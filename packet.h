@@ -4,34 +4,152 @@
   lcd scl-21
   call sw 22-53
 */
+#include "fx.h"
 #include <LiquidCrystal_I2C.h>
 #include <Arduino.h>
 #include <EEPROM.h>
 #include <DFRobotDFPlayerMini.h>
-#define push_UP 3
-#define push_DOWN 4
+#define push_UP 3   // sw setting
+#define push_DOWN 4 // sw setting
+#define buz 10      // buzzer
 LiquidCrystal_I2C lcd(0x27, 24, 4);
 const int sw[2][16] =
     {{22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37},
      {38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53}},
-          led_master[2] = {12, 11};
+          led_master[3] = {12, 11, 13};
+String position[32] = {
+    "bed 1",
+    "bed 2",
+    "bed 3",
+    "bed 4",
+    "bed 5",
+    "bed 6",
+    "bed 7",
+    "bed 8",
+    "bed 9",
+    "bed 10",
+    "bed 11",
+    "bed 12",
+    "bed 13",
+    "bed 14",
+    "bed 15",
+    "bed 16",
+    "bed 17",
+    "bed 18",
+    "bed 19",
+    "bed 20",
+    "bed 21",
+    "bed 22",
+    "bed 23",
+    "bed 24",
+    "bed 25",
+    "kamar mandi",
+    "bed 27",
+    "bed 28",
+    "bed 29",
+    "bed 30",
+    "bed 31",
+    "bed 32"};
 int fx;
-unsigned long int timeshowPacket = 20, Waktuakhir = 0, interval = 10000, dl = 3000;
+unsigned long int timeshowPacket = 20, Waktuakhir = 0, interval = 10000, dl = 9000, noDisplay;
 // display
-bool selector = false;
+bool selector = false, synonim = false;
 int clearScrool, scrool, packet, setLANG, cursorLegt,
     lenght_1, cursorLenght2,
-    clear001, clear002;
+    clear001, clear002, interval2, prev = 0, lenght_10;
 void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
-bool C = false, language = false, handle = false,
-     emergency = false, menu = true, lenght_10 = false;
-String L, L1, L2;
+bool C = false, language = false, handle = false, lenght_bawah,
+     emergency = false, menu = true, handle2;
+String L, L1, L2, show_interval2;
 const char *red = "\033[31m";
 const char *green = "\033[32m";
 const char *orange = "\033[33m";
 const char *reset = "\033[0m";
+void buzz()
+{
+  int voicecover;
+  switch (setLANG)
+  {
+  case 0:
+    voicecover = NOTE_D5;
+    break;
+  case 1:
+    voicecover = NOTE_A4;
+    break;
+  case 2:
+    voicecover = NOTE_AS3;
+    break;
+  case 3:
+    voicecover = NOTE_F5;
+  default:
+    voicecover = NOTE_DS5;
+    break;
+  }
+  for (int i = 0; i < 4; i++)
+  {
+    digitalWrite(led_master[2], HIGH);
+    digitalWrite(led_master[0], LOW);
+    tone(buz, voicecover);
+    delay(250);
+    noTone(buz);
+    digitalWrite(led_master[2], LOW);
+    digitalWrite(led_master[0], HIGH);
+    delay(250);
+  }
+  for (int i = 0; i < 2; i++)
+  {
+    for (int x = 0; x < 16; x++)
+    {
+      if (digitalRead(sw[i][x]) == HIGH)
+      {
+        Waktuakhir = millis();
+      }
+    }
+  }
+}
+void checkpoin()
+{
+  Serial.print(red);
+  Serial.print(menu, HEX);
+  Serial.print(" ");
+  Serial.print(menu);
+  Serial.print(" ");
+  Serial.print(reset);
+  Serial.print(clear001, HEX);
+  Serial.print(" ");
+  Serial.print(clear001);
+  Serial.print(" ");
+  Serial.print(clear002, HEX);
+  Serial.print(" ");
+  Serial.print(clear002);
+  Serial.print(" ");
+  Serial.print(C, HEX);
+  Serial.print(" ");
+  Serial.print(C);
+  Serial.print(" ");
+  //
+  Serial.print(green);
+  Serial.print(emergency, HEX);
+  Serial.print(" ");
+  Serial.print(emergency);
+  Serial.print(" ");
+  Serial.print(lenght_10, HEX);
+  Serial.print(" ");
+  Serial.print(lenght_10);
+  Serial.print(" ");
+  Serial.print(handle2, HEX);
+  Serial.print(" ");
+  Serial.print(handle2);
+  Serial.print(" ");
+  Serial.print(handle, HEX);
+  Serial.println(" ");
+  Serial.print(handle);
+  Serial.println(" ");
+  return;
+}
 void msg(String msg1, String msg2, int leng)
 {
+
   int up = 1;
   int x = (lenght_10) ? 3 : (lenght_1 > 0) ? 3
                                            : 2;
@@ -40,8 +158,11 @@ void msg(String msg1, String msg2, int leng)
   lcd.setCursor(0, up);
   lcd.print(msg1);
   lcd.setCursor(leng + x, up);
+  // lcd.print("   ");
   lcd.print("   ");
+  return;
 }
+String customName[32];
 char menuLang[4][2][26] =
     {
         {"SISTEM PANGGIL", ">>DOKTER<<"},
@@ -66,8 +187,8 @@ char lang[4][8][13] = {
      "STEM 2",
      "STEM 3",
      "STEM 4"},
-    {"VOTA 1 1",
-     "VOTA  2",
+    {"VOTA 1",
+     "VOTA 2",
      "VOTA 3",
      "VOTA 4"}};
 void logversion(const char *text)
@@ -86,16 +207,26 @@ void logversion(const char *text)
       {
         lcd.setCursor(i, x);
         lcd.print(text[i]);
-        delay(80);
+        delay(50);
       }
     }
   }
   delay(2000);
+
   lcd.clear();
 }
 void callbed()
 {
+  bool buzconfirm;
   String m;
+  if (clear001 && clear002)
+  {
+    lcd.clear();
+    clear001 = false, clear002 = false;
+  }
+  
+  if(m.length()!=m.length()){lcd.clear();}
+  
   for (int i = 0; i < 2; i++)
   {
     for (int b = 0; b < 16; b++)
@@ -103,18 +234,29 @@ void callbed()
       packet = sw[i][b] - 21;
       if (digitalRead(sw[i][b]) == HIGH)
       {
-        lenght_1 = m.length();
-        m += (lenght_1 > 0) ? "," : " ";
-        m += String(packet);
-        lenght_10 = (packet > 9) ? true : false;
-        Waktuakhir = millis();
+        m += position[packet];
         clear001 = true;
+        emergency = false;
+        Waktuakhir = millis();
       }
     }
   }
+
+  Serial.print(packet);
+  Serial.print(" ");
+  Serial.println(m.length());
+  int menu_index = 0, lenghtLCD = 19;
+  String menu_indexStr;
+  menu_index = menu_indexStr.length();
+  if (menu_index <= lenghtLCD)
+  {
+    int x, y;
+    x++;
+    lcd.setCursor(x, y);
+    lcd.print(m);
+  }
   if (menu)
   {
-    clear002 = true;
     switch (scrool)
     {
     case 0:
@@ -136,27 +278,34 @@ void callbed()
     lcd.setCursor(cursorLenght2, 2);
     lcd.print(L2);
     delay(10);
+    clear002 = true;
+    buzconfirm = false;
   }
   else
   {
-    clear002 = false;
-    msg(m, L, lenght_1);
+    // Serial.print(packet);
+    // Serial.print(" ");
+    // Serial.println(m.length());
+    buzconfirm = true;
+    clear001 = true;
   }
+  if (buzconfirm)
+  {
+    buzz();
+  }
+  return;
 }
 void VOICE()
 {
-
   while (handle)
   {
-
-    if (millis() - Waktuakhir > dl)
+    if (!handle)
     {
-      handle = false, menu = true;
+      Waktuakhir = millis();
       break;
     }
     if (digitalRead(push_UP) == HIGH)
     {
-      Waktuakhir = millis();
       setLANG++;
       selector = true;
       if (setLANG > 3)
@@ -164,12 +313,13 @@ void VOICE()
         setLANG = 0;
       }
       delay(250);
+      handle2 = false;
+      interval2 = 11000;
     }
     if (digitalRead(push_DOWN) == HIGH)
     {
       Waktuakhir = millis();
       clearScrool = setLANG--;
-      dl -= 500;
       selector = false;
       if (setLANG < 0)
       {
@@ -177,6 +327,8 @@ void VOICE()
         clearScrool = 0;
       }
       delay(250);
+      handle2 = false;
+      interval2 = 11000;
     }
     for (int i = 0; i < 4; i++)
     {
@@ -195,17 +347,52 @@ void VOICE()
         lcd.print(" ");
       }
     }
+    if (handle2 && millis() - interval2 >= 1000)
+    {
+      prev = millis();
+      interval2 -= 100;
+    }
+    show_interval2 = (millis() - interval2 > 1) ? String(interval2 / 1000) + " " : "     ";
+    lcd.setCursor(17, 3);
+    lcd.print(show_interval2);
+    if (interval2 <= 0)
+    {
+      handle2 = false;
+    }
+    else
+    {
+      handle2 = true;
+    }
+    if (millis() - Waktuakhir > dl)
+    {
+      handle = false, menu = true, clear001 = true;
+      interval2 = 11000;
+      lcd.clear();
+      handle2 = true;
+    }
+  }
+  if (!handle)
+  {
+    Waktuakhir = millis();
+    delay(100);
+    emergency = false;
+    return;
   }
 }
 void setVoice()
 {
-  C = true;
+  delay(500);
   do
   {
     if (millis() - Waktuakhir > dl)
     {
-      handle = true, C = true, selector = true;
+      handle = true, selector = true,
       clearScrool = setLANG;
+      handle2 = false,
+      interval2 = 11000,
+      Waktuakhir = millis(),
+      lcd.clear();
+
       break;
     }
     if (digitalRead(push_UP) == HIGH)
@@ -217,13 +404,11 @@ void setVoice()
       {
         scrool = 0;
       }
+      handle2 = false;
+      interval2 = 11000;
       delay(250);
     }
-    if (millis() - Waktuakhir > dl)
-    {
-      handle = true, C = true;
-      break;
-    }
+
     if (digitalRead(push_DOWN) == HIGH)
     {
       Waktuakhir = millis();
@@ -234,10 +419,11 @@ void setVoice()
         scrool = 3;
         clearScrool = 0;
       }
-      Serial.print("value scrol = ");
-      Serial.print(scrool);
+      handle2 = false;
+      interval2 = 11000;
       delay(250);
     }
+
     for (int x = 0; x < 4; x++)
     {
       lcd.setCursor(2, x);
@@ -255,35 +441,34 @@ void setVoice()
         lcd.print(" ");
       }
     }
+    if (handle2 && millis() - interval2 >= 1000)
+    {
+      prev = millis();
+      interval2 -= 100;
+    }
+    show_interval2 = (millis() - interval2 > 1) ? String(interval2 / 1000) + " " : "     ";
+    lcd.setCursor(17, 3);
+    lcd.print(show_interval2);
     save_memory(1, scrool);
+    if (interval2 <= 0)
+    {
+      handle2 = false;
+    }
+    else
+    {
+      handle2 = true;
+    }
 
   } while (true);
 }
-int checkpoin(int b1, int b2, int b3, int b4)
+void datasw()
 {
-  int a;
-  a += 1;
-  int *addres0 = &b1;
-  int *addres1 = &b2;
-  int *addres2 = &b3;
-  int *addres3 = &b4;
-  Serial.print(red);
-  Serial.print(" C ");
-  Serial.print(*addres0);
-  Serial.print(" ");
-  Serial.print(green);
-  Serial.print(*addres1);
-  Serial.print(" ");
-  Serial.print(reset);
-  Serial.print(*addres2);
-  Serial.print(" ");
-  Serial.print(orange);
-  Serial.print("menu ");
-  Serial.print(*addres3);
-  Serial.print(" ");
-  if (a > 5)
-  {
-    Serial.println("");
-    a = 0;
-  }
+  lcd.backlight();
+  lcd.display();
+  lcd.clear();
+  handle2 = false;
+  interval2 = 11000;
+  Waktuakhir = millis();
+  setVoice();
+  return;
 }
