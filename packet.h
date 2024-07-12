@@ -54,7 +54,7 @@ int fx;
 unsigned long int timeshowPacket = 20, Waktuakhir = 0, interval = 10000, dl = 9000, noDisplay;
 // display
 bool selector = false, synonim = false;
-int clearScrool, scrool, packet, setLANG, cursorLegt,clear,
+int clearScrool, scrool, packet, setLANG, cursorLegt, clear,
     lenght_1, cursorLenght2,
     clear001, clear002, interval2, prev = 0, lenght_10;
 void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
@@ -216,7 +216,7 @@ void logversion(const char *text)
   lcd.clear();
 }
 void callbed()
-{  
+{
   bool buzconfirm;
   String m;
   if (clear001 && clear002)
@@ -232,9 +232,8 @@ void callbed()
       packet = sw[i][b] - 21;
       if (digitalRead(sw[i][b]) == HIGH)
       {
+        m += ((m.length()) > clear) ? " " : ",";
         m += position[packet];
-        // m+=(m.length()>m.length+1)?","::
-        m += (m.length() != clear) ? "," : "";
         clear001 = true;
         emergency = false;
         Waktuakhir = millis();
