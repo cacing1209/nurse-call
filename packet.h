@@ -232,7 +232,6 @@ void callbed()
       packet = sw[i][b] - 21;
       if (digitalRead(sw[i][b]) == HIGH)
       {
-        m += ((m.length()) > clear) ? " " : ",";
         m += position[packet];
         clear001 = true;
         emergency = false;
