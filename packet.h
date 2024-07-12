@@ -54,7 +54,7 @@ int fx;
 unsigned long int timeshowPacket = 20, Waktuakhir = 0, interval = 10000, dl = 9000, noDisplay;
 // display
 bool selector = false, synonim = false;
-int clearScrool, scrool, packet, setLANG, cursorLegt,
+int clearScrool, scrool, packet, setLANG, cursorLegt,clear,
     lenght_1, cursorLenght2,
     clear001, clear002, interval2, prev = 0, lenght_10;
 void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
@@ -216,7 +216,7 @@ void logversion(const char *text)
   lcd.clear();
 }
 void callbed()
-{
+{  
   bool buzconfirm;
   String m;
   if (clear001 && clear002)
@@ -225,13 +225,6 @@ void callbed()
     lcd.clear();
     clear001 = false, clear002 = false;
   }
-
-  if (m.length() != m.length())
-  {
-    lcd.clear();
-  }
-
-  int clear;
   for (int i = 0; i < 2; i++)
   {
     for (int b = 0; b < 16; b++)
@@ -239,30 +232,25 @@ void callbed()
       packet = sw[i][b] - 21;
       if (digitalRead(sw[i][b]) == HIGH)
       {
-        // m+=(m.length()>m.length+1)?","::
         m += position[packet];
+        // m+=(m.length()>m.length+1)?","::
+        m += (m.length() != clear) ? "," : "";
         clear001 = true;
         emergency = false;
         Waktuakhir = millis();
       }
     }
   }
-  if (m.length() != clear)
-  {
-    lcd.clear();
-    clear = m.length();
-  }
   Serial.print(clear);
   Serial.print(" ");
-  Serial.println(m.length());
-  int menu_index = 0, lenghtLCD = 19;
-  String menu_indexStr;
-  menu_index = menu_indexStr.length();
-  if (menu_index <= lenghtLCD)
+  Serial.print(m.length());
+  Serial.print(" ");
+  Serial.println(m);
+  if (m.length() != clear)
   {
-    int x, y;
-    lcd.setCursor(x, y);
-    lcd.print(m);
+    Serial.print("|<<<============================>>>|");
+    lcd.clear();
+    clear = m.length();
   }
   if (menu)
   {
@@ -292,9 +280,20 @@ void callbed()
   }
   else
   {
-    // Serial.print(packet);
-    // Serial.print(" ");
-    // Serial.println(m.length());
+    String length_chr;
+    int menu_index, lenghtLCD = 19,
+                    x, y;
+    length_chr += m;
+    menu_index = length_chr.length();
+    if (length_chr.length() <= lenghtLCD)
+    {
+
+      lcd.setCursor(x, y);
+      lcd.print(m);
+    }
+    else
+    {
+    }
     buzconfirm = true;
     clear001 = true;
   }
