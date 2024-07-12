@@ -221,12 +221,17 @@ void callbed()
   String m;
   if (clear001 && clear002)
   {
+    delay(100);
     lcd.clear();
     clear001 = false, clear002 = false;
   }
-  
-  if(m.length()!=m.length()){lcd.clear();}
-  
+
+  if (m.length() != m.length())
+  {
+    lcd.clear();
+  }
+
+  int clear;
   for (int i = 0; i < 2; i++)
   {
     for (int b = 0; b < 16; b++)
@@ -234,6 +239,7 @@ void callbed()
       packet = sw[i][b] - 21;
       if (digitalRead(sw[i][b]) == HIGH)
       {
+        // m+=(m.length()>m.length+1)?","::
         m += position[packet];
         clear001 = true;
         emergency = false;
@@ -241,8 +247,12 @@ void callbed()
       }
     }
   }
-
-  Serial.print(packet);
+  if (m.length() != clear)
+  {
+    lcd.clear();
+    clear = m.length();
+  }
+  Serial.print(clear);
   Serial.print(" ");
   Serial.println(m.length());
   int menu_index = 0, lenghtLCD = 19;
@@ -251,7 +261,6 @@ void callbed()
   if (menu_index <= lenghtLCD)
   {
     int x, y;
-    x++;
     lcd.setCursor(x, y);
     lcd.print(m);
   }
