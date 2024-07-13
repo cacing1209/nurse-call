@@ -50,7 +50,7 @@ String position[32] = {
     "bed 30",
     "bed 31",
     "bed 32"};
-int fx;
+int fx, menu_index, lenghtLCD = 19;
 unsigned long int timeshowPacket = 20, Waktuakhir = 0, interval = 10000, dl = 9000, noDisplay;
 // display
 bool selector = false, synonim = false;
@@ -58,8 +58,8 @@ int clearScrool, scrool, packet, setLANG, cursorLegt, clear,
     lenght_1, cursorLenght2,
     clear001, clear002, interval2, prev = 0, lenght_10;
 void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
-bool C = false, language = false, handle = false, lenght_bawah,
-     emergency = false, menu = true, handle2;
+bool C, language = false, handle = false, lenght_bawah,
+        emergency = false, menu = true, handle2;
 String L, L1, L2, show_interval2;
 const char *red = "\033[31m";
 const char *green = "\033[32m";
@@ -219,12 +219,6 @@ void callbed()
 {
   bool buzconfirm;
   String m;
-  if (clear001 && clear002)
-  {
-    delay(100);
-    lcd.clear();
-    clear001 = false, clear002 = false;
-  }
   for (int i = 0; i < 2; i++)
   {
     for (int b = 0; b < 16; b++)
@@ -239,19 +233,20 @@ void callbed()
       }
     }
   }
-  Serial.print(clear);
-  Serial.print(" ");
-  Serial.print(m.length());
-  Serial.print(" ");
-  Serial.println(m);
   if (m.length() != clear)
   {
-    Serial.print("|<<<============================>>>|");
+    Serial.println("|<<<============================>>>|");
     lcd.clear();
     clear = m.length();
   }
   if (menu)
   {
+    clear001 = false;
+    if (clear001 != clear002)
+    {
+      lcd.clear();
+      clear002 = clear001;
+    }
     switch (scrool)
     {
     case 0:
@@ -273,19 +268,21 @@ void callbed()
     lcd.setCursor(cursorLenght2, 2);
     lcd.print(L2);
     delay(10);
-    clear002 = true;
     buzconfirm = false;
   }
   else
   {
     String length_chr;
-    int menu_index, lenghtLCD = 19,
-                    x, y;
+    int x, y;
+    if (clear001 != clear002)
+    {
+      lcd.clear();
+      clear002 = clear001;
+    }
     length_chr += m;
     menu_index = length_chr.length();
     if (length_chr.length() <= lenghtLCD)
     {
-
       lcd.setCursor(x, y);
       lcd.print(m);
     }
@@ -293,7 +290,7 @@ void callbed()
     {
     }
     buzconfirm = true;
-    clear001 = true;
+    Serial.println(length_chr);
   }
   if (buzconfirm)
   {
@@ -371,7 +368,7 @@ void VOICE()
     }
     if (millis() - Waktuakhir > dl)
     {
-      handle = false, menu = true, clear001 = true;
+      handle = false, menu = true;
       interval2 = 11000;
       lcd.clear();
       handle2 = true;

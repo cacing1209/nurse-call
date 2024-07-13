@@ -30,9 +30,7 @@ void setup()
 }
 void loop()
 {
-  // C = (clear001 == true && clear002 == true) ? true : false;
   lcd.setBacklight((millis() - Waktuakhir > interval) ? LOW : HIGH);
-  // checkpoin();
   menu = (millis() - Waktuakhir > 100) ? true : false;
   int backlightState = (millis() - Waktuakhir > interval) ? LOW : HIGH;
   lcd.setBacklight(backlightState);
@@ -40,7 +38,6 @@ void loop()
   {
     digitalWrite(led_master[0], LOW);
     digitalWrite(led_master[1], HIGH);
-
     lcd.noDisplay();
     do
     {
@@ -80,12 +77,6 @@ void loop()
     lcd.display();
     noDisplay = 5000;
   }
-  if (C)
-  {
-    lcd.clear();
-    clear001 = false, clear002 = false;
-    delay(50);
-  }
   if (digitalRead(push_UP) == HIGH || digitalRead(push_DOWN) == HIGH)
   {
     datasw();
@@ -109,7 +100,7 @@ void loop()
       L = callsetup[2];
       L1 = menuLang[2][0];
       L2 = menuLang[2][1];
-      break;            
+      break;
     case 3:
       L = callsetup[3];
       L1 = menuLang[3][0];
