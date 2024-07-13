@@ -279,7 +279,7 @@ void callbed()
       lcd.clear();
       clear002 = clear001;
     }
-    length_chr += m;
+    length_chr = m;
     menu_index = length_chr.length();
     if (length_chr.length() <= lenghtLCD)
     {
@@ -290,7 +290,7 @@ void callbed()
     {
     }
     buzconfirm = true;
-    Serial.println(length_chr);
+  Serial.println(length_chr);
   }
   if (buzconfirm)
   {
