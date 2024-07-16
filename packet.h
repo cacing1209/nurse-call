@@ -12,6 +12,7 @@
 #define push_UP 3   // sw setting
 #define push_DOWN 4 // sw setting
 #define buz 10      // buzzer
+
 LiquidCrystal_I2C lcd(0x27, 24, 4);
 const int sw[2][16] =
     {{22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37},
@@ -57,7 +58,6 @@ bool selector = false, synonim = false;
 int clearScrool, scrool, packet, setLANG, cursorLegt, clear,
     lenght_1, cursorLenght2,
     clear001, clear002, interval2, prev = 0, lenght_10;
-void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
 bool C, language = false, handle = false, lenght_bawah,
         emergency = false, menu = true, handle2;
 String L, L1, L2, show_interval2;
@@ -65,6 +65,7 @@ const char *red = "\033[31m";
 const char *green = "\033[32m";
 const char *orange = "\033[33m";
 const char *reset = "\033[0m";
+void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
 void buzz()
 {
   int voicecover;
@@ -85,16 +86,16 @@ void buzz()
     voicecover = NOTE_DS5;
     break;
   }
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 2; i++)
   {
     digitalWrite(led_master[2], HIGH);
     digitalWrite(led_master[0], LOW);
     tone(buz, voicecover);
-    delay(250);
+    delay(200);
     noTone(buz);
     digitalWrite(led_master[2], LOW);
     digitalWrite(led_master[0], HIGH);
-    delay(250);
+    delay(200);
   }
   for (int i = 0; i < 2; i++)
   {
@@ -226,7 +227,7 @@ void callbed()
       packet = sw[i][b] - 21;
       if (digitalRead(sw[i][b]) == HIGH)
       {
-        m += position[packet];
+        m += position[packet-1];
         clear001 = true;
         emergency = false;
         Waktuakhir = millis();
@@ -474,4 +475,42 @@ void datasw()
   Waktuakhir = millis();
   setVoice();
   return;
-} 
+}
+// typedef struct
+// {
+//   unsigned long int waktu,
+//       standbyTimer;
+//   bool emrgncy = false;
+
+// } data;
+// void hibernate()
+// {
+//   data p2;
+//   if (p2.waktu > p2.standbyTimer)
+//   {
+//     if (p2.emrgncy)
+//     {
+//       return;
+//     }
+//     lcd.clear();
+//     lcd.noDisplay();
+//   }
+// }
+// void standby(int *wktu)
+// {
+//   data p1;
+//   p1.standbyTimer = 15000;
+//   p1.waktu = millis();
+//   for (int i = 0; i < 2; i++)
+//   {
+//     for (int x = 0; x < 16; x++)
+//     {
+//       if (digitalRead(sw[i][x]) == HIGH)
+//       {
+//         p1.emrgncy = true;
+//         p1.waktu = millis();
+//       }
+//     }
+//   }
+//   hibernate();
+// }
