@@ -108,44 +108,9 @@ void buzz()
     }
   }
 }
-void checkpoin()
+void checkpoin(int value)
 {
-  Serial.print(red);
-  Serial.print(menu, HEX);
-  Serial.print(" ");
-  Serial.print(menu);
-  Serial.print(" ");
-  Serial.print(reset);
-  Serial.print(clear001, HEX);
-  Serial.print(" ");
-  Serial.print(clear001);
-  Serial.print(" ");
-  Serial.print(clear002, HEX);
-  Serial.print(" ");
-  Serial.print(clear002);
-  Serial.print(" ");
-  Serial.print(C, HEX);
-  Serial.print(" ");
-  Serial.print(C);
-  Serial.print(" ");
-  //
-  Serial.print(green);
-  Serial.print(emergency, HEX);
-  Serial.print(" ");
-  Serial.print(emergency);
-  Serial.print(" ");
-  Serial.print(lenght_10, HEX);
-  Serial.print(" ");
-  Serial.print(lenght_10);
-  Serial.print(" ");
-  Serial.print(handle2, HEX);
-  Serial.print(" ");
-  Serial.print(handle2);
-  Serial.print(" ");
-  Serial.print(handle, HEX);
-  Serial.println(" ");
-  Serial.print(handle);
-  Serial.println(" ");
+  Serial.print(value);
   return;
 }
 void msg(String msg1, String msg2, int leng)
@@ -218,7 +183,6 @@ void logversion(const char *text)
 }
 void callbed()
 {
-  bool buzconfirm;
   String m;
   for (int i = 0; i < 2; i++)
   {
@@ -227,7 +191,7 @@ void callbed()
       packet = sw[i][b] - 21;
       if (digitalRead(sw[i][b]) == HIGH)
       {
-        m += position[packet-1];
+        m += position[packet - 1];
         clear001 = true;
         emergency = false;
         Waktuakhir = millis();
@@ -269,7 +233,7 @@ void callbed()
     lcd.setCursor(cursorLenght2, 2);
     lcd.print(L2);
     delay(10);
-    buzconfirm = false;
+    // buzconfirm = false;
   }
   else
   {
@@ -289,14 +253,14 @@ void callbed()
     }
     else
     {
-    }
-    buzconfirm = true;
+    }    
+    buzz();
     Serial.println(length_chr);
   }
-  if (buzconfirm)
-  {
-    buzz();
-  }
+  // if (buzconfirm)
+  // {
+  //   buzz();
+  // }
   return;
 }
 void VOICE()
@@ -474,7 +438,7 @@ void datasw()
   interval2 = 11000;
   Waktuakhir = millis();
   setVoice();
-  return;
+  // return;
 }
 // typedef struct
 // {
