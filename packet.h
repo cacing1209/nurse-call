@@ -65,7 +65,11 @@ const char *red = "\033[31m";
 const char *green = "\033[32m";
 const char *orange = "\033[33m";
 const char *reset = "\033[0m";
-void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
+void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); }
+typedef struct
+{  
+} data;
+
 void buzz()
 {
   int voicecover;
@@ -253,7 +257,7 @@ void callbed()
     }
     else
     {
-    }    
+    }
     buzz();
     Serial.println(length_chr);
   }
@@ -360,7 +364,14 @@ void setVoice()
       interval2 = 11000,
       Waktuakhir = millis(),
       lcd.clear();
-
+      if (scrool != scrool || setLANG != setLANG)
+      {
+        for (int i = 0; i < 2; i++)
+        {
+          char addes[i] = {'language', 'voice'};
+          save_memory(i, addes[i]);
+        }
+      }
       break;
     }
     if (digitalRead(push_UP) == HIGH)
