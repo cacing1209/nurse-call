@@ -65,11 +65,7 @@ const char *red = "\033[31m";
 const char *green = "\033[32m";
 const char *orange = "\033[33m";
 const char *reset = "\033[0m";
-void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); }
-typedef struct
-{  
-} data;
-
+void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
 void buzz()
 {
   int voicecover;
@@ -185,6 +181,10 @@ void logversion(const char *text)
 
   lcd.clear();
 }
+typedef struct data
+{
+};
+
 void callbed()
 {
   String m;
@@ -261,11 +261,6 @@ void callbed()
     buzz();
     Serial.println(length_chr);
   }
-  // if (buzconfirm)
-  // {
-  //   buzz();
-  // }
-  return;
 }
 void VOICE()
 {
@@ -362,16 +357,10 @@ void setVoice()
       clearScrool = setLANG;
       handle2 = false,
       interval2 = 11000,
-      Waktuakhir = millis(),
+      Waktuakhir = millis();
       lcd.clear();
-      if (scrool != scrool || setLANG != setLANG)
-      {
-        for (int i = 0; i < 2; i++)
-        {
-          char addes[i] = {'language', 'voice'};
-          save_memory(i, addes[i]);
-        }
-      }
+      save_memory(0, scrool);
+      save_memory(1, setLANG);
       break;
     }
     if (digitalRead(push_UP) == HIGH)

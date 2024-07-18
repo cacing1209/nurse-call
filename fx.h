@@ -1,5 +1,7 @@
 // #include <TonePitch.h>
 #pragma once
+#ifndef TONE_PITCH_H
+#define TONE_PITCH_H
 #include <ToneDefault.h>
 #define NOTE_B0 31
 #define NOTE_C1 33
@@ -90,3 +92,4 @@
 #define NOTE_CS8 4435
 #define NOTE_D8 4699
 #define NOTE_DS8 4978
+#endif TONE_PITCH_H
