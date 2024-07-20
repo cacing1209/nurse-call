@@ -166,28 +166,29 @@ struct data
 data p1;
 void standby(bool confirm)
 {
-  for (int x = 0; x < 2; x++)
+  while (confirm)
   {
-    for (int y = 0; y < 16; y++)
+    for (int x = 0; x < 2; x++)
     {
-      if (digitalRead(sw[x][y]) == HIGH)
+      for (int y = 0; y < 16; y++)
       {
-        p1.wakeup = true;
+        if (digitalRead(sw[x][y]) == HIGH)
+        {
+          lcd.display();
+          break;
+        }
       }
     }
-  }
-  if (confirm && !p1.wakeup)
-  {
-    lcd.noDisplay();
-  }
-  else
-  {
-    lcd.display();
+    if (confirm && millis() - Waktuakhir > interval + 5000)
+    {
+      lcd.noDisplay();
+    }
   }
 }
 void callbed()
 {
   String m;
+  data p2;
   for (int i = 0; i < 2; i++)
   {
     for (int b = 0; b < 16; b++)
@@ -197,6 +198,7 @@ void callbed()
       {
         m += position[packet - 1];
         clear001 = true;
+        p2.wakeup = false;
         Waktuakhir = millis();
       }
     }
