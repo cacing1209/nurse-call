@@ -54,12 +54,12 @@ String position[32] = {
 int fx, menu_index, lenghtLCD = 19;
 unsigned long int timeshowPacket = 20, Waktuakhir = 0, interval = 10000, dl = 9000, noDisplay;
 // display
-bool selector = false, synonim = false;
+bool selector = false;
 int clearScrool, scrool, packet, setLANG, cursorLegt, clear,
     lenght_1, cursorLenght2,
     clear001, clear002, interval2, prev = 0, lenght_10;
-bool C, language = false, handle = false, lenght_bawah,
-        emergency = false, menu = true, handle2;
+bool language = false, handle = false,
+     menu = true, handle2;
 String L, L1, L2, show_interval2;
 const char *red = "\033[31m";
 const char *green = "\033[32m";
@@ -157,34 +157,34 @@ char lang[4][8][13] = {
      "VOTA 2",
      "VOTA 3",
      "VOTA 4"}};
-void logversion(const char *text)
+
+struct data
 {
-  lcd.clear();
-  for (int x = 0; x < 4; x++)
+  unsigned long time = 0;
+  bool wakeup;
+};
+data p1;
+void standby(bool confirm)
+{
+  for (int x = 0; x < 2; x++)
   {
-    for (int y = 0; y < 20; y++)
+    for (int y = 0; y < 16; y++)
     {
-      lcd.setCursor(y, x);
-      lcd.print("#");
-    }
-    if (x == 1)
-    {
-      for (int i = 0; text[i] != '\0'; i++)
+      if (digitalRead(sw[x][y]) == HIGH)
       {
-        lcd.setCursor(i, x);
-        lcd.print(text[i]);
-        delay(50);
+        p1.wakeup = true;
       }
     }
   }
-  delay(2000);
-
-  lcd.clear();
+  if (confirm && !p1.wakeup)
+  {
+    lcd.noDisplay();
+  }
+  else
+  {
+    lcd.display();
+  }
 }
-typedef struct data
-{
-};
-
 void callbed()
 {
   String m;
@@ -197,7 +197,6 @@ void callbed()
       {
         m += position[packet - 1];
         clear001 = true;
-        emergency = false;
         Waktuakhir = millis();
       }
     }
@@ -342,7 +341,6 @@ void VOICE()
   {
     Waktuakhir = millis();
     delay(100);
-    emergency = false;
     return;
   }
 }

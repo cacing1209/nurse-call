@@ -1,6 +1,30 @@
 #include "packet.h"
 DFRobotDFPlayerMini myDFPlayer;
 void printDetail(uint8_t type, int value);
+void logversion(const char *text)
+{
+  lcd.clear();
+  for (int x = 0; x < 4; x++)
+  {
+    for (int y = 0; y < 20; y++)
+    {
+      lcd.setCursor(y, x);
+      lcd.print("#");
+    }
+    if (x == 1)
+    {
+      for (int i = 0; text[i] != '\0'; i++)
+      {
+        lcd.setCursor(i, x);
+        lcd.print(text[i]);
+        delay(50);
+      }
+    }
+  }
+  delay(2000);
+
+  lcd.clear();
+}
 void setup()
 {
   menu = true, selector = true, clearScrool = setLANG;
@@ -30,53 +54,8 @@ void setup()
 }
 void loop()
 {
-  lcd.setBacklight((millis() - Waktuakhir > interval) ? LOW : HIGH);
   menu = (millis() - Waktuakhir > 100) ? true : false;
-  int backlightState = (millis() - Waktuakhir > interval) ? LOW : HIGH;
-  lcd.setBacklight(backlightState);
-  if (backlightState == LOW && millis() - Waktuakhir > interval + (noDisplay - 44))
-  {
-    digitalWrite(led_master[0], LOW);
-    digitalWrite(led_master[1], HIGH);
-    lcd.noDisplay();
-    do
-    {
-      if (emergency)
-      {
-        break;
-      }
-      for (int i = 0; i < 2; i++)
-      {
-        for (int b = 0; b < 16; b++)
-        {
-          packet = sw[i][b] - 21;
-          if (digitalRead(sw[i][b]) == HIGH)
-          {
-            if (emergency)
-            {
-              break;
-            }
-            emergency = true;
-          }
-          else
-          {
-            if (digitalRead(push_UP) == HIGH || digitalRead(push_DOWN) == HIGH)
-            {
-              emergency = true;
-              break;
-            }
-          }
-        }
-      }
-    } while (!emergency);
-  }
-  else
-  {
-    digitalWrite(led_master[1], LOW);
-    digitalWrite(led_master[0], HIGH);
-    lcd.display();
-    noDisplay = 5000;
-  }
+  bool backlightState = (millis() - Waktuakhir > interval) ? false : true;
   if (digitalRead(push_UP) == HIGH || digitalRead(push_DOWN) == HIGH)
   {
     datasw();
@@ -115,5 +94,6 @@ void loop()
     Waktuakhir = millis();
     VOICE();
   }
+  standby(backlightState);
   callbed();
 }
