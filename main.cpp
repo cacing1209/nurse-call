@@ -61,7 +61,8 @@ void loop()
   // Serial.println(millis() - Waktuakhir);
   menu = (millis() - Waktuakhir > 100) ? true : false;
 
-  if (digitalRead(push_UP) == HIGH || digitalRead(push_DOWN) == HIGH)
+  if (digitalRead(push_UP) == HIGH ||
+      digitalRead(push_DOWN) == HIGH)
   {
     datasw();
   }
