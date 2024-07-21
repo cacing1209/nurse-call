@@ -17,7 +17,7 @@ void logversion(const char *text)
       {
         lcd.setCursor(i, x);
         lcd.print(text[i]);
-        delay(50);
+        delay(30);
       }
     }
   }
@@ -54,48 +54,21 @@ void setup()
 }
 void loop()
 {
+  Serial.print(opator1.wakeup);
+  Serial.print(" ");
+  Serial.print(opator1.sleep);
+  Serial.println(" ");
   // Serial.println(millis() - Waktuakhir);
   menu = (millis() - Waktuakhir > 100) ? true : false;
-  bool backlightState = (millis() -
-   Waktuakhir > interval) ? false : true;
+
   if (digitalRead(push_UP) == HIGH || digitalRead(push_DOWN) == HIGH)
   {
     datasw();
   }
-  if (handle)
+  else if (millis() - opator1.waktu > interval && menu)
   {
-    lcd.clear();
-    switch (scrool)
-    {
-    case 0:
-      L = callsetup[0];
-      L1 = menuLang[0][0];
-      L2 = menuLang[0][1];
-      break;
-    case 1:
-      L = callsetup[1];
-      L1 = menuLang[1][0];
-      L2 = menuLang[1][1];
-      break;
-    case 2:
-      L = callsetup[2];
-      L1 = menuLang[2][0];
-      L2 = menuLang[2][1];
-      break;
-    case 3:
-      L = callsetup[3];
-      L1 = menuLang[3][0];
-      L2 = menuLang[3][1];
-      break;
-    default:
-      L = callsetup[0];
-      L1 = menuLang[0][0];
-      L2 = menuLang[0][1];
-      break;
-    }
-    Waktuakhir = millis();
-    VOICE();
+
+    standby();
   }
-  standby(backlightState);
   callbed();
 }

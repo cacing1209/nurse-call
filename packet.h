@@ -161,30 +161,44 @@ char lang[4][8][13] = {
 struct stb
 {
   bool wakeup;
-  unsigned long int waktu;
+  bool sleep;
+  unsigned long int waktu = 0;
 };
-
-void standby(bool confirm)
+stb opator1;
+void standby()
 {
-  stb p1;
-  Serial.print(confirm);
-  Serial.print(" ");
-  Serial.println(p1.wakeup);
-  while (!p1.wakeup && !confirm)
+
+  while (opator1.sleep)
   {
-    if (p1.wakeup)
+    // lcd.noBacklight();
+    if (opator1.wakeup)
     {
-      Waktuakhir = millis();
+      lcd.backlight();
+      lcd.display();
+      for (int i = 0; i < 100; i += 10)
+      {
+        opator1.waktu = millis();
+        delay(i);
+      }
       break;
     }
-
+    else
+    {
+      if ((millis() - opator1.waktu) > (interval + 5000))
+      {
+        lcd.noDisplay();
+      }
+      lcd.noBacklight();
+    }
     for (int x = 0; x < 2; x++)
     {
       for (int y = 0; y < 16; y++)
       {
-        if (digitalRead(sw[x][y]) == HIGH)
+        if (digitalRead(sw[x][y]) == HIGH ||
+            digitalRead(push_DOWN) == HIGH ||
+            digitalRead(push_UP) == HIGH)
         {
-          p1.wakeup = true;
+          opator1.wakeup = true;
         }
       }
     }
@@ -193,7 +207,6 @@ void standby(bool confirm)
 
 void callbed()
 {
-  stb p2;
   String m;
   for (int i = 0; i < 2; i++)
   {
@@ -205,6 +218,7 @@ void callbed()
         m += position[packet - 1];
         clear001 = true;
         Waktuakhir = millis();
+        opator1.waktu = millis();
       }
     }
   }
@@ -216,7 +230,8 @@ void callbed()
   }
   if (menu)
   {
-    p2.wakeup = false;
+    opator1.wakeup = false;
+    opator1.sleep = true;
     clear001 = false;
     if (clear001 != clear002)
     {
@@ -248,7 +263,7 @@ void callbed()
   }
   else
   {
-    p2.wakeup = true;
+
     String length_chr;
     int x, y;
     if (clear001 != clear002)
@@ -344,6 +359,7 @@ void VOICE()
       interval2 = 11000;
       lcd.clear();
       handle2 = true;
+      opator1.waktu = millis();
     }
   }
   if (!handle)
@@ -368,6 +384,35 @@ void setVoice()
       save_memory(0, scrool);
       save_memory(1, setLANG);
       Waktuakhir = millis();
+      switch (scrool)
+      {
+      case 0:
+        L = callsetup[0];
+        L1 = menuLang[0][0];
+        L2 = menuLang[0][1];
+        break;
+      case 1:
+        L = callsetup[1];
+        L1 = menuLang[1][0];
+        L2 = menuLang[1][1];
+        break;
+      case 2:
+        L = callsetup[2];
+        L1 = menuLang[2][0];
+        L2 = menuLang[2][1];
+        break;
+      case 3:
+        L = callsetup[3];
+        L1 = menuLang[3][0];
+        L2 = menuLang[3][1];
+        break;
+      default:
+        L = callsetup[0];
+        L1 = menuLang[0][0];
+        L2 = menuLang[0][1];
+        break;
+      }
+      VOICE();
       break;
     }
     if (digitalRead(push_UP) == HIGH)
