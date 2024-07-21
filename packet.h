@@ -51,11 +51,12 @@ String position[32] = {
     "bed 30",
     "bed 31",
     "bed 32"};
-int fx, menu_index, lenghtLCD = 19;
+int fx, menu_index;
 unsigned long int timeshowPacket = 20, Waktuakhir = 0, interval = 10000, dl = 9000, noDisplay;
 // display
+unsigned int  lenghtLCD = 19, clear;
 bool selector = false;
-int clearScrool, scrool, packet, setLANG, cursorLegt, clear,
+int clearScrool, scrool, packet, setLANG, cursorLegt,
     lenght_1, cursorLenght2,
     clear001, clear002, interval2, prev = 0, lenght_10;
 bool language = false, handle = false,
@@ -65,6 +66,7 @@ const char *red = "\033[31m";
 const char *green = "\033[32m";
 const char *orange = "\033[33m";
 const char *reset = "\033[0m";
+
 void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
 void buzz()
 {
@@ -157,7 +159,37 @@ char lang[4][8][13] = {
      "VOTA 2",
      "VOTA 3",
      "VOTA 4"}};
-
+void startmenu(int value)
+{
+  switch (value)
+  {
+  case 0:
+    L = callsetup[0];
+    L1 = menuLang[0][0];
+    L2 = menuLang[0][1];
+    break;
+  case 1:
+    L = callsetup[1];
+    L1 = menuLang[1][0];
+    L2 = menuLang[1][1];
+    break;
+  case 2:
+    L = callsetup[2];
+    L1 = menuLang[2][0];
+    L2 = menuLang[2][1];
+    break;
+  case 3:
+    L = callsetup[3];
+    L1 = menuLang[3][0];
+    L2 = menuLang[3][1];
+    break;
+  default:
+    L = callsetup[0];
+    L1 = menuLang[0][0];
+    L2 = menuLang[0][1];
+    break;
+  }
+}
 struct stb
 {
   bool wakeup;
@@ -383,38 +415,11 @@ void setVoice()
       save_memory(0, scrool);
       save_memory(1, setLANG);
       Waktuakhir = millis();
-      switch (scrool)
-      {
-      case 0:
-        L = callsetup[0];
-        L1 = menuLang[0][0];
-        L2 = menuLang[0][1];
-        break;
-      case 1:
-        L = callsetup[1];
-        L1 = menuLang[1][0];
-        L2 = menuLang[1][1];
-        break;
-      case 2:
-        L = callsetup[2];
-        L1 = menuLang[2][0];
-        L2 = menuLang[2][1];
-        break;
-      case 3:
-        L = callsetup[3];
-        L1 = menuLang[3][0];
-        L2 = menuLang[3][1];
-        break;
-      default:
-        L = callsetup[0];
-        L1 = menuLang[0][0];
-        L2 = menuLang[0][1];
-        break;
-      }
+      startmenu(scrool);
       VOICE();
       break;
     }
-    if (digitalRead(push_UP) == HIGH)
+    else if (digitalRead(push_UP) == HIGH)
     {
       Waktuakhir = millis();
       scrool++;
@@ -428,7 +433,7 @@ void setVoice()
       delay(250);
     }
 
-    if (digitalRead(push_DOWN) == HIGH)
+    else if (digitalRead(push_DOWN) == HIGH)
     {
       Waktuakhir = millis();
       clearScrool = scrool--;
@@ -489,6 +494,7 @@ void datasw()
   setVoice();
   // return;
 }
+
 // typedef struct
 // {
 //   unsigned long int waktu,

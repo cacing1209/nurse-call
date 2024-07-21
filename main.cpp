@@ -1,37 +1,78 @@
 #include "packet.h"
 DFRobotDFPlayerMini myDFPlayer;
 void printDetail(uint8_t type, int value);
-void logversion(const char *text)
+void logversion(const char *text, const char *text2)
 {
   lcd.clear();
   for (int x = 0; x < 4; x++)
   {
-    for (int y = 0; y < 20; y++)
+    switch (x)
     {
-      lcd.setCursor(y, x);
-      lcd.print("#");
-    }
-    if (x == 1)
-    {
+    case 1:
       for (int i = 0; text[i] != '\0'; i++)
       {
         lcd.setCursor(i, x);
         lcd.print(text[i]);
         delay(30);
       }
+      break;
+    case 2:
+      for (int i = 0; text2[i] != '\0'; i++)
+      {
+        lcd.setCursor(i, x);
+        lcd.print(text2[i]);
+        delay(30);
+      }
+      break;
+    default:
+      for (int y = 0; y < 20; y++)
+      {
+        if (x == 1 || x == 2)
+        {
+          continue;
+        }
+        lcd.setCursor(y, x);
+        lcd.print("#");
+      }
+
+      break;
     }
   }
   delay(2000);
-
   lcd.clear();
+  char *animation;
+  const char *name = "CCNG";
+  for (int y = 0; y < 4; y++)
+  {
+    for (int x = 0; x < 10; x++)
+    {
+      animation = ">";
+      lcd.setCursor(x, y);
+      lcd.print(animation);
+      delay(25 + (y * 9));      
+    }
+    for (int x_ = 19; x_ > 10; x_--)
+    {
+      animation = "<";
+      lcd.setCursor(x_, y);
+      lcd.print(animation);
+      // delay(25);
+      delay(25 + (y * 9));
+    }
+    for (int i = 0; name[i] != '\0'; i++)
+    {
+      lcd.setCursor(10, y);
+      lcd.print(name[y]);
+      delay(10);
+    }
+  }
+  lcd.clear();
+  return;
 }
 void setup()
 {
   menu = true, selector = true, clearScrool = setLANG;
-  scrool = 0;
-  L = callsetup[0];
-  L1 = menuLang[0][0];
-  L2 = menuLang[0][1];
+  startmenu(scrool);
   lcd.backlight();
   lcd.init();
   Serial.begin(9600);
@@ -50,7 +91,8 @@ void setup()
       pinMode(sw[i][w], INPUT);
     }
   }
-  logversion("    AW TECH v1.0     ");
+  logversion(">>> CACENG  v1.0 <<<",
+             ">>  HELLO   ALL   <<");
 }
 void loop()
 {
