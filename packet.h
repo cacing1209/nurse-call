@@ -158,37 +158,43 @@ char lang[4][8][13] = {
      "VOTA 3",
      "VOTA 4"}};
 
-struct data
+struct stb
 {
-  unsigned long time = 0;
   bool wakeup;
+  unsigned long int waktu;
 };
-data p1;
+
 void standby(bool confirm)
 {
-  while (confirm)
+  stb p1;
+  Serial.print(confirm);
+  Serial.print(" ");
+  Serial.println(p1.wakeup);
+  while (!p1.wakeup && !confirm)
   {
+    if (p1.wakeup)
+    {
+      Waktuakhir = millis();
+      break;
+    }
+
     for (int x = 0; x < 2; x++)
     {
       for (int y = 0; y < 16; y++)
       {
         if (digitalRead(sw[x][y]) == HIGH)
         {
-          lcd.display();
-          break;
+          p1.wakeup = true;
         }
       }
     }
-    if (confirm && millis() - Waktuakhir > interval + 5000)
-    {
-      lcd.noDisplay();
-    }
   }
 }
+
 void callbed()
 {
+  stb p2;
   String m;
-  data p2;
   for (int i = 0; i < 2; i++)
   {
     for (int b = 0; b < 16; b++)
@@ -198,7 +204,6 @@ void callbed()
       {
         m += position[packet - 1];
         clear001 = true;
-        p2.wakeup = false;
         Waktuakhir = millis();
       }
     }
@@ -211,6 +216,7 @@ void callbed()
   }
   if (menu)
   {
+    p2.wakeup = false;
     clear001 = false;
     if (clear001 != clear002)
     {
@@ -242,6 +248,7 @@ void callbed()
   }
   else
   {
+    p2.wakeup = true;
     String length_chr;
     int x, y;
     if (clear001 != clear002)
@@ -357,10 +364,10 @@ void setVoice()
       clearScrool = setLANG;
       handle2 = false,
       interval2 = 11000,
-      Waktuakhir = millis();
       lcd.clear();
       save_memory(0, scrool);
       save_memory(1, setLANG);
+      Waktuakhir = millis();
       break;
     }
     if (digitalRead(push_UP) == HIGH)
@@ -431,8 +438,6 @@ void setVoice()
 }
 void datasw()
 {
-  lcd.backlight();
-  lcd.display();
   lcd.clear();
   handle2 = false;
   interval2 = 11000;

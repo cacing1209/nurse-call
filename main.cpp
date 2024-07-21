@@ -54,8 +54,10 @@ void setup()
 }
 void loop()
 {
+  // Serial.println(millis() - Waktuakhir);
   menu = (millis() - Waktuakhir > 100) ? true : false;
-  bool backlightState = (millis() - Waktuakhir > interval) ? false : true;
+  bool backlightState = (millis() -
+   Waktuakhir > interval) ? false : true;
   if (digitalRead(push_UP) == HIGH || digitalRead(push_DOWN) == HIGH)
   {
     datasw();
