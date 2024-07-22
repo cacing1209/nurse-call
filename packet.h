@@ -336,6 +336,7 @@ void VOICE()
     }
     else if (digitalRead(push_UP) == HIGH)
     {
+      Waktuakhir = millis();
       setLANG++;
       selector = true;
       if (setLANG > 3)
