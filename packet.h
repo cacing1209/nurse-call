@@ -67,7 +67,17 @@ const char *green = "\033[32m";
 const char *orange = "\033[33m";
 const char *reset = "\033[0m";
 
-void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
+void myMemory(int addres, int nameadd, bool get)
+{
+  if (!get)
+  {
+    EEPROM.put(addres, nameadd);
+  }
+  else
+  {
+    EEPROM.get(addres, nameadd);
+  };
+}
 void buzz(bool check)
 {
   int voicecover;
@@ -411,8 +421,8 @@ void setVoice()
       handle2 = false,
       interval2 = 11000,
       lcd.clear();
-      save_memory(0, scrool);
-      save_memory(1, setLANG);
+      myMemory(0, scrool, false);
+      myMemory(1, setLANG, false);
       Waktuakhir = millis();
       startmenu(scrool);
       VOICE();
@@ -472,7 +482,6 @@ void setVoice()
     show_interval2 = (millis() - interval2 > 1) ? String(interval2 / 1000) + " " : "     ";
     lcd.setCursor(17, 3);
     lcd.print(show_interval2);
-    save_memory(1, scrool);
     if (interval2 <= 0)
     {
       handle2 = false;
@@ -539,8 +548,14 @@ void checkpoin(int value)
   switch (value)
   {
   case 0:
+    message = "STATUS PIN";
     Serial.print(reset);
-    Serial.println("STATUS PIN");
+    for (int i = 0; message[i] != '\0'; i++)
+    {
+      Serial.print(message[i]);
+      delay(100);
+    }
+    Serial.println();
     for (int x = 0; x < 2; x++)
     {
       for (int y = 0; y < 16; y++)
@@ -553,8 +568,30 @@ void checkpoin(int value)
       Serial.println();
     }
     break;
-    case 1:
+  case 1:
+    message = "Setup language ";
+    Serial.println(reset);
+    for (int i = 0; message[i] != '\0'; i++)
+    {
+      Serial.print(message[i]);
+      delay(50);
+    }
+    myMemory(0, scrool, true);
     startmenu(scrool);
+    Serial.print(green);
+    Serial.println(scrool);
+    break;
+  case 2:
+    message = "Set Alarm voice...... ";
+    Serial.println(reset);
+    for (int i = 0; message[i] != '\0'; i++)
+    {
+      Serial.print(message[i]);
+      delay(50);
+    }
+    myMemory(0, setLANG, true);
+    Serial.print(green);
+    Serial.println(setLANG);
     break;
   }
   return;

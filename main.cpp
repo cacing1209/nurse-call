@@ -37,7 +37,6 @@ void logversion(const char *text, const char *text2)
 
       break;
     }
-    checkpoin(x);
   }
   delay(2000);
   lcd.clear();
@@ -66,6 +65,7 @@ void logversion(const char *text, const char *text2)
       lcd.print(name[y]);
       delay(10);
     }
+    checkpoin(y);
   }
   lcd.clear();
   opator1.waktu = millis();
