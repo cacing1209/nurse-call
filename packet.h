@@ -44,7 +44,7 @@ String position[32] = {
     "bed 23",
     "bed 24",
     "bed 25",
-    "kamar mandi",
+    "Ebed 26",
     "bed 27",
     "bed 28",
     "bed 29",
@@ -54,7 +54,7 @@ String position[32] = {
 int fx, menu_index;
 unsigned long int timeshowPacket = 20, Waktuakhir = 0, interval = 10000, dl = 9000, noDisplay;
 // display
-unsigned int  lenghtLCD = 19, clear;
+unsigned int lenghtLCD = 19, clear;
 bool selector = false;
 int clearScrool, scrool, packet, setLANG, cursorLegt,
     lenght_1, cursorLenght2,
@@ -112,8 +112,39 @@ void buzz()
 }
 void checkpoin(int value)
 {
-  Serial.print(value);
-  return;
+  String txt;
+  switch (value)
+  {
+  case 0:
+    Serial.print(reset);
+    Serial.println("STATUS PIN");
+    for (int x = 0; x < 2; x++)
+    {
+      for (int y = 0; y < 16; y++)
+      {
+        Serial.print(
+            (digitalRead(sw[x][y]) == HIGH) ? red : reset);
+        Serial.print((digitalRead(sw[x][y]) == HIGH) ? "HIGH" : "LOW");
+      }
+    }
+    break;
+  case 1:
+    Serial.print(reset);
+    for (int i = 0; i < 2; i++)
+    {
+      txt = (i > 0) ? "Check Setup Setting ........." : "Set Language";
+      for (int op = 0; txt != '\0'; op++)
+      {
+        Serial.print(txt[op]);
+        delay(250);
+      }
+    }
+    EEPROM.get(0, scrool);
+    EEPROM.get(0, setLANG);
+    break;
+  default:
+    break;
+  }
 }
 void msg(String msg1, String msg2, int leng)
 {
@@ -325,7 +356,7 @@ void VOICE()
       Waktuakhir = millis();
       break;
     }
-    if (digitalRead(push_UP) == HIGH)
+    else if (digitalRead(push_UP) == HIGH)
     {
       setLANG++;
       selector = true;
@@ -337,7 +368,7 @@ void VOICE()
       handle2 = false;
       interval2 = 11000;
     }
-    if (digitalRead(push_DOWN) == HIGH)
+    else if (digitalRead(push_DOWN) == HIGH)
     {
       Waktuakhir = millis();
       clearScrool = setLANG--;

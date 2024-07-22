@@ -37,6 +37,7 @@ void logversion(const char *text, const char *text2)
 
       break;
     }
+    checkpoin(x);
   }
   delay(2000);
   lcd.clear();
@@ -49,7 +50,7 @@ void logversion(const char *text, const char *text2)
       animation = ">";
       lcd.setCursor(x, y);
       lcd.print(animation);
-      delay(25 + (y * 9));      
+      delay(25 + (y * 9));
     }
     for (int x_ = 19; x_ > 10; x_--)
     {
@@ -67,18 +68,16 @@ void logversion(const char *text, const char *text2)
     }
   }
   lcd.clear();
+  opator1.waktu = millis();
   return;
 }
 void setup()
 {
   menu = true, selector = true, clearScrool = setLANG;
-  startmenu(scrool);
   lcd.backlight();
   lcd.init();
   Serial.begin(9600);
   Serial1.begin(300);
-  EEPROM.get(0, fx);
-  // EEPROM.get(1, scrool); // 100.000 function call (get/put)
   for (int l = 0; l < 3; l++)
   {
     pinMode(led_master[l], OUTPUT);
