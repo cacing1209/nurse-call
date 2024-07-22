@@ -68,7 +68,7 @@ const char *orange = "\033[33m";
 const char *reset = "\033[0m";
 
 void save_memory(int addres, int nameadd) { EEPROM.put(addres, nameadd); };
-void buzz()
+void buzz(bool check)
 {
   int voicecover;
   switch (setLANG)
@@ -99,6 +99,10 @@ void buzz()
     digitalWrite(led_master[0], HIGH);
     delay(200);
   }
+  if (check)
+  {
+    return;
+  }
   for (int i = 0; i < 2; i++)
   {
     for (int x = 0; x < 16; x++)
@@ -108,42 +112,6 @@ void buzz()
         Waktuakhir = millis();
       }
     }
-  }
-}
-void checkpoin(int value)
-{
-  String txt;
-  switch (value)
-  {
-  case 0:
-    Serial.print(reset);
-    Serial.println("STATUS PIN");
-    for (int x = 0; x < 2; x++)
-    {
-      for (int y = 0; y < 16; y++)
-      {
-        Serial.print(
-            (digitalRead(sw[x][y]) == HIGH) ? red : reset);
-        Serial.print((digitalRead(sw[x][y]) == HIGH) ? "HIGH" : "LOW");
-      }
-    }
-    break;
-  case 1:
-    Serial.print(reset);
-    for (int i = 0; i < 2; i++)
-    {
-      txt = (i > 0) ? "Check Setup Setting ........." : "Set Language";
-      for (int op = 0; txt != '\0'; op++)
-      {
-        Serial.print(txt[op]);
-        delay(250);
-      }
-    }
-    EEPROM.get(0, scrool);
-    EEPROM.get(0, setLANG);
-    break;
-  default:
-    break;
   }
 }
 void msg(String msg1, String msg2, int leng)
@@ -343,7 +311,7 @@ void callbed()
     else
     {
     }
-    buzz();
+    buzz(false);
     Serial.println(length_chr);
   }
 }
@@ -564,3 +532,30 @@ void datasw()
 //   }
 //   hibernate();
 // }
+void checkpoin(int value)
+{
+  char *message;
+  // String message;
+  switch (value)
+  {
+  case 0:
+    Serial.print(reset);
+    Serial.println("STATUS PIN");
+    for (int x = 0; x < 2; x++)
+    {
+      for (int y = 0; y < 16; y++)
+      {
+        Serial.print(
+            (digitalRead(sw[x][y]) == HIGH) ? reset : red);
+        Serial.print(sw[x][y] - 21);
+        Serial.print((digitalRead(sw[x][y]) == HIGH) ? " HIGH " : " LOW ");
+      }
+      Serial.println();
+    }
+    break;
+    case 1:
+    startmenu(scrool);
+    break;
+  }
+  return;
+}
