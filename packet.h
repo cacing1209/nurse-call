@@ -211,6 +211,7 @@ void standby()
 
   while (opator1.sleep)
   {
+    
     // lcd.noBacklight();
     if (opator1.wakeup)
     {

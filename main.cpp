@@ -93,12 +93,34 @@ void setup()
   logversion(">>> CACENG  v1.0 <<<",
              ">>  HELLO   ALL   <<");
 }
+int a, a1;
+void gabut()
+{
+  a += rand();
+  a1++;
+  Serial.print((a % 3) ? green : reset);
+  Serial.print(a, HEX);
+  Serial.print(" ");
+  Serial.print(red);
+  Serial.print(a1, HEX);
+  Serial.print(" ");
+  if (a > 1000)
+  {
+    a = -1000;
+  }
+  else
+  {
+    if (a1 > 16)
+    {
+      a1 = 0, Serial.println();
+    }
+  }
+  // opator1.waktu = millis(); bypas mode
+}
+
 void loop()
 {
-  Serial.print(opator1.wakeup);
-  Serial.print(" ");
-  Serial.print(opator1.sleep);
-  Serial.println(" ");
+  gabut();
   // Serial.println(millis() - Waktuakhir);
   menu = (millis() - Waktuakhir > 100) ? true : false;
 
@@ -112,5 +134,6 @@ void loop()
 
     standby();
   }
+
   callbed();
 }
