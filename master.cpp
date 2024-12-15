@@ -63,7 +63,9 @@ void button_Begin()
         if (i <= size_STR(display.logo))
         {
             digitalWrite(lamp.led[0], LOW);
+
             digitalWrite(lamp.led[1], HIGH);
+
             lcdMsg.setCursor(i + 5, 1);
             lcdMsg.print(display.logo[i]);
             delay(display.logoTime);
@@ -302,7 +304,7 @@ void setup()
     // button_Begin();
     // TEST_setRole();
     // system.systemInformation(myButton, &display);
-    // Serial1.begin(300);
+    Serial1.begin(300);
     Serial.begin(9600);
 }
 // void loop()
@@ -316,27 +318,49 @@ void setup()
 //     displayMain();
 //     priviouseTimeprossed.thread();
 // }
-
-void loop()
+void checkptr(String *ptrSC)
 {
-    String a =
-        "+kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM++kamar1-EM+";
-    uint8_t sizeString_kamar = 6;
-    String input_kamar = "";
-    String input_bed = "";
-
-    for (size_t i = 0; i < a.length(); i++)
+    for (size_t i = 0; i < 6; i++)
     {
-        static int source;
-        if (i - source > 20)
-        {
-            Serial.println(a[i]);
-            source = i;
-        }
-        else
-        {
-            Serial.print(a[i]);
-        }
-        delay(200);
+        Serial.println(ptrSC[i]);
     }
 }
+
+void ReadSerial(HardwareSerial *ssr)
+{
+    // String a = "-kamar2@EM-kamar1@PT1-kamar3@PT1-kamar1@EM-kamar1@PT2";
+    String a = String(Serial.read());
+    if (ssr->available() == 0)
+    {
+        return;
+    }
+    do
+    {
+        a += (char)ssr->read();
+    } while (ssr->available() > 0);
+
+    static uint8_t indexArr_Queue = 0;
+    static String Queue[30];
+
+    for (uint8_t i = 0; i < a.length(); i++)
+    {
+        if (a[i] == '-')
+        {
+            for (size_t IncludeStr = 0; IncludeStr < 9; IncludeStr++)
+            {
+                Queue[indexArr_Queue] += a[i + (IncludeStr + 1)];
+            }
+            delay(2000);
+            checkptr(Queue);
+            indexArr_Queue++;
+        }
+    }
+
+    delay(2000);
+}
+void loop()
+{
+    ReadSerial(&Serial);
+    
+}
+// -kamar2@EM-kamar1@PT1-kamar3@PT1-kamar1@EM-kamar1@PT2-kamar2@EM-kamar1@PT1-kamar3@PT1-kamar1@EM-kamar1@PT2

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Coding\\C#\\setTombolApps\\setTombol\\setTombol.csproj": {}
+    "D:\\Coding\\arduino\\Nurse call\\Nurse call\\src\\setTombolApps\\setTombol\\setTombol.csproj": {}
   },
   "projects": {
-    "D:\\Coding\\C#\\setTombolApps\\setTombol\\setTombol.csproj": {
+    "D:\\Coding\\arduino\\Nurse call\\Nurse call\\src\\setTombolApps\\setTombol\\setTombol.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Coding\\C#\\setTombolApps\\setTombol\\setTombol.csproj",
+        "projectUniqueName": "D:\\Coding\\arduino\\Nurse call\\Nurse call\\src\\setTombolApps\\setTombol\\setTombol.csproj",
         "projectName": "setTombol",
-        "projectPath": "D:\\Coding\\C#\\setTombolApps\\setTombol\\setTombol.csproj",
+        "projectPath": "D:\\Coding\\arduino\\Nurse call\\Nurse call\\src\\setTombolApps\\setTombol\\setTombol.csproj",
         "packagesPath": "C:\\Users\\n5747\\.nuget\\packages\\",
-        "outputPath": "D:\\Coding\\C#\\setTombolApps\\setTombol\\obj\\",
+        "outputPath": "D:\\Coding\\arduino\\Nurse call\\Nurse call\\src\\setTombolApps\\setTombol\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
