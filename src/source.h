@@ -73,8 +73,8 @@ struct mainDisplay
     unsigned long timeSleep,
         timeOn,
         intervalSleep;
+        // 
     uint8_t clear, previouseClear;
-
     String logo;
     uint8_t logoTime = 100;
     String msg_ReadyQueue[Range_lcdVertical];
