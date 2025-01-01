@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "Comuniacation Serial",
+			"path": "../../Comunicarion Serial/Comuniacation Serial"
+		}
+	],
+	"settings": {}
+}

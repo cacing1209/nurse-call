@@ -1,0 +1,1347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Lucida Sans Unicode, 24pt, style=Bold, Italic</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>504, 0</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>403, 39</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Setup kamar Nurse Call</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label3.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 17</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>set input 2</value>
+  </data>
+  <data name="label14.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label14.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label14.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>set input 12</value>
+  </data>
+  <data name="label15.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label15.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label15.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>91, 17</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>set input 11</value>
+  </data>
+  <data name="label20.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label20.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label20.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label20.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label20.Text" xml:space="preserve">
+    <value>set input 22</value>
+  </data>
+  <data name="label21.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label21.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label21.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label21.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label21.Text" xml:space="preserve">
+    <value>set input 21</value>
+  </data>
+  <data name="upload_Btn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="upload_Btn.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="upload_Btn.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Malgun Gothic, 9.75pt, style=Bold, Italic, Underline</value>
+  </data>
+  <data name="upload_Btn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="upload_Btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1050, 689</value>
+  </data>
+  <data name="upload_Btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 27</value>
+  </data>
+  <data name="upload_Btn.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label5.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 17</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>set input 3</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label4.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 17</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>set input 4</value>
+  </data>
+  <data name="label9.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label9.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label9.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 17</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>set input 5</value>
+  </data>
+  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label8.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label8.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 17</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>set input 6</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label7.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label7.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 17</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>set input 7</value>
+  </data>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label6.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label6.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 17</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>set input 8</value>
+  </data>
+  <data name="label17.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label17.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label17.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label17.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 17</value>
+  </data>
+  <data name="label17.Text" xml:space="preserve">
+    <value>set input 9</value>
+  </data>
+  <data name="label16.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label16.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label16.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label16.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 452</value>
+  </data>
+  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label16.Text" xml:space="preserve">
+    <value>set input 10</value>
+  </data>
+  <data name="label13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label13.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label13.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>set input 13</value>
+  </data>
+  <data name="label12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label12.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label12.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>set input 14</value>
+  </data>
+  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label11.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label11.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>set input 15</value>
+  </data>
+  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label10.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label10.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>set input 16</value>
+  </data>
+  <data name="label25.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label25.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label25.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label25.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label25.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 17</value>
+  </data>
+  <data name="label25.Text" xml:space="preserve">
+    <value>set input 17</value>
+  </data>
+  <data name="label24.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label24.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label24.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label24.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label24.Text" xml:space="preserve">
+    <value>set input 18</value>
+  </data>
+  <data name="label23.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label23.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label23.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label23.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label23.Text" xml:space="preserve">
+    <value>set input 19</value>
+  </data>
+  <data name="label19.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label19.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label19.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label19.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label19.Text" xml:space="preserve">
+    <value>set input 23</value>
+  </data>
+  <data name="label18.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label18.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label18.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label18.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label18.Text" xml:space="preserve">
+    <value>set input 24</value>
+  </data>
+  <data name="label29.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label29.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label29.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label29.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label29.Text" xml:space="preserve">
+    <value>set input 25</value>
+  </data>
+  <data name="label28.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label28.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label28.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label28.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label28.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label28.Text" xml:space="preserve">
+    <value>set input 26</value>
+  </data>
+  <data name="label27.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label27.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label27.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label27.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label27.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 17</value>
+  </data>
+  <data name="label27.Text" xml:space="preserve">
+    <value>set input 27</value>
+  </data>
+  <data name="label26.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label26.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label26.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label26.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label26.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label26.Text" xml:space="preserve">
+    <value>set input 28</value>
+  </data>
+  <data name="label31.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label31.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label31.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label31.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label31.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label31.Text" xml:space="preserve">
+    <value>set input 29</value>
+  </data>
+  <data name="label30.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label30.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label30.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label30.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label30.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label30.Text" xml:space="preserve">
+    <value>set input 30</value>
+  </data>
+  <data name="label37.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label37.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label37.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label37.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label37.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 499</value>
+  </data>
+  <data name="label37.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="label37.Text" xml:space="preserve">
+    <value>set input 31</value>
+  </data>
+  <data name="label36.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label36.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label36.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label36.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label36.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 541</value>
+  </data>
+  <data name="label36.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label36.Text" xml:space="preserve">
+    <value>set input 32</value>
+  </data>
+  <data name="label35.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label35.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label35.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label35.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label35.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 584</value>
+  </data>
+  <data name="label35.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label35.Text" xml:space="preserve">
+    <value>set input 33</value>
+  </data>
+  <data name="label34.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label34.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label34.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label34.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label34.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 626</value>
+  </data>
+  <data name="label34.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label34.Text" xml:space="preserve">
+    <value>set input 34</value>
+  </data>
+  <data name="label33.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label33.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label33.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label33.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label33.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 669</value>
+  </data>
+  <data name="label33.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label33.Text" xml:space="preserve">
+    <value>set input 35</value>
+  </data>
+  <data name="label32.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label32.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label32.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label32.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label32.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 711</value>
+  </data>
+  <data name="label32.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label32.Text" xml:space="preserve">
+    <value>set input 36</value>
+  </data>
+  <data name="button1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 9pt, style=Bold, Italic</value>
+  </data>
+  <data name="button1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1148, 601</value>
+  </data>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 82</value>
+  </data>
+  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+    <value>111</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>connection</value>
+  </data>
+  <data name="button2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 9pt, style=Bold, Italic</value>
+  </data>
+  <data name="button2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1148, 509</value>
+  </data>
+  <data name="button2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 82</value>
+  </data>
+  <data name="button2.Text" xml:space="preserve">
+    <value>test connection</value>
+  </data>
+  <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label1.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>122, 76</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>113</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>set input 1</value>
+  </data>
+  <data name="comboBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 74</value>
+  </data>
+  <data name="comboBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>114</value>
+  </data>
+  <data name="comboBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 74</value>
+  </data>
+  <data name="comboBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>114</value>
+  </data>
+  <data name="comboBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 116</value>
+  </data>
+  <data name="comboBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>115</value>
+  </data>
+  <data name="comboBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 116</value>
+  </data>
+  <data name="comboBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>116</value>
+  </data>
+  <data name="comboBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 201</value>
+  </data>
+  <data name="comboBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>119</value>
+  </data>
+  <data name="comboBox6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 201</value>
+  </data>
+  <data name="comboBox6.TabIndex" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="comboBox7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 158</value>
+  </data>
+  <data name="comboBox7.TabIndex" type="System.Int32, mscorlib">
+    <value>117</value>
+  </data>
+  <data name="comboBox8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 158</value>
+  </data>
+  <data name="comboBox8.TabIndex" type="System.Int32, mscorlib">
+    <value>118</value>
+  </data>
+  <data name="comboBox9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 367</value>
+  </data>
+  <data name="comboBox9.TabIndex" type="System.Int32, mscorlib">
+    <value>127</value>
+  </data>
+  <data name="comboBox10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 367</value>
+  </data>
+  <data name="comboBox10.TabIndex" type="System.Int32, mscorlib">
+    <value>128</value>
+  </data>
+  <data name="comboBox11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 326</value>
+  </data>
+  <data name="comboBox11.TabIndex" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
+  <data name="comboBox12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 326</value>
+  </data>
+  <data name="comboBox12.TabIndex" type="System.Int32, mscorlib">
+    <value>126</value>
+  </data>
+  <data name="comboBox13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 283</value>
+  </data>
+  <data name="comboBox13.TabIndex" type="System.Int32, mscorlib">
+    <value>123</value>
+  </data>
+  <data name="comboBox14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 283</value>
+  </data>
+  <data name="comboBox14.TabIndex" type="System.Int32, mscorlib">
+    <value>124</value>
+  </data>
+  <data name="comboBox15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 242</value>
+  </data>
+  <data name="comboBox15.TabIndex" type="System.Int32, mscorlib">
+    <value>121</value>
+  </data>
+  <data name="comboBox16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 242</value>
+  </data>
+  <data name="comboBox16.TabIndex" type="System.Int32, mscorlib">
+    <value>122</value>
+  </data>
+  <data name="comboBox17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 450</value>
+  </data>
+  <data name="comboBox17.TabIndex" type="System.Int32, mscorlib">
+    <value>131</value>
+  </data>
+  <data name="comboBox18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 450</value>
+  </data>
+  <data name="comboBox18.TabIndex" type="System.Int32, mscorlib">
+    <value>132</value>
+  </data>
+  <data name="comboBox19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 409</value>
+  </data>
+  <data name="comboBox19.TabIndex" type="System.Int32, mscorlib">
+    <value>129</value>
+  </data>
+  <data name="comboBox20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 409</value>
+  </data>
+  <data name="comboBox20.TabIndex" type="System.Int32, mscorlib">
+    <value>130</value>
+  </data>
+  <data name="comboBox21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 450</value>
+  </data>
+  <data name="comboBox21.TabIndex" type="System.Int32, mscorlib">
+    <value>151</value>
+  </data>
+  <data name="comboBox22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 450</value>
+  </data>
+  <data name="comboBox22.TabIndex" type="System.Int32, mscorlib">
+    <value>152</value>
+  </data>
+  <data name="comboBox23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 409</value>
+  </data>
+  <data name="comboBox23.TabIndex" type="System.Int32, mscorlib">
+    <value>149</value>
+  </data>
+  <data name="comboBox24.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 409</value>
+  </data>
+  <data name="comboBox24.TabIndex" type="System.Int32, mscorlib">
+    <value>150</value>
+  </data>
+  <data name="comboBox25.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 367</value>
+  </data>
+  <data name="comboBox25.TabIndex" type="System.Int32, mscorlib">
+    <value>147</value>
+  </data>
+  <data name="comboBox26.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 367</value>
+  </data>
+  <data name="comboBox26.TabIndex" type="System.Int32, mscorlib">
+    <value>148</value>
+  </data>
+  <data name="comboBox27.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 326</value>
+  </data>
+  <data name="comboBox27.TabIndex" type="System.Int32, mscorlib">
+    <value>145</value>
+  </data>
+  <data name="comboBox28.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 326</value>
+  </data>
+  <data name="comboBox28.TabIndex" type="System.Int32, mscorlib">
+    <value>146</value>
+  </data>
+  <data name="comboBox29.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 283</value>
+  </data>
+  <data name="comboBox29.TabIndex" type="System.Int32, mscorlib">
+    <value>143</value>
+  </data>
+  <data name="comboBox30.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 283</value>
+  </data>
+  <data name="comboBox30.TabIndex" type="System.Int32, mscorlib">
+    <value>144</value>
+  </data>
+  <data name="comboBox31.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 242</value>
+  </data>
+  <data name="comboBox31.TabIndex" type="System.Int32, mscorlib">
+    <value>141</value>
+  </data>
+  <data name="comboBox32.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 242</value>
+  </data>
+  <data name="comboBox32.TabIndex" type="System.Int32, mscorlib">
+    <value>142</value>
+  </data>
+  <data name="comboBox33.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 201</value>
+  </data>
+  <data name="comboBox33.TabIndex" type="System.Int32, mscorlib">
+    <value>139</value>
+  </data>
+  <data name="comboBox34.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 201</value>
+  </data>
+  <data name="comboBox34.TabIndex" type="System.Int32, mscorlib">
+    <value>140</value>
+  </data>
+  <data name="comboBox35.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 158</value>
+  </data>
+  <data name="comboBox35.TabIndex" type="System.Int32, mscorlib">
+    <value>137</value>
+  </data>
+  <data name="comboBox36.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 158</value>
+  </data>
+  <data name="comboBox36.TabIndex" type="System.Int32, mscorlib">
+    <value>138</value>
+  </data>
+  <data name="comboBox37.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 116</value>
+  </data>
+  <data name="comboBox37.TabIndex" type="System.Int32, mscorlib">
+    <value>135</value>
+  </data>
+  <data name="comboBox38.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 116</value>
+  </data>
+  <data name="comboBox38.TabIndex" type="System.Int32, mscorlib">
+    <value>136</value>
+  </data>
+  <data name="comboBox39.Location" type="System.Drawing.Point, System.Drawing">
+    <value>730, 74</value>
+  </data>
+  <data name="comboBox39.TabIndex" type="System.Int32, mscorlib">
+    <value>134</value>
+  </data>
+  <data name="comboBox40.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 74</value>
+  </data>
+  <data name="comboBox40.TabIndex" type="System.Int32, mscorlib">
+    <value>133</value>
+  </data>
+  <data name="comboBox41.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 452</value>
+  </data>
+  <data name="comboBox41.TabIndex" type="System.Int32, mscorlib">
+    <value>171</value>
+  </data>
+  <data name="comboBox42.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 452</value>
+  </data>
+  <data name="comboBox42.TabIndex" type="System.Int32, mscorlib">
+    <value>172</value>
+  </data>
+  <data name="comboBox43.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 411</value>
+  </data>
+  <data name="comboBox43.TabIndex" type="System.Int32, mscorlib">
+    <value>169</value>
+  </data>
+  <data name="comboBox44.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 411</value>
+  </data>
+  <data name="comboBox44.TabIndex" type="System.Int32, mscorlib">
+    <value>170</value>
+  </data>
+  <data name="comboBox45.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 369</value>
+  </data>
+  <data name="comboBox45.TabIndex" type="System.Int32, mscorlib">
+    <value>167</value>
+  </data>
+  <data name="comboBox46.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 369</value>
+  </data>
+  <data name="comboBox46.TabIndex" type="System.Int32, mscorlib">
+    <value>168</value>
+  </data>
+  <data name="comboBox47.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 328</value>
+  </data>
+  <data name="comboBox47.TabIndex" type="System.Int32, mscorlib">
+    <value>165</value>
+  </data>
+  <data name="comboBox48.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 328</value>
+  </data>
+  <data name="comboBox48.TabIndex" type="System.Int32, mscorlib">
+    <value>166</value>
+  </data>
+  <data name="comboBox49.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 285</value>
+  </data>
+  <data name="comboBox49.TabIndex" type="System.Int32, mscorlib">
+    <value>163</value>
+  </data>
+  <data name="comboBox50.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 285</value>
+  </data>
+  <data name="comboBox50.TabIndex" type="System.Int32, mscorlib">
+    <value>164</value>
+  </data>
+  <data name="comboBox51.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 244</value>
+  </data>
+  <data name="comboBox51.TabIndex" type="System.Int32, mscorlib">
+    <value>161</value>
+  </data>
+  <data name="comboBox52.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 244</value>
+  </data>
+  <data name="comboBox52.TabIndex" type="System.Int32, mscorlib">
+    <value>162</value>
+  </data>
+  <data name="comboBox53.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 203</value>
+  </data>
+  <data name="comboBox53.TabIndex" type="System.Int32, mscorlib">
+    <value>159</value>
+  </data>
+  <data name="comboBox54.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 203</value>
+  </data>
+  <data name="comboBox54.TabIndex" type="System.Int32, mscorlib">
+    <value>160</value>
+  </data>
+  <data name="comboBox55.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 160</value>
+  </data>
+  <data name="comboBox55.TabIndex" type="System.Int32, mscorlib">
+    <value>157</value>
+  </data>
+  <data name="comboBox56.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 160</value>
+  </data>
+  <data name="comboBox56.TabIndex" type="System.Int32, mscorlib">
+    <value>158</value>
+  </data>
+  <data name="comboBox57.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 118</value>
+  </data>
+  <data name="comboBox57.TabIndex" type="System.Int32, mscorlib">
+    <value>155</value>
+  </data>
+  <data name="comboBox58.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 118</value>
+  </data>
+  <data name="comboBox58.TabIndex" type="System.Int32, mscorlib">
+    <value>156</value>
+  </data>
+  <data name="comboBox59.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1119, 76</value>
+  </data>
+  <data name="comboBox59.TabIndex" type="System.Int32, mscorlib">
+    <value>154</value>
+  </data>
+  <data name="comboBox60.Location" type="System.Drawing.Point, System.Drawing">
+    <value>992, 76</value>
+  </data>
+  <data name="comboBox60.TabIndex" type="System.Int32, mscorlib">
+    <value>153</value>
+  </data>
+  <data name="comboBox61.Location" type="System.Drawing.Point, System.Drawing">
+    <value>574, 668</value>
+  </data>
+  <data name="comboBox61.TabIndex" type="System.Int32, mscorlib">
+    <value>191</value>
+  </data>
+  <data name="comboBox62.Location" type="System.Drawing.Point, System.Drawing">
+    <value>447, 668</value>
+  </data>
+  <data name="comboBox62.TabIndex" type="System.Int32, mscorlib">
+    <value>192</value>
+  </data>
+  <data name="comboBox63.Location" type="System.Drawing.Point, System.Drawing">
+    <value>574, 626</value>
+  </data>
+  <data name="comboBox63.TabIndex" type="System.Int32, mscorlib">
+    <value>189</value>
+  </data>
+  <data name="comboBox64.Location" type="System.Drawing.Point, System.Drawing">
+    <value>447, 626</value>
+  </data>
+  <data name="comboBox64.TabIndex" type="System.Int32, mscorlib">
+    <value>190</value>
+  </data>
+  <data name="comboBox65.Location" type="System.Drawing.Point, System.Drawing">
+    <value>574, 585</value>
+  </data>
+  <data name="comboBox65.TabIndex" type="System.Int32, mscorlib">
+    <value>187</value>
+  </data>
+  <data name="comboBox66.Location" type="System.Drawing.Point, System.Drawing">
+    <value>447, 585</value>
+  </data>
+  <data name="comboBox66.TabIndex" type="System.Int32, mscorlib">
+    <value>188</value>
+  </data>
+  <data name="comboBox67.Location" type="System.Drawing.Point, System.Drawing">
+    <value>574, 544</value>
+  </data>
+  <data name="comboBox67.TabIndex" type="System.Int32, mscorlib">
+    <value>185</value>
+  </data>
+  <data name="comboBox68.Location" type="System.Drawing.Point, System.Drawing">
+    <value>447, 544</value>
+  </data>
+  <data name="comboBox68.TabIndex" type="System.Int32, mscorlib">
+    <value>186</value>
+  </data>
+  <data name="comboBox69.Location" type="System.Drawing.Point, System.Drawing">
+    <value>574, 499</value>
+  </data>
+  <data name="comboBox69.TabIndex" type="System.Int32, mscorlib">
+    <value>183</value>
+  </data>
+  <data name="comboBox70.Location" type="System.Drawing.Point, System.Drawing">
+    <value>447, 499</value>
+  </data>
+  <data name="comboBox70.TabIndex" type="System.Int32, mscorlib">
+    <value>184</value>
+  </data>
+  <data name="button3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 9pt, style=Bold, Italic</value>
+  </data>
+  <data name="button3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 82</value>
+  </data>
+  <data name="button3.Text" xml:space="preserve">
+    <value>port</value>
+  </data>
+  <data name="button4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 9pt, style=Bold, Italic</value>
+  </data>
+  <data name="button4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 82</value>
+  </data>
+  <data name="button4.Text" xml:space="preserve">
+    <value>setting</value>
+  </data>
+  <data name="dateTimePicker1.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="dateTimePicker1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1215, 14</value>
+  </data>
+  <data name="dateTimePicker1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>205, 23</value>
+  </data>
+  <data name="buttonRefresh.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1073, 12</value>
+  </data>
+  <data name="buttonRefresh.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 23</value>
+  </data>
+  <data name="buttonRefresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="comboBoxPorts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="comboBoxPorts.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Malgun Gothic, 9.75pt, style=Underline</value>
+  </data>
+  <data name="comboBoxPorts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1141, 12</value>
+  </data>
+  <data name="comboBoxPorts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 25</value>
+  </data>
+  <data name="comboBoxPorts.TabIndex" type="System.Int32, mscorlib">
+    <value>200</value>
+  </data>
+  <data name="label38.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label38.Font" type="System.Drawing.Font, System.Drawing">
+    <value>MV Boli, 9.75pt, style=Bold</value>
+  </data>
+  <data name="label38.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="label38.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label38.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="label38.Text" xml:space="preserve">
+    <value>set input 20</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>1388, 756</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
+  </data>
+</root>
