@@ -69,11 +69,11 @@ struct mainDisplay
 {
 
     statusDisplay action;
-    uint16_t size_button_HIGH, size_button_HIGH_previous;
+    uint16_t size_button_HIGH;
+    static uint16_t size_button_HIGH_previous;
     unsigned long timeSleep,
         timeOn,
         intervalSleep;
-        // 
     uint8_t clear, previouseClear;
     String logo;
     uint8_t logoTime = 100;

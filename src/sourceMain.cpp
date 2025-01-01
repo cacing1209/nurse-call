@@ -67,6 +67,8 @@ void mainDisplay::displayAction()
     else if (ShowMenu)
     {
         status = dsp_menu;
+        timeSleep = millis();
+        return;
     }
     else if (size_button_HIGH_previous == 0)
     {
@@ -103,6 +105,8 @@ void mainDisplay::main()
 
         break;
     case dsp_menu:
+        lcdMsg->display();
+        lcdMsg->backlight();
         clear = 0x04;
         break;
     default:

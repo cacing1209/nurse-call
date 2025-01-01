@@ -175,7 +175,7 @@ void callButton()
         }
     }
 
-    display.size_button_HIGH_previous = display.size_button_HIGH;
+    // display.size_button_HIGH_previous = display.size_button_HIGH;
     display.reset_valueH();
 }
 
@@ -191,11 +191,32 @@ void setup()
     TEST_setRole();
     // systemInformation.systemInformationButton(myButton, &display);
 }
+bool pushButton_menu()
+{
+    uint8_t IntervalPress, loopInterval;
+    IntervalPress = 1200, loopInterval = 0;
+    static unsigned long timePress = 0;
+    if (digitalRead(pinButton_menuDown) == HIGH &&
+        digitalRead(pinButton_menuUp) == HIGH)
+    {
+        if (millis() - timePress >= IntervalPress + loopInterval && display.size_button_HIGH == 0)
+        {
+            timePress = millis();
+            loopInterval = 5000;
+            return true;
+        }
+    }
+    else
+    {
+        timePress = millis();
+        return false;
+    }
+}
 
 void menuSetting()
 {
-    if (digitalRead(pinButton_menuDown) == HIGH &&
-        digitalRead(pinButton_menuUp) == HIGH)
+    static unsigned timebreak;
+    if (pushButton_menu())
     {
         display.timeSleep = millis();
         display.ShowMenu = true;
@@ -203,16 +224,24 @@ void menuSetting()
     }
     else if (display.status != dsp_menu)
     {
+        timebreak = millis();
         return;
     }
+    else if (millis() - timebreak >= 5000)
+    {
+        display.ShowMenu = false;
+    }
+    uint8_t show = 5000 - (millis() - timebreak);
+    lcdMsg.setCursor(13, 0);
+    lcdMsg.print("break:" + String(show));
 
     String menu[3] = {"1.SETUP Tombol", "2.setting Alarm", "3.system Info"};
     // static uint8_t indexCursor;
-    for (size_t x = 0; x < 3; x++)
-    {
-        lcdMsg.setCursor(0, x);
-        lcdMsg.print(menu[x]);
-    }
+    // for (size_t x = 0; x < 3; x++)
+    // {
+    //     lcdMsg.setCursor(0, x);
+    //     lcdMsg.print(menu[x]);
+    // }
 }
 
 void loop()
