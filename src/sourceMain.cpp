@@ -16,18 +16,6 @@ void SetButton_Room::MsgRead(HardwareSerial *serial, button *btn)
 {
 }
 
-/**
- * comunication Serial.
- */
-// void sdCard::begine(int baudSerial)
-// {
-//     if (!sd.begin(CS_PIN, SPI_SPEED))
-//     {
-
-//     }
-//     serialMsg->begin(baudSerial);
-// }
-
 const char *PickRole_button(uint8_t indexbutton, button *btn)
 {
     switch (btn[indexbutton].role)
@@ -38,7 +26,6 @@ const char *PickRole_button(uint8_t indexbutton, button *btn)
         return "C.";
     case patient:
         return "P.";
- 
     }
 }
 
@@ -65,8 +52,7 @@ void mainDisplay::functionClear()
     {
         previouseClear = clear;
         valueQueue = size_button_HIGH_previous;
-        // dsp->transisi(&lcdMsg); // bjir masih kek taiiii
-        // lcdMsg.clear();
+        lcdMsg->clear();
     }
 }
 
@@ -75,10 +61,16 @@ void mainDisplay::displayAction()
     functionClear();
     if (timeOn >= intervalSleep)
     {
+        ShowMenu = false;
         status = dsp_OFF;
+    }
+    else if (ShowMenu)
+    {
+        status = dsp_menu;
     }
     else if (size_button_HIGH_previous == 0)
     {
+        ShowMenu = false;
         status = dsp_standby;
         return;
     }
@@ -97,10 +89,10 @@ void mainDisplay::main()
     case dsp_OFF:
         lcdMsg->noBacklight();
         lcdMsg->noDisplay();
-
+        clear = 0x00;
         break;
     case dsp_ON:
-
+        clear = 0x01;
         lcdMsg->display();
         lcdMsg->backlight();
         break;
@@ -108,18 +100,23 @@ void mainDisplay::main()
         clear = 0x02;
         lcdMsg->setCursor(5, 1);
         lcdMsg->print(logo);
+
+        break;
+    case dsp_menu:
+        clear = 0x04;
         break;
     default:
         Serial.println("lcd no Roles");
         break;
     }
 }
-void mainDisplay::begin(const char *logoMSG, int time_Sleep)
+void mainDisplay::begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp)
 {
     size_button_HIGH_previous = 0b0000;
     size_button_HIGH = 0b0000;
     logo = logoMSG;
     status = dsp_standby;
+    lcdMsg = dsp;
     intervalSleep = (time_Sleep <= 250) ? 1000 : time_Sleep;
 }
 void ledState::begin()

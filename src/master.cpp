@@ -96,6 +96,8 @@ void button_Begin()
         delay(100);
         digitalWrite(lamp.led[2], LOW);
     }
+    pinMode(pinButton_menuDown, INPUT);
+    pinMode(pinButton_menuUp, INPUT);
     display.timeSleep = millis();
 }
 
@@ -184,16 +186,40 @@ void setup()
     lcdMsg.begin(20, 4);
     lcdMsg.backlight();
     lamp.begin();
-    display.begin("Zadikirom", 7000);
+    display.begin("Zadikirom", 7000, &lcdMsg);
     button_Begin();
     TEST_setRole();
     // systemInformation.systemInformationButton(myButton, &display);
 }
 
+void menuSetting()
+{
+    if (digitalRead(pinButton_menuDown) == HIGH &&
+        digitalRead(pinButton_menuUp) == HIGH)
+    {
+        display.timeSleep = millis();
+        display.ShowMenu = true;
+        Serial.println("menu active");
+    }
+    else if (display.status != dsp_menu)
+    {
+        return;
+    }
+
+    String menu[3] = {"1.SETUP Tombol", "2.setting Alarm", "3.system Info"};
+    // static uint8_t indexCursor;
+    for (size_t x = 0; x < 3; x++)
+    {
+        lcdMsg.setCursor(0, x);
+        lcdMsg.print(menu[x]);
+    }
+}
+
 void loop()
 {
     // systemInformation.thread();
+    menuSetting();
     callButton();
-    display.setupShowdisplay();
+    display.main();
     // systemInformation.thread();
 }
