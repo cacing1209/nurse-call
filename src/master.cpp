@@ -8,11 +8,11 @@ systemInfo systemInformation;
 sdCard sdcard;
 mainDisplay display;
 LiquidCrystal_I2C lcdMsg(0x27, Range_lcdHorizontal, Range_lcdVertical);
-
 button myButton[SizeButton];
 ledState lamp;
 
 /**
+ * --
  * test pengisian role tombol
  * HEHE (* v *)
  */
@@ -20,6 +20,7 @@ void TEST_setRole()
 {
     for (int x = 0; x < SizeButton; x++)
     {
+
         uint8_t random = rand();
         switch (x)
         {
