@@ -150,7 +150,6 @@ const char *btnRole_AND_ledRole(button *btn, uint8_t i)
         break;
     }
 }
-
 void callButton()
 {
 
@@ -174,9 +173,136 @@ void callButton()
             display.timeOn = millis() - display.timeSleep;
         }
     }
-
+    display.setupShowdisplay();
     // display.size_button_HIGH_previous = display.size_button_HIGH;
     display.reset_valueH();
+}
+
+bool interuptButton()
+{
+    for (size_t indexButton = 0; indexButton < SizeButton; indexButton++)
+    {
+        if (myButton[indexButton].trigger)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+void printMenu(uint8_t indexCursor)
+{
+    String menu[3] = {"1.SETUP Tombol", "2.setting Alarm", "3.system Info"};
+
+    for (size_t x = 0; x < 3; x++)
+    {
+        lcdMsg.setCursor(0, x);
+        lcdMsg.print(menu[x]);
+    }
+    lcdMsg.setCursor(0, indexCursor);
+    lcdMsg.print(">");
+}
+
+bool activatedMenu(unsigned long int *timeReturnMenu)
+{
+
+    uint16_t IntervalPress = 1200;
+    static unsigned long timePress = 0;
+    if (digitalRead(pinButton_menuDown) == HIGH &&
+        digitalRead(pinButton_menuUp) == HIGH)
+    {
+        if (millis() - timePress >= IntervalPress && interuptButton())
+        {
+            *timeReturnMenu = millis();
+            timePress = millis();
+            return true;
+        }
+    }
+    else
+    {
+        timePress = millis();
+        return false;
+    }
+}
+
+int intterval = 500;
+uint8_t debounceButton(uint8_t Buttonpin)
+
+{
+    static unsigned int priviouseTime = 0;
+    if (digitalRead(pinButton_menuUp) == HIGH)
+    {
+        if (millis() - priviouseTime > intterval)
+        {
+            priviouseTime = millis();
+            return 0x01;
+        }
+    }
+    else if (digitalRead(pinButton_menuDown) == HIGH)
+    {
+        if (millis() - priviouseTime > intterval)
+        {
+            priviouseTime = millis();
+            return 0x02;
+        }
+    }
+
+    else
+    {
+        priviouseTime = millis();
+        return 0x00;
+    }
+}
+void cursor(unsigned long int *timeReturnMenu)
+{
+    static int indexCursor = 0;
+    if (debounceButton(pinButton_menuUp) == 0X01)
+    {
+        indexCursor++;
+        if (indexCursor > 2)
+        {
+            indexCursor = 0;
+        }
+        printMenu(indexCursor);
+        *timeReturnMenu = millis();
+    }
+    else if (debounceButton(pinButton_menuDown) == 0X02)
+    {
+        indexCursor--;
+        if (indexCursor < 0)
+        {
+            indexCursor = 2;
+        }
+        printMenu(indexCursor);
+        *timeReturnMenu = millis();
+    }
+}
+
+void menuSetting()
+{
+    static unsigned long int timebreak;
+    if (activatedMenu(&timebreak) && !display.ShowMenu)
+    {
+        display.timeSleep = millis();
+        display.ShowMenu = true;
+        Serial.println("menu active");
+        printMenu(0);
+    }
+    else if (display.status != dsp_menu || !interuptButton())
+    {
+        timebreak = millis();
+        return;
+    }
+    else if (millis() - timebreak >= 10000)
+    {
+        Serial.println("return the menu program ");
+        display.ShowMenu = false;
+    }
+    uint8_t show = 10 - (millis() - timebreak) / 1000;
+    lcdMsg.setCursor(9, 3);
+    lcdMsg.print("RETURN:" + String(show));
+
+    cursor(&timebreak);
 }
 
 void setup()
@@ -191,64 +317,12 @@ void setup()
     TEST_setRole();
     // systemInformation.systemInformationButton(myButton, &display);
 }
-bool pushButton_menu()
-{
-    uint8_t IntervalPress, loopInterval;
-    IntervalPress = 1200, loopInterval = 0;
-    static unsigned long timePress = 0;
-    if (digitalRead(pinButton_menuDown) == HIGH &&
-        digitalRead(pinButton_menuUp) == HIGH)
-    {
-        if (millis() - timePress >= IntervalPress + loopInterval && display.size_button_HIGH == 0)
-        {
-            timePress = millis();
-            loopInterval = 5000;
-            return true;
-        }
-    }
-    else
-    {
-        timePress = millis();
-        return false;
-    }
-}
-
-void menuSetting()
-{
-    static unsigned timebreak;
-    if (pushButton_menu())
-    {
-        display.timeSleep = millis();
-        display.ShowMenu = true;
-        Serial.println("menu active");
-    }
-    else if (display.status != dsp_menu)
-    {
-        timebreak = millis();
-        return;
-    }
-    else if (millis() - timebreak >= 5000)
-    {
-        display.ShowMenu = false;
-    }
-    uint8_t show = 5000 - (millis() - timebreak);
-    lcdMsg.setCursor(13, 0);
-    lcdMsg.print("break:" + String(show));
-
-    String menu[3] = {"1.SETUP Tombol", "2.setting Alarm", "3.system Info"};
-    // static uint8_t indexCursor;
-    // for (size_t x = 0; x < 3; x++)
-    // {
-    //     lcdMsg.setCursor(0, x);
-    //     lcdMsg.print(menu[x]);
-    // }
-}
 
 void loop()
 {
     // systemInformation.thread();
+    display.main();
     menuSetting();
     callButton();
-    display.main();
     // systemInformation.thread();
 }

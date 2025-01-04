@@ -28,17 +28,21 @@ const char *PickRole_button(uint8_t indexbutton, button *btn)
         return "P.";
     }
 }
-
 void mainDisplay::setupShowdisplay()
 {
-    if (size_button_HIGH_previous == 0)
+    uint8_t total_tombolHigh = size_button_HIGH_previous;
+    if (size_button_HIGH == 0)
     {
         return;
     }
-
-    for (size_t incomingValue = 0; incomingValue < size_button_HIGH_previous; incomingValue++)
+    for (size_t incomingValue = 0; incomingValue <
+                                   total_tombolHigh;
+         incomingValue++)
     {
-        display_1[incomingValue] = String(btn[incomingValue].kamar) + '-' + String(btn[incomingValue].BED) + PickRole_button(incomingValue, btn);
+        display_1[incomingValue] = String(btn[incomingValue].kamar) +
+                                   '-' +
+                                   String(btn[incomingValue].BED) +
+                                   PickRole_button(incomingValue, btn);
         Serial.print(display_1[incomingValue]);
     }
     Serial.println();

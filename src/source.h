@@ -67,31 +67,54 @@ enum statusDisplay
 
 struct mainDisplay
 {
-
-    statusDisplay action;
-    uint16_t size_button_HIGH;
-    static uint16_t size_button_HIGH_previous;
-    unsigned long timeSleep,
-        timeOn,
-        intervalSleep;
-    uint8_t clear, previouseClear;
-    String logo;
-    uint8_t logoTime = 100;
-    String msg_ReadyQueue[Range_lcdVertical];
-
-    bool ShowMenu = false;
-    statusDisplay status;
+    /**
+     * the begin display firstly
+     * initialization logo
+     * setup button high of 0
+     * setup the display status of satndby
+     * setup value interval display sleep
+     */
+    void begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp);
     button *btn;
     LiquidCrystal_I2C *lcdMsg;
+
+    // size of all button trigger is HIGH
+    uint8_t size_button_HIGH;
+    // set the button HIGH to size priviouse button HIGH
+    uint8_t size_button_HIGH_previous;
+    // reset the value size button high
     void reset_valueH();
-    void functionClear();
-    void main();
-    void transisi(LiquidCrystal_I2C *lcd);
-    void begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp);
-    void setupShowdisplay();
-    void checkpoint_Shorting();
+
+    // time preiviouse display off
+    unsigned long timeSleep;
+    // difference time value
+    unsigned long timeOn;
+    // interval time sleep
+    unsigned long intervalSleep;
+    // action display
+    statusDisplay status;
+    // displays the set of role arguments
     void displayAction();
-    String display_1[Range_lcdVertical];
+    // execution of stetment diplay role
+    void main();
+
+    uint8_t clear, previouseClear;
+    void functionClear();
+    void transisi(LiquidCrystal_I2C *lcd);
+
+    // name logo
+    String logo;
+    // range 0 - 128
+    uint8_t logoTime = 100;
+
+    // display MENU config
+    bool ShowMenu = false;
+
+    // setup show button HIGH
+    void setupShowdisplay();
+    // sort buttons by time
+    void checkpoint_Shorting();
+    String display_1[SizeButton];
 };
 
 struct SetButton_Room
