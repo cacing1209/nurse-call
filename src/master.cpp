@@ -225,8 +225,8 @@ bool activatedMenu(unsigned long int *timeReturnMenu)
     }
 }
 
-int intterval = 500;
-uint8_t debounceButton(uint8_t Buttonpin)
+int intterval = 1500;
+uint8_t debounceButton()
 
 {
     static unsigned int priviouseTime = 0;
@@ -234,17 +234,21 @@ uint8_t debounceButton(uint8_t Buttonpin)
     {
         if (millis() - priviouseTime > intterval)
         {
+            Serial.print("up executed");
             priviouseTime = millis();
             return 0x01;
         }
+        Serial.println(millis() - priviouseTime);
     }
     else if (digitalRead(pinButton_menuDown) == HIGH)
     {
         if (millis() - priviouseTime > intterval)
         {
+            Serial.println("down executed");
             priviouseTime = millis();
             return 0x02;
         }
+        Serial.println(millis() - priviouseTime);
     }
 
     else
@@ -256,7 +260,7 @@ uint8_t debounceButton(uint8_t Buttonpin)
 void cursor(unsigned long int *timeReturnMenu)
 {
     static int indexCursor = 0;
-    if (debounceButton(pinButton_menuUp) == 0X01)
+    if (debounceButton() == 0X01)
     {
         indexCursor++;
         if (indexCursor > 2)
@@ -266,7 +270,7 @@ void cursor(unsigned long int *timeReturnMenu)
         printMenu(indexCursor);
         *timeReturnMenu = millis();
     }
-    else if (debounceButton(pinButton_menuDown) == 0X02)
+    else if (debounceButton() == 0X02)
     {
         indexCursor--;
         if (indexCursor < 0)
