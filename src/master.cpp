@@ -225,14 +225,14 @@ bool activatedMenu(unsigned long int *timeReturnMenu)
     }
 }
 
-int intterval = 1500;
+int interval = 1500;
 uint8_t debounceButton()
 
 {
     static unsigned int priviouseTime = 0;
     if (digitalRead(pinButton_menuUp) == HIGH)
     {
-        if (millis() - priviouseTime > intterval)
+        if (millis() - priviouseTime > interval)
         {
             Serial.print("up executed");
             priviouseTime = millis();
@@ -242,7 +242,7 @@ uint8_t debounceButton()
     }
     else if (digitalRead(pinButton_menuDown) == HIGH)
     {
-        if (millis() - priviouseTime > intterval)
+        if (millis() - priviouseTime > interval)
         {
             Serial.println("down executed");
             priviouseTime = millis();

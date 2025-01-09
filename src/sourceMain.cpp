@@ -50,7 +50,7 @@ void mainDisplay::setupShowdisplay()
 
 void mainDisplay::functionClear()
 {
-    static uint8_t valueQueue = 0;
+    static uint8_t valueQueue = 0x00;
     if (clear != previouseClear ||
         size_button_HIGH_previous != valueQueue)
     {
@@ -98,14 +98,14 @@ void mainDisplay::main()
         clear = 0x00;
         break;
     case dsp_ON:
-        clear = 0x01;
         lcdMsg->display();
         lcdMsg->backlight();
+        clear = 0x01;
         break;
     case dsp_standby:
-        clear = 0x02;
         lcdMsg->setCursor(5, 1);
         lcdMsg->print(logo);
+        clear = 0x02;
 
         break;
     case dsp_menu:
