@@ -3,6 +3,7 @@
 systemInfo systemInformation;
 #define getTimebutton 3 // millisecond
 #define pinButton_menuDown 3
+#define buzzer 10
 #define pinButton_menuUp 4
 
 sdCard sdcard;
@@ -64,6 +65,20 @@ void TEST_setRole()
         }
 
         // Serial.println("Button Roles: " + String(x) + String(RolesOFbutton(x)));
+    }
+}
+
+void buzzerON(bool isEmergency)
+{
+    if (!isEmergency)
+    {
+        return;
+    }
+    static int prev = 0;
+    if (millis() - prev >= 500)
+    {
+        digitalWrite(buzzer, !(digitalRead(buzzer)));
+        prev = millis();
     }
 }
 void button_Begin()
@@ -134,22 +149,22 @@ void button_difference(bool status_button, int button)
     display.btn = myButton;
 }
 
-const char *btnRole_AND_ledRole(button *btn, uint8_t i)
+void ledHigh(bool btnHigh)
 {
-
-    switch (btn[i].role)
+    if (!btnHigh)
     {
-    case Emergency:
-        return "E";
-    case patient:
-        return "P";
-    case Codeblue:
-        return "C";
-    default:
-        return "x";
-        break;
+        digitalWrite(lamp.led[2], LOW);
+        return;
+    }
+    static long int timePreviouse = 0;
+    int delayofLEdHIGH = 500;
+    if (millis() - timePreviouse >= delayofLEdHIGH)
+    {
+        digitalWrite(lamp.led[2], !digitalRead(lamp.led[2]) == HIGH);
+        timePreviouse = millis();
     }
 }
+
 void callButton()
 {
 
@@ -162,7 +177,6 @@ void callButton()
             myButton[i].trigger = true;
             display.timeSleep = millis();
             myButton[i].STATUS = btn_ON;
-
             // display.checkpoint_Shorting(myButton);
         }
 
@@ -172,9 +186,10 @@ void callButton()
             myButton[i].trigger = false;
             display.timeOn = millis() - display.timeSleep;
         }
+        ledHigh(display.buttonisHIGH());
+        buzzerON(display.buttonisHIGH());
     }
     display.setupShowdisplay();
-    // display.size_button_HIGH_previous = display.size_button_HIGH;
     display.reset_valueH();
 }
 
@@ -184,129 +199,38 @@ bool interuptButton()
     {
         if (myButton[indexButton].trigger)
         {
+            display.functionClear();
             return false;
         }
     }
     return true;
 }
 
-void printMenu(uint8_t indexCursor)
+bool activationMenu()
 {
-    String menu[3] = {"1.SETUP Tombol", "2.setting Alarm", "3.system Info"};
-
-    for (size_t x = 0; x < 3; x++)
+    static unsigned int priviouseTime = 0;
+    
+    if (digitalRead(pinButton_menuUp) == HIGH && digitalRead(pinButton_menuDown) == HIGH)
     {
-        lcdMsg.setCursor(0, x);
-        lcdMsg.print(menu[x]);
-    }
-    lcdMsg.setCursor(0, indexCursor);
-    lcdMsg.print(">");
-}
-
-bool activatedMenu(unsigned long int *timeReturnMenu)
-{
-
-    uint16_t IntervalPress = 1200;
-    static unsigned long timePress = 0;
-    if (digitalRead(pinButton_menuDown) == HIGH &&
-        digitalRead(pinButton_menuUp) == HIGH)
-    {
-        if (millis() - timePress >= IntervalPress && interuptButton())
+        if (millis() - priviouseTime >= 1500)
         {
-            *timeReturnMenu = millis();
-            timePress = millis();
+            priviouseTime = millis();
             return true;
         }
     }
     else
     {
-        timePress = millis();
+        priviouseTime = millis();
         return false;
     }
 }
 
-int interval = 1500;
-uint8_t debounceButton()
-
+void setButtonInput()
 {
-    static unsigned int priviouseTime = 0;
-    if (digitalRead(pinButton_menuUp) == HIGH)
+    if (activationMenu())
     {
-        if (millis() - priviouseTime > interval)
-        {
-            Serial.print("up executed");
-            priviouseTime = millis();
-            return 0x01;
-        }
-        Serial.println(millis() - priviouseTime);
-    }
-    else if (digitalRead(pinButton_menuDown) == HIGH)
-    {
-        if (millis() - priviouseTime > interval)
-        {
-            Serial.println("down executed");
-            priviouseTime = millis();
-            return 0x02;
-        }
-        Serial.println(millis() - priviouseTime);
-    }
-
-    else
-    {
-        priviouseTime = millis();
-        return 0x00;
-    }
-}
-void cursor(unsigned long int *timeReturnMenu)
-{
-    static int indexCursor = 0;
-    if (debounceButton() == 0X01)
-    {
-        indexCursor++;
-        if (indexCursor > 2)
-        {
-            indexCursor = 0;
-        }
-        printMenu(indexCursor);
-        *timeReturnMenu = millis();
-    }
-    else if (debounceButton() == 0X02)
-    {
-        indexCursor--;
-        if (indexCursor < 0)
-        {
-            indexCursor = 2;
-        }
-        printMenu(indexCursor);
-        *timeReturnMenu = millis();
-    }
-}
-
-void menuSetting()
-{
-    static unsigned long int timebreak;
-    if (activatedMenu(&timebreak) && !display.ShowMenu)
-    {
-        display.timeSleep = millis();
-        display.ShowMenu = true;
-        Serial.println("menu active");
-        printMenu(0);
-    }
-    else if (display.status != dsp_menu || !interuptButton())
-    {
-        timebreak = millis();
         return;
     }
-    else if (millis() - timebreak >= 10000)
-    {
-        Serial.println("return the menu program ");
-        display.ShowMenu = false;
-    }
-    uint8_t show = 10 - (millis() - timebreak) / 1000;
-    lcdMsg.setCursor(9, 3);
-    lcdMsg.print("RETURN:" + String(show));
-
-    cursor(&timebreak);
 }
 
 void setup()
@@ -320,13 +244,16 @@ void setup()
     button_Begin();
     TEST_setRole();
     // systemInformation.systemInformationButton(myButton, &display);
+    display.functionClear();
+    pinMode(buzzer, OUTPUT);
 }
 
 void loop()
 {
+    setButtonInput();
     // systemInformation.thread();
     display.main();
-    menuSetting();
     callButton();
+
     // systemInformation.thread();
 }

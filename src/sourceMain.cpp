@@ -1,5 +1,4 @@
 #include <source.h>
-// #include <Arduino.h>
 
 void mainDisplay::checkpoint_Shorting()
 {
@@ -10,10 +9,6 @@ void mainDisplay::checkpoint_Shorting()
         Serial.print(String(btn[indexing].pin) + " ");
     }
     Serial.println(" ");
-}
-
-void SetButton_Room::MsgRead(HardwareSerial *serial, button *btn)
-{
 }
 
 const char *PickRole_button(uint8_t indexbutton, button *btn)
@@ -62,7 +57,7 @@ void mainDisplay::functionClear()
 
 void mainDisplay::displayAction()
 {
-    functionClear();
+    // functionClear();
     if (timeOn >= intervalSleep)
     {
         ShowMenu = false;
@@ -133,6 +128,14 @@ void ledState::begin()
     {
         pinMode(led[i], OUTPUT);
     }
+}
+bool mainDisplay::buttonisHIGH()
+{
+    if (size_button_HIGH <= 0)
+    {
+        return false;
+    }
+    return true;
 }
 void mainDisplay::reset_valueH()
 {

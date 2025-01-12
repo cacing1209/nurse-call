@@ -83,6 +83,7 @@ struct mainDisplay
     // set the button HIGH to size priviouse button HIGH
     uint8_t size_button_HIGH_previous;
     // reset the value size button high
+    bool buttonisHIGH();
     void reset_valueH();
 
     // time preiviouse display off
@@ -119,15 +120,14 @@ struct mainDisplay
 
 struct SetButton_Room
 {
-    void MsgRead(HardwareSerial *serial, button *btn);
-    String Msg_Queue;
-    String MsgReadySet[SizeButton][12];
+    String kamar, bed;
+    uint8_t numberOfKamar, numberofBed;
 };
 
 struct sdCard
 {
     SdFat sd;
-    // void begine(int baudSerial);
+    // void begin();
     HardwareSerial *serialMsg;
 };
 
