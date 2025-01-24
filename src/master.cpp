@@ -17,70 +17,43 @@ ledState lamp;
  * test pengisian role tombol
  * HEHE (* v *)
  */
+
 void TEST_setRole()
 {
-    for (int x = 0; x < SizeButton; x++)
+    for (int buttonIndex = 0; buttonIndex < SizeButton; buttonIndex++)
     {
+        myButton[buttonIndex].kamar = buttonIndex / 3;
+        myButton[buttonIndex].BED = buttonIndex % 6;
 
-        uint8_t random = rand();
-        switch (x)
+        if (buttonIndex % 3 == 0)
         {
-        case 0 ... 5:
-            myButton[x].kamar = 12;
-            myButton[x].BED = 1;
-            myButton[x].role = Emergency;
-            break;
-        case 6 ... 10:
-            myButton[x].kamar = random;
-            myButton[x].BED = 2;
-            myButton[x].kamar = 1;
-            myButton[x].BED = 1;
-            myButton[x].role = patient;
-            break;
-        case 11 ... 15:
-            myButton[x].kamar = random;
-            myButton[x].BED = 3;
-            myButton[x].role = Codeblue;
-            break;
-        case 16 ... 20:
-            myButton[x].kamar = random;
-            myButton[x].BED = 5;
-            myButton[x].role = (x % 2 == 0) ? empty : patient;
-            break;
-        case 21 ... 25:
-            myButton[x].kamar = random;
-            myButton[x].BED = 6;
-            myButton[x].role = Codeblue;
-            break;
-        case 26 ... 30:
-            myButton[x].kamar = random;
-            myButton[x].BED = 7;
-            myButton[x].role = patient;
-            break;
-        default:
-            myButton[x].kamar = random;
-            myButton[x].BED = 10;
-            myButton[x].role = (x % 2 == 0) ? empty : Emergency;
-            break;
+            myButton[buttonIndex].role = Emergency;
         }
-
-        // Serial.println("Button Roles: " + String(x) + String(RolesOFbutton(x)));
+        else if (buttonIndex % 3 == 1)
+        {
+            myButton[buttonIndex].role = Codeblue;
+        }
+        else
+        {
+            myButton[buttonIndex].role = patient;
+        }
     }
 }
 
-void buzzerON(bool isEmergency)
+void buzzerON(bool isEmergency, int timeONbuzzer)
 {
     if (!isEmergency)
     {
         return;
     }
     static int prev = 0;
-    if (millis() - prev >= 500)
+    if (millis() - prev >= 1000)
     {
-        digitalWrite(buzzer, !(digitalRead(buzzer)));
+        // digitalWrite(buzzer, !(digitalRead(buzzer)));
         prev = millis();
     }
 }
+
 void button_Begin()
 {
 
@@ -165,9 +138,20 @@ void ledHigh(bool btnHigh)
     }
 }
 
+int BuzzerFlipFlop()
+{
+    for (size_t index = 0; index < SizeButton; index++)
+    {
+        if (myButton[index].role == Emergency)
+        {
+            return 1000;
+        }
+    }
+    return 500;
+}
+
 void callButton()
 {
-
     for (int i = 0; i < SizeButton; i++)
     {
         button_difference(myButton[i].trigger, i);
@@ -186,9 +170,9 @@ void callButton()
             myButton[i].trigger = false;
             display.timeOn = millis() - display.timeSleep;
         }
-        ledHigh(display.buttonisHIGH());
-        buzzerON(display.buttonisHIGH());
     }
+    ledHigh(display.buttonisHIGH());
+    buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
     display.setupShowdisplay();
     display.reset_valueH();
 }
@@ -209,12 +193,11 @@ bool interuptButton()
 bool activationMenu()
 {
     static unsigned int priviouseTime = 0;
-    
-    if (digitalRead(pinButton_menuUp) == HIGH && digitalRead(pinButton_menuDown) == HIGH)
+    static uint8_t Count = 0;
+    if (digitalRead(pinButton_menuUp) == HIGH || digitalRead(pinButton_menuDown) == HIGH)
     {
-        if (millis() - priviouseTime >= 1500)
+        if (millis() - priviouseTime >= 200)
         {
-            priviouseTime = millis();
             return true;
         }
     }
@@ -240,7 +223,7 @@ void setup()
     lcdMsg.begin(20, 4);
     lcdMsg.backlight();
     lamp.begin();
-    display.begin("Zadikirom", 7000, &lcdMsg);
+    display.begin("'Zadikirom'", 15000, &lcdMsg);
     button_Begin();
     TEST_setRole();
     // systemInformation.systemInformationButton(myButton, &display);
@@ -251,9 +234,8 @@ void setup()
 void loop()
 {
     setButtonInput();
-    // systemInformation.thread();
+    systemInformation.thread();
     display.main();
     callButton();
-
     // systemInformation.thread();
 }

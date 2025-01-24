@@ -143,15 +143,15 @@ void mainDisplay::reset_valueH()
     size_button_HIGH = 0;
 }
 
-void mainDisplay::transisi(LiquidCrystal_I2C *lcd)
+void mainDisplay::transisi()
 {
     for (size_t y = 0; y < Range_lcdVertical; y++)
     {
 
         for (size_t x = 0; x < Range_lcdHorizontal; x++)
         {
-            lcd->setCursor(x, y);
-            lcd->print("*");
+            lcdMsg->setCursor(x, y);
+            lcdMsg->print("*");
             delay(25);
         }
     }

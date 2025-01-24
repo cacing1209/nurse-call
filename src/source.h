@@ -101,7 +101,7 @@ struct mainDisplay
 
     uint8_t clear, previouseClear;
     void functionClear();
-    void transisi(LiquidCrystal_I2C *lcd);
+    void transisi();
 
     // name logo
     String logo;
