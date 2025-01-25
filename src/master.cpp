@@ -107,19 +107,22 @@ void sorting()
     }
 }
 
-void button_difference(bool status_button, int button)
+void button_difference()
 {
-    if (!status_button)
-    {
-        myButton[button].difference = millis();
-        myButton[button].pressDuration = 0;
-        delay(getTimebutton);
-        return;
-    }
-    myButton[button].pressDuration =
-        millis() - myButton[button].difference;
     sorting();
-    display.btn = myButton;
+    for (size_t indexBtn = 0; indexBtn < SizeButton; indexBtn++)
+    {
+        if (!myButton[indexBtn].trigger)
+        {
+            myButton[indexBtn].difference = millis();
+            myButton[indexBtn].pressDuration = 0;
+            delay(getTimebutton);
+            return;
+        }
+
+        myButton[indexBtn].pressDuration =
+            millis() - myButton[indexBtn].difference;
+    }
 }
 
 void ledHigh(bool btnHigh)
@@ -154,10 +157,9 @@ void callButton()
 {
     for (int i = 0; i < SizeButton; i++)
     {
-        button_difference(myButton[i].trigger, i);
         if (digitalRead(myButton[i].pin) == HIGH)
         {
-            display.size_button_HIGH++;
+            display.button_HIGH++;
             myButton[i].trigger = true;
             display.timeSleep = millis();
             myButton[i].STATUS = btn_ON;
@@ -171,10 +173,10 @@ void callButton()
             display.timeOn = millis() - display.timeSleep;
         }
     }
+    button_difference();
     ledHigh(display.buttonisHIGH());
     buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
     display.setupShowdisplay();
-    display.reset_valueH();
 }
 
 bool interuptButton()
@@ -192,8 +194,7 @@ bool interuptButton()
 
 bool activationMenu()
 {
-    static unsigned int priviouseTime = 0;
-    static uint8_t Count = 0;
+    static unsigned int priviouseTime;
     if (digitalRead(pinButton_menuUp) == HIGH || digitalRead(pinButton_menuDown) == HIGH)
     {
         if (millis() - priviouseTime >= 200)
@@ -207,15 +208,6 @@ bool activationMenu()
         return false;
     }
 }
-
-void setButtonInput()
-{
-    if (activationMenu())
-    {
-        return;
-    }
-}
-
 void setup()
 {
     // Serial1.begin(300);
@@ -229,13 +221,30 @@ void setup()
     // systemInformation.systemInformationButton(myButton, &display);
     display.functionClear();
     pinMode(buzzer, OUTPUT);
+    display.btn = myButton;
+}
+
+void ShowDisplay()
+{
+    if (display.button_HIGH == 0)
+    {
+        Serial.print("No Button");
+        return;
+    }
+    for (size_t x = 0; x < 4; x++)
+    {
+        for (size_t y = 0; y < 4; y++)
+        {
+            lcdMsg.setCursor(y, x);
+            // lcdMsg.print(display.display_1[y]);
+        }
+    }
 }
 
 void loop()
 {
-    setButtonInput();
-    systemInformation.thread();
-    display.main();
+    // systemInformation.thread();
     callButton();
+    display.main();
     // systemInformation.thread();
 }

@@ -3,7 +3,7 @@
 void mainDisplay::checkpoint_Shorting()
 {
     for (uint8_t indexing = 0; indexing <
-                               size_button_HIGH_previous;
+                               total_HighButton;
          indexing++)
     {
         Serial.print(String(btn[indexing].pin) + " ");
@@ -25,39 +25,52 @@ const char *PickRole_button(uint8_t indexbutton, button *btn)
 }
 void mainDisplay::setupShowdisplay()
 {
-    uint8_t total_tombolHigh = size_button_HIGH_previous;
-    if (size_button_HIGH == 0)
+    uint8_t total_tombolHigh = total_HighButton;
+    if (button_HIGH == 0)
     {
+        display[0][0] = "No Button";
         return;
     }
-    for (size_t incomingValue = 0; incomingValue <
-                                   total_tombolHigh;
-         incomingValue++)
+
+    for (size_t x = 0; x < 4; x++)
     {
-        display_1[incomingValue] = String(btn[incomingValue].kamar) +
-                                   '-' +
-                                   String(btn[incomingValue].BED) +
-                                   PickRole_button(incomingValue, btn);
-        Serial.print(display_1[incomingValue]);
+        for (size_t y = 0; y < 4; y++)
+        {
+            display[x][y] = String(btn[y].kamar) +
+                            '-' +
+                            String(btn[y].BED) +
+                            PickRole_button(y, btn);
+            Serial.print(display[x][y] + ",");
+        }
     }
+
     Serial.println();
 }
 
 void mainDisplay::functionClear()
 {
-    static uint8_t valueQueue = 0x00;
-    if (clear != previouseClear ||
-        size_button_HIGH_previous != valueQueue)
+
+    if (clear != previouseClear)
     {
         previouseClear = clear;
-        valueQueue = size_button_HIGH_previous;
         lcdMsg->clear();
     }
 }
 
+// void mainDisplay::functionClear()
+// {
+//     static uint8_t valueQueue = 0x00;
+//     if (clear != previouseClear ||
+//         total_HighButton != valueQueue)
+//     {
+//         previouseClear = clear;
+//         valueQueue = total_HighButton;
+//         lcdMsg->clear();
+//     }
+// }
+
 void mainDisplay::displayAction()
 {
-    // functionClear();
     if (timeOn >= intervalSleep)
     {
         ShowMenu = false;
@@ -67,18 +80,20 @@ void mainDisplay::displayAction()
     {
         status = dsp_menu;
         timeSleep = millis();
-        return;
     }
-    else if (size_button_HIGH_previous == 0)
+    else if (total_HighButton == 0)
     {
         ShowMenu = false;
         status = dsp_standby;
-        return;
+    }
+    else if (total_HighButton != button_HIGH)
+    {
+        status = dsp_updateValue;
     }
     else
-    {
         status = dsp_ON;
-    }
+    functionClear();
+    reset_valueH();
 }
 
 void mainDisplay::main()
@@ -108,6 +123,9 @@ void mainDisplay::main()
         lcdMsg->backlight();
         clear = 0x04;
         break;
+    case dsp_updateValue:
+        clear = 0x05;
+        break;
     default:
         Serial.println("lcd no Roles");
         break;
@@ -115,8 +133,8 @@ void mainDisplay::main()
 }
 void mainDisplay::begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp)
 {
-    size_button_HIGH_previous = 0b0000;
-    size_button_HIGH = 0b0000;
+    total_HighButton = 0b0000;
+    button_HIGH = 0b0000;
     logo = logoMSG;
     status = dsp_standby;
     lcdMsg = dsp;
@@ -131,7 +149,7 @@ void ledState::begin()
 }
 bool mainDisplay::buttonisHIGH()
 {
-    if (size_button_HIGH <= 0)
+    if (button_HIGH <= 0)
     {
         return false;
     }
@@ -139,8 +157,8 @@ bool mainDisplay::buttonisHIGH()
 }
 void mainDisplay::reset_valueH()
 {
-    size_button_HIGH_previous = size_button_HIGH;
-    size_button_HIGH = 0;
+    total_HighButton = button_HIGH;
+    button_HIGH = 0;
 }
 
 void mainDisplay::transisi()

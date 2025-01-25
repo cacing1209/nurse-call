@@ -183,8 +183,8 @@
     {
       "type": "wokwi-resistor",
       "id": "r25",
-      "top": 460.75,
-      "left": 554.2,
+      "top": 435.95,
+      "left": 643.2,
       "attrs": { "value": "1100" }
     },
     {
@@ -305,7 +305,14 @@
       "attrs": {}
     },
     { "type": "wokwi-microsd-card", "id": "sd1", "top": 576.23, "left": 211.27, "attrs": {} },
-    { "type": "wokwi-dip-switch-8", "id": "sw5", "top": 284.7, "left": -17.7, "attrs": {} }
+    { "type": "wokwi-dip-switch-8", "id": "sw5", "top": 284.7, "left": -17.7, "attrs": {} },
+    {
+      "type": "wokwi-resistor",
+      "id": "r35",
+      "top": 455.15,
+      "left": 681.6,
+      "attrs": { "value": "1100" }
+    }
   ],
   "connections": [
     [ "sw1:1a", "mega1:22", "green", [ "h0" ] ],
@@ -443,8 +450,7 @@
     [ "sw3:5b", "sw3:6b", "green", [ "h0" ] ],
     [ "sw3:6b", "sw3:7b", "green", [ "h0" ] ],
     [ "sw3:7b", "sw3:8b", "green", [ "h0" ] ],
-    [ "sw3:1a", "mega1:38", "green", [ "h9.6", "v201.6" ] ],
-    [ "mega1:39", "sw3:2a", "green", [ "v1.15", "h170.2", "v-297.6" ] ],
+    [ "sw3:1a", "mega1:38", "green", [ "h9.6", "v297.6", "h-180.2" ] ],
     [ "sw3:3a", "mega1:40", "green", [ "h9.6", "v9.6" ] ],
     [ "mega1:41", "sw3:4a", "green", [ "v1.25", "h170.2", "v-288" ] ],
     [ "sw3:5a", "mega1:42", "cyan", [ "h9.6", "v278.4" ] ],
@@ -463,7 +469,10 @@
     [ "btn2:1.r", "sw5:7b", "green", [ "v19.4", "h57.6" ] ],
     [ "btn1:2.r", "sw5:6b", "green", [ "v0" ] ],
     [ "sw5:6a", "sw5:8a", "green", [ "v0" ] ],
-    [ "sw5:7a", "sw5:6a", "green", [ "v0" ] ]
+    [ "sw5:7a", "sw5:6a", "green", [ "v0" ] ],
+    [ "r35:1", "mega1:39", "green", [ "v28.8", "h-103" ] ],
+    [ "r35:2", "r25:2", "black", [ "v0" ] ],
+    [ "r35:1", "sw3:2a", "green", [ "v-28.8", "h28.8", "v-268.8" ] ]
   ],
   "dependencies": {}
 }

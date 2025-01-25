@@ -14,11 +14,11 @@
 // {
 //     return a + b;
 // }
-const uint8_t Inputbutton[SizeButton] =
-    {22, 23, 24, 25, 26, 27, 28, 29, 30,
-     31, 32, 33, 34, 35, 36, 37,
-     38, 39, 40, 41, 42, 43, 44, 45,
-     46, 47, 48, 49, 50, 51, 52, 53};
+const uint8_t Inputbutton[SizeButton] = {
+    22, 23, 24, 25, 26, 27, 28, 29, 30,
+    31, 32, 33, 34, 35, 36, 37,
+    38, 39, 40, 41, 42, 43, 44, 45,
+    46, 47, 48, 49, 50, 51, 52, 53};
 enum Rolebutton
 {
     Emergency,
@@ -62,6 +62,7 @@ enum statusDisplay
     dsp_ON,
     dsp_OFF,
     dsp_menu,
+    dsp_updateValue,
 
 };
 
@@ -79,9 +80,9 @@ struct mainDisplay
     LiquidCrystal_I2C *lcdMsg;
 
     // size of all button trigger is HIGH
-    uint8_t size_button_HIGH;
+    uint8_t button_HIGH;
     // set the button HIGH to size priviouse button HIGH
-    uint8_t size_button_HIGH_previous;
+    uint8_t total_HighButton;
     // reset the value size button high
     bool buttonisHIGH();
     void reset_valueH();
@@ -110,12 +111,12 @@ struct mainDisplay
 
     // display MENU config
     bool ShowMenu = false;
-
+    String display[4][SizeButton];
     // setup show button HIGH
     void setupShowdisplay();
     // sort buttons by time
     void checkpoint_Shorting();
-    String display_1[SizeButton];
+    // String display_2[SizeButton];
 };
 
 struct SetButton_Room
