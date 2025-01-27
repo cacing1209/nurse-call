@@ -11,6 +11,7 @@ mainDisplay display;
 LiquidCrystal_I2C lcdMsg(0x27, Range_lcdHorizontal, Range_lcdVertical);
 button myButton[SizeButton];
 ledState lamp;
+buttonMain main_Button;
 
 /**
  * --
@@ -89,42 +90,6 @@ void button_Begin()
     display.timeSleep = millis();
 }
 
-void sorting()
-{
-    for (int x = 0; x < SizeButton - 1; x++)
-    {
-        for (int y = 0; y < SizeButton - x - 1; y++)
-        {
-            if (myButton[y].pressDuration < myButton[y + 1].pressDuration)
-            {
-                /*sorting 1 set  */
-
-                button temp = myButton[y];
-                myButton[y] = myButton[y + 1];
-                myButton[y + 1] = temp;
-            }
-        }
-    }
-}
-
-void button_difference()
-{
-    sorting();
-    for (size_t indexBtn = 0; indexBtn < SizeButton; indexBtn++)
-    {
-        if (!myButton[indexBtn].trigger)
-        {
-            myButton[indexBtn].difference = millis();
-            myButton[indexBtn].pressDuration = 0;
-            delay(getTimebutton);
-            return;
-        }
-
-        myButton[indexBtn].pressDuration =
-            millis() - myButton[indexBtn].difference;
-    }
-}
-
 void ledHigh(bool btnHigh)
 {
     if (!btnHigh)
@@ -155,28 +120,11 @@ int BuzzerFlipFlop()
 
 void callButton()
 {
-    for (int i = 0; i < SizeButton; i++)
+    for (int i = 0; i < 4; i++)
     {
-        if (digitalRead(myButton[i].pin) == HIGH)
-        {
-            display.button_HIGH++;
-            myButton[i].trigger = true;
-            display.timeSleep = millis();
-            myButton[i].STATUS = btn_ON;
-            // display.checkpoint_Shorting(myButton);
-        }
-
-        else
-        {
-            myButton[i].STATUS = btn_OFF;
-            myButton[i].trigger = false;
-            display.timeOn = millis() - display.timeSleep;
-        }
+        Serial.print(String(myButton[i].pin) + ",");
     }
-    button_difference();
-    ledHigh(display.buttonisHIGH());
-    buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
-    display.setupShowdisplay();
+    Serial.println();
 }
 
 bool interuptButton()
@@ -221,7 +169,6 @@ void setup()
     // systemInformation.systemInformationButton(myButton, &display);
     display.functionClear();
     pinMode(buzzer, OUTPUT);
-    display.btn = myButton;
 }
 
 void ShowDisplay()
@@ -244,7 +191,10 @@ void ShowDisplay()
 void loop()
 {
     // systemInformation.thread();
+    main_Button.main(myButton);
     callButton();
     display.main();
+    ledHigh(display.buttonisHIGH());
+    buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
     // systemInformation.thread();
 }

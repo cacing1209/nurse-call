@@ -1,6 +1,6 @@
 #include <source.h>
 
-void mainDisplay::checkpoint_Shorting()
+void mainDisplay::checkpoint_Shorting(button *btn)
 {
     for (uint8_t indexing = 0; indexing <
                                total_HighButton;
@@ -23,28 +23,64 @@ const char *PickRole_button(uint8_t indexbutton, button *btn)
         return "P.";
     }
 }
-void mainDisplay::setupShowdisplay()
-{
-    uint8_t total_tombolHigh = total_HighButton;
-    if (button_HIGH == 0)
-    {
-        display[0][0] = "No Button";
-        return;
-    }
 
-    for (size_t x = 0; x < 4; x++)
+void buttonMain::main(button *incomingButon)
+{
+    getTime(incomingButon);
+    Call(incomingButon);
+    Sorting(incomingButon);
+}
+
+void buttonMain::getTime(button *btn)
+{
+    for (size_t i = 0; i < SizeButton; i++)
     {
-        for (size_t y = 0; y < 4; y++)
+        if (btn[i].STATUS == btn_ON)
         {
-            display[x][y] = String(btn[y].kamar) +
-                            '-' +
-                            String(btn[y].BED) +
-                            PickRole_button(y, btn);
-            Serial.print(display[x][y] + ",");
+            btn[i].pressDuration = millis() - btn[i].difference;
+            continue;
+        }
+        btn[i].difference = millis();
+        btn[i].pressDuration = 0;
+    }
+}
+
+void buttonMain::Call(button *btn)
+{
+    for (size_t i = 0; i < SizeButton; i++)
+    {
+        if (digitalRead(btn[i].pin) == HIGH)
+        {
+            btn[i].trigger = true;
+            btn[i].STATUS = btn_ON;
+            dsp.timeOn = millis() - dsp.timeSleep;
+        }
+        else
+        {
+            btn[i].STATUS = btn_OFF;
+            btn[i].trigger = false;
         }
     }
+}
 
-    Serial.println();
+void buttonMain::Sorting(button *btn)
+{
+    for (size_t i = 0; i < SizeButton; i++)
+    {
+        for (size_t j = i + 1; j < SizeButton; j++)
+        {
+            if (btn[i].pressDuration < btn[j].pressDuration)
+            {
+                button temp = btn[i];
+                btn[i] = btn[j];
+                btn[j] = temp;
+            }
+        }
+    }
+}
+
+void mainDisplay::setupShowdisplay(button *btn)
+{
 }
 
 void mainDisplay::functionClear()
@@ -56,18 +92,6 @@ void mainDisplay::functionClear()
         lcdMsg->clear();
     }
 }
-
-// void mainDisplay::functionClear()
-// {
-//     static uint8_t valueQueue = 0x00;
-//     if (clear != previouseClear ||
-//         total_HighButton != valueQueue)
-//     {
-//         previouseClear = clear;
-//         valueQueue = total_HighButton;
-//         lcdMsg->clear();
-//     }
-// }
 
 void mainDisplay::displayAction()
 {

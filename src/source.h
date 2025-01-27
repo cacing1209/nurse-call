@@ -49,8 +49,8 @@ struct button
     uint8_t kamar;
     uint8_t pin;
     uint32_t pressed;
-    unsigned long difference;
-    unsigned long pressDuration;
+    unsigned long int difference;
+    unsigned long int pressDuration;
     bool trigger;
     Rolebutton role;
     statusbtn STATUS;
@@ -76,7 +76,6 @@ struct mainDisplay
      * setup value interval display sleep
      */
     void begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp);
-    button *btn;
     LiquidCrystal_I2C *lcdMsg;
 
     // size of all button trigger is HIGH
@@ -111,14 +110,23 @@ struct mainDisplay
 
     // display MENU config
     bool ShowMenu = false;
-    String display[4][SizeButton];
+    String display[SizeButton];
     // setup show button HIGH
-    void setupShowdisplay();
+    void setupShowdisplay(button *btn);
+
     // sort buttons by time
-    void checkpoint_Shorting();
+    void checkpoint_Shorting(button *btn);
     // String display_2[SizeButton];
 };
 
+struct buttonMain
+{
+    mainDisplay dsp;
+    void main(button *btn);
+    void Call(button *btn);
+    void getTime(button *btn);
+    void Sorting(button *btn);
+};
 struct SetButton_Room
 {
     String kamar, bed;
