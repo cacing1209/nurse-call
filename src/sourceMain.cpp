@@ -16,11 +16,11 @@ const char *PickRole_button(uint8_t indexbutton, button *btn)
     switch (btn[indexbutton].role)
     {
     case Emergency:
-        return "E.";
+        return "E";
     case Codeblue:
-        return "C.";
+        return "C";
     case patient:
-        return "P.";
+        return "P";
     }
 }
 
@@ -39,6 +39,18 @@ void buttonMain::getTime(button *btn)
     Sorting(btn);
 }
 
+void setMessageDisplay(mainDisplay *dsp, button *btn, uint8_t sizeButton_HIGH)
+{
+    String incomingMessage;
+    for (size_t index = 0; index < sizeButton_HIGH; index++)
+    {
+        incomingMessage += String(btn[index].pin) + char('-') +
+                           String(btn[index].kamar) +
+                           String(PickRole_button(index, btn)) + char('.');
+    }
+    dsp->Message_button = incomingMessage;
+}
+
 void buttonMain::Call(button *btn, mainDisplay *dsp)
 {
     for (size_t i = 0; i < SizeButton; i++)
@@ -46,17 +58,20 @@ void buttonMain::Call(button *btn, mainDisplay *dsp)
         if (digitalRead(btn[i].pin) == HIGH)
         {
             dsp->button_HIGH++;
-            btn[i].trigger = true;
             btn[i].STATUS = btn_ON;
             dsp->timeSleep = millis();
         }
         else
         {
             btn[i].STATUS = btn_OFF;
-            btn[i].trigger = false;
+
         }
     }
     dsp->timeOn = millis() - dsp->timeSleep;
+    setMessageDisplay(dsp, btn, dsp->button_HIGH);
+    if (dsp->status == dsp_OFF)
+        return;
+    getTime(btn);
 }
 
 void buttonMain::Sorting(button *btn)

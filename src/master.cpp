@@ -77,7 +77,6 @@ void button_Begin()
         myButton[i].pressDuration = 0;
         myButton[i].difference = 0;
         myButton[i].role = empty;
-        myButton[i].trigger = false;
         myButton[i].STATUS = btn_OFF;
         display.timeOn = 0;
         pinMode(myButton[i].pin, INPUT);
@@ -120,15 +119,17 @@ int BuzzerFlipFlop()
 
 void callButton()
 {
-    // Serial.print(String(display.total_HighButton) + ' ');
-
-    if (display.total_HighButton != display.button_HIGH && display.button_HIGH > 0)
+    if (display.button_HIGH != display.total_HighButton)
     {
-        for (int i = 0; i < display.button_HIGH; i++)
+
+        if (display.button_HIGH <= 0)
         {
-            Serial.print(String(myButton[i].pin) + ",");
+            Serial.println(">>-- no Button");
         }
-        Serial.println();
+        else
+        {
+            Serial.println(display.Message_button);
+        }
     }
 }
 
@@ -136,7 +137,7 @@ bool interuptButton()
 {
     for (size_t indexButton = 0; indexButton < SizeButton; indexButton++)
     {
-        if (myButton[indexButton].trigger)
+        if (myButton[indexButton].STATUS == btn_ON)
         {
             display.functionClear();
             return false;
@@ -178,10 +179,9 @@ void setup()
 
 void loop()
 {
-    main_Button.Call(myButton, &display);
-    main_Button.getTime(myButton);
-    callButton();
     display.main();
+    main_Button.Call(myButton, &display);
+    callButton();
     ledHigh(display.buttonisHIGH());
     // buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
     // systemInformation.thread();

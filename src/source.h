@@ -7,7 +7,7 @@
 
 #include <SdFat.h>
 #define SPI_SPEED SD_SCK_MHZ(4)
-#define CS_PIN 10
+#define CS_PIN 7
 
 // template <typename penambahan, typename ss>
 // penambahan tambah(penambahan a, penambahan b)
@@ -51,7 +51,6 @@ struct button
     uint32_t pressed;
     unsigned long int difference;
     unsigned long int pressDuration;
-    bool trigger;
     Rolebutton role;
     statusbtn STATUS;
 };
@@ -110,7 +109,7 @@ struct mainDisplay
 
     // display MENU config
     bool ShowMenu = false;
-    String display[SizeButton];
+    String Message_button;
     // setup show button HIGH
     void setupShowdisplay(button *btn);
 
@@ -121,7 +120,6 @@ struct mainDisplay
 
 struct buttonMain
 {
-
     void Call(button *btn, mainDisplay *dsp);
     void getTime(button *btn);
     void Sorting(button *btn);
