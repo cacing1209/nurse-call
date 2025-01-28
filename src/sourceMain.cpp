@@ -24,13 +24,6 @@ const char *PickRole_button(uint8_t indexbutton, button *btn)
     }
 }
 
-void buttonMain::main(button *incomingButon)
-{
-    getTime(incomingButon);
-    Call(incomingButon);
-    Sorting(incomingButon);
-}
-
 void buttonMain::getTime(button *btn)
 {
     for (size_t i = 0; i < SizeButton; i++)
@@ -43,17 +36,19 @@ void buttonMain::getTime(button *btn)
         btn[i].difference = millis();
         btn[i].pressDuration = 0;
     }
+    Sorting(btn);
 }
 
-void buttonMain::Call(button *btn)
+void buttonMain::Call(button *btn, mainDisplay *dsp)
 {
     for (size_t i = 0; i < SizeButton; i++)
     {
         if (digitalRead(btn[i].pin) == HIGH)
         {
+            dsp->button_HIGH++;
             btn[i].trigger = true;
             btn[i].STATUS = btn_ON;
-            dsp.timeOn = millis() - dsp.timeSleep;
+            dsp->timeSleep = millis();
         }
         else
         {
@@ -61,6 +56,7 @@ void buttonMain::Call(button *btn)
             btn[i].trigger = false;
         }
     }
+    dsp->timeOn = millis() - dsp->timeSleep;
 }
 
 void buttonMain::Sorting(button *btn)
@@ -110,9 +106,10 @@ void mainDisplay::displayAction()
         ShowMenu = false;
         status = dsp_standby;
     }
-    else if (total_HighButton != button_HIGH)
+    else if (total_HighButton != button_HIGH && status == dsp_ON)
     {
         status = dsp_updateValue;
+        transisi();
     }
     else
         status = dsp_ON;
@@ -181,6 +178,7 @@ bool mainDisplay::buttonisHIGH()
 }
 void mainDisplay::reset_valueH()
 {
+    // Serial.println(button_HIGH);
     total_HighButton = button_HIGH;
     button_HIGH = 0;
 }
@@ -194,7 +192,7 @@ void mainDisplay::transisi()
         {
             lcdMsg->setCursor(x, y);
             lcdMsg->print("*");
-            delay(25);
+            delay(10);
         }
     }
 }

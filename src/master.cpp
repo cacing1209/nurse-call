@@ -120,11 +120,16 @@ int BuzzerFlipFlop()
 
 void callButton()
 {
-    for (int i = 0; i < 4; i++)
+    // Serial.print(String(display.total_HighButton) + ' ');
+
+    if (display.total_HighButton != display.button_HIGH && display.button_HIGH > 0)
     {
-        Serial.print(String(myButton[i].pin) + ",");
+        for (int i = 0; i < display.button_HIGH; i++)
+        {
+            Serial.print(String(myButton[i].pin) + ",");
+        }
+        Serial.println();
     }
-    Serial.println();
 }
 
 bool interuptButton()
@@ -171,30 +176,13 @@ void setup()
     pinMode(buzzer, OUTPUT);
 }
 
-void ShowDisplay()
-{
-    if (display.button_HIGH == 0)
-    {
-        Serial.print("No Button");
-        return;
-    }
-    for (size_t x = 0; x < 4; x++)
-    {
-        for (size_t y = 0; y < 4; y++)
-        {
-            lcdMsg.setCursor(y, x);
-            // lcdMsg.print(display.display_1[y]);
-        }
-    }
-}
-
 void loop()
 {
-    // systemInformation.thread();
-    main_Button.main(myButton);
+    main_Button.Call(myButton, &display);
+    main_Button.getTime(myButton);
     callButton();
     display.main();
     ledHigh(display.buttonisHIGH());
-    buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
+    // buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
     // systemInformation.thread();
 }

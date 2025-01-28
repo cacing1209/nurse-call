@@ -121,9 +121,8 @@ struct mainDisplay
 
 struct buttonMain
 {
-    mainDisplay dsp;
-    void main(button *btn);
-    void Call(button *btn);
+
+    void Call(button *btn, mainDisplay *dsp);
     void getTime(button *btn);
     void Sorting(button *btn);
 };
