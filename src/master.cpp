@@ -97,8 +97,7 @@ void ledHigh(bool btnHigh)
         return;
     }
     static long int timePreviouse = 0;
-    int delayofLEdHIGH = 500;
-    if (millis() - timePreviouse >= delayofLEdHIGH)
+    if (millis() - timePreviouse >= 500)
     {
         digitalWrite(lamp.led[2], !digitalRead(lamp.led[2]) == HIGH);
         timePreviouse = millis();
@@ -111,10 +110,34 @@ int BuzzerFlipFlop()
     {
         if (myButton[index].role == Emergency)
         {
-            return 1000;
+            return 500;
         }
     }
-    return 500;
+    return 1000;
+}
+
+void ex()
+{
+    uint8_t sizeMSG = 4;
+    String xx[sizeMSG];
+    for (size_t indexARR = 0; indexARR < sizeMSG; indexARR++)
+    {
+        size_t startIdx = indexARR * 20;
+        if (startIdx < display.Message_button.length())
+            xx[indexARR] = display.Message_button.substring(startIdx, startIdx + 20);
+    }
+
+    for (size_t i = 0; i < sizeMSG; i++)
+    {
+        // Serial.print(xx[i] + String(i));
+        lcdMsg.setCursor(0, i);
+        lcdMsg.print(xx[i]);
+        if (xx[i].length() == 0)
+        {
+            Serial.print(i);
+        }
+    }
+    Serial.println();
 }
 
 void callButton()
@@ -122,13 +145,13 @@ void callButton()
     if (display.button_HIGH != display.total_HighButton)
     {
 
-        if (display.button_HIGH <= 0)
+        if (display.total_HighButton <= 0)
         {
             Serial.println(">>-- no Button");
         }
         else
         {
-            Serial.println(display.Message_button);
+            ex();
         }
     }
 }
@@ -179,8 +202,8 @@ void setup()
 
 void loop()
 {
-    display.main();
     main_Button.Call(myButton, &display);
+    display.main();
     callButton();
     ledHigh(display.buttonisHIGH());
     // buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());

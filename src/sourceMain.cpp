@@ -64,11 +64,10 @@ void buttonMain::Call(button *btn, mainDisplay *dsp)
         else
         {
             btn[i].STATUS = btn_OFF;
-
         }
     }
     dsp->timeOn = millis() - dsp->timeSleep;
-    setMessageDisplay(dsp, btn, dsp->button_HIGH);
+    setMessageDisplay(dsp, btn, dsp->total_HighButton);
     if (dsp->status == dsp_OFF)
         return;
     getTime(btn);
@@ -185,7 +184,7 @@ void ledState::begin()
 }
 bool mainDisplay::buttonisHIGH()
 {
-    if (button_HIGH <= 0)
+    if (total_HighButton <= 0)
     {
         return false;
     }
