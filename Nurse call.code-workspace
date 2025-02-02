@@ -6,6 +6,10 @@
 		{
 			"name": "Comuniacation Serial",
 			"path": "../../Comunicarion Serial/Comuniacation Serial"
+		},
+		{
+			"name": "CTRL",
+			"path": "../display panel P5/CTRL"
 		}
 	],
 	"settings": {}

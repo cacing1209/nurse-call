@@ -2,9 +2,10 @@
 
 systemInfo systemInformation;
 #define getTimebutton 3 // millisecond
-#define pinButton_menuDown 3
+#define pinButton_menuConfirm A2
+#define pinButton_menuUp A1
+#define pinButton_menuDown A0
 #define buzzer 10
-#define pinButton_menuUp 4
 
 sdCard sdcard;
 mainDisplay display;
@@ -12,12 +13,6 @@ LiquidCrystal_I2C lcdMsg(0x27, Range_lcdHorizontal, Range_lcdVertical);
 button myButton[SizeButton];
 ledState lamp;
 buttonMain main_Button;
-
-/**
- * --
- * test pengisian role tombol
- * HEHE (* v *)
- */
 
 void TEST_setRole()
 {
@@ -50,7 +45,6 @@ void buzzerON(bool isEmergency, int timeONbuzzer)
     static int prev = 0;
     if (millis() - prev >= 1000)
     {
-        // digitalWrite(buzzer, !(digitalRead(buzzer)));
         prev = millis();
     }
 }
@@ -84,6 +78,7 @@ void button_Begin()
         delay(100);
         digitalWrite(lamp.led[2], LOW);
     }
+    pinMode(pinButton_menuConfirm, INPUT);
     pinMode(pinButton_menuDown, INPUT);
     pinMode(pinButton_menuUp, INPUT);
     display.timeSleep = millis();
@@ -116,9 +111,9 @@ int BuzzerFlipFlop()
     return 1000;
 }
 
-void ex()
+void displayShowButton()
 {
-    uint8_t sizeMSG = 4;
+    uint8_t sizeMSG = 9;
     String xx[sizeMSG];
     for (size_t indexARR = 0; indexARR < sizeMSG; indexARR++)
     {
@@ -129,13 +124,17 @@ void ex()
 
     for (size_t i = 0; i < sizeMSG; i++)
     {
-        // Serial.print(xx[i] + String(i));
-        lcdMsg.setCursor(0, i);
-        lcdMsg.print(xx[i]);
-        if (xx[i].length() == 0)
+        if (i < 4)
         {
-            Serial.print(i);
+            Serial.print(xx[i]);
+            lcdMsg.setCursor(0, i);
+            lcdMsg.print(xx[i]);
         }
+
+        // if (xx[i].length() == 0)
+        // {
+        //     Serial.print(i);
+        // }
     }
     Serial.println();
 }
@@ -151,40 +150,102 @@ void callButton()
         }
         else
         {
-            ex();
+            displayShowButton();
         }
     }
 }
 
-bool interuptButton()
+bool interuptButton(button *btn)
 {
-    for (size_t indexButton = 0; indexButton < SizeButton; indexButton++)
+    for (size_t index = 0; index < SizeButton; index++)
     {
-        if (myButton[indexButton].STATUS == btn_ON)
+        if (digitalRead(btn[index].pin) == HIGH)
         {
-            display.functionClear();
-            return false;
-        }
-    }
-    return true;
-}
-
-bool activationMenu()
-{
-    static unsigned int priviouseTime;
-    if (digitalRead(pinButton_menuUp) == HIGH || digitalRead(pinButton_menuDown) == HIGH)
-    {
-        if (millis() - priviouseTime >= 200)
-        {
+            display.ShowMenu = false;
             return true;
         }
     }
-    else
+    return false;
+}
+
+char Cursor = '<';
+String Msg[4] = {"1.Setup button",
+                 "2.Alarm song",
+                 "3.event Log",
+                 "4.System log"};
+
+static uint8_t pinMenu = 0x00;
+static unsigned long DebouncePresButton = 0;
+long interval = 900;
+
+void updatepinMenu(int direction)
+{
+    if (display.status != dsp_menu)
     {
-        priviouseTime = millis();
-        return false;
+        pinMenu = 0;
+    }
+    else if (millis() - DebouncePresButton > 200)
+    {
+        pinMenu += direction;
+        if (pinMenu > 3)
+            pinMenu = 0;
+        else if (pinMenu < 0)
+            pinMenu = 3;
+        lcdMsg.clear();
+        DebouncePresButton = millis();
     }
 }
+
+void menu()
+{
+    if (interuptButton(myButton))
+        return;
+
+    if (analogRead(pinButton_menuDown) >= 500)
+    {
+        display.ShowMenu = true;
+        display.timeSleep = millis();
+        updatepinMenu(1);
+    }
+    else if (analogRead(pinButton_menuUp) >= 500)
+    {
+        display.ShowMenu = true;
+        display.timeSleep = millis();
+        updatepinMenu(-1);
+    }
+    else if (analogRead(pinButton_menuConfirm) >= 500 &&
+             display.status == dsp_menu)
+    {
+        Serial.println(pinMenu);
+    }
+    else if (display.status == dsp_menu &&
+             millis() - DebouncePresButton > 5000)
+    {
+        Serial.print(millis() - DebouncePresButton);
+        Serial.println("-> no Action");
+        // display.transisi();
+        lcdMsg.clear();
+        lcdMsg.setCursor(19, pinMenu);
+        lcdMsg.print(Cursor);
+        lcdMsg.setCursor(7, pinMenu);
+        display.ShowMenu = false;
+        lcdMsg.print("RETURN");
+        delay(1500);
+        return;
+    }
+    else if (display.status == dsp_menu)
+    {
+
+        lcdMsg.setCursor(19, pinMenu);
+        lcdMsg.print(Cursor);
+        for (size_t index = 0; index < 4; index++)
+        {
+            lcdMsg.setCursor(0, index);
+            lcdMsg.print(Msg[index]);
+        }
+    }
+}
+
 void setup()
 {
     // Serial1.begin(300);
@@ -199,10 +260,10 @@ void setup()
     display.functionClear();
     pinMode(buzzer, OUTPUT);
 }
-
 void loop()
 {
     main_Button.Call(myButton, &display);
+    menu();
     display.main();
     callButton();
     ledHigh(display.buttonisHIGH());

@@ -24,12 +24,68 @@ const char *PickRole_button(uint8_t indexbutton, button *btn)
     }
 }
 
+void setup_button::button_set(button *btn)
+{
+    uint8_t index = 0;
+    uint8_t strt = 0;
+
+    while (strt < incomingData.length() && index < SizeButton)
+    {
+        uint8_t dashPos = incomingData.indexOf('-', strt);
+        uint8_t lastCharPos = incomingData.indexOf('.', strt);
+
+        if (dashPos == -1 || lastCharPos == -1)
+            break;
+        btn[index].kamar = incomingData.substring(strt, dashPos).toInt();
+        btn[index].BED = incomingData.substring(dashPos + 1, lastCharPos - 1).toInt();
+
+        char roleChar = incomingData.charAt(lastCharPos - 1);
+        switch (roleChar)
+        {
+        case 'E':
+            btn[index].role = Emergency;
+            break;
+        case 'C':
+            btn[index].role = Codeblue;
+            break;
+        case 'P':
+            btn[index].role = patient;
+            break;
+        default:
+            btn[index].role = empty;
+            break;
+        }
+
+        strt = lastCharPos + 1;
+        index++;
+    }
+}
+void setup_button::ReadSerial(button *btn)
+{
+    while (Serial.available())
+    {
+        char incomingByte = Serial.read();
+        incomingData += incomingByte;
+
+        if (incomingByte == '\n')
+        {
+            Serial.println("Data diterima:");
+            Serial.println(incomingData);
+            button_set(btn);
+            // print();
+            incomingData = "";
+            delay(300);
+        }
+    }
+}
+
 void buttonMain::getTime(button *btn)
 {
     for (size_t i = 0; i < SizeButton; i++)
     {
         if (btn[i].STATUS == btn_ON)
         {
+            delay(10 + i + 15);
             btn[i].pressDuration = millis() - btn[i].difference;
             continue;
         }
@@ -112,8 +168,8 @@ void mainDisplay::displayAction()
     }
     else if (ShowMenu)
     {
-        status = dsp_menu;
         timeSleep = millis();
+        status = dsp_menu;
     }
     else if (total_HighButton == 0)
     {
@@ -154,8 +210,8 @@ void mainDisplay::main()
 
         break;
     case dsp_menu:
-        lcdMsg->display();
         lcdMsg->backlight();
+        lcdMsg->display();
         clear = 0x04;
         break;
     case dsp_updateValue:
@@ -206,8 +262,9 @@ void mainDisplay::transisi()
         {
             lcdMsg->setCursor(x, y);
             lcdMsg->print("*");
-            delay(10);
+            delay(5);
         }
+        delay(13);
     }
 }
 const char *RolesOFbutton(button *btn, uint8_t i)
@@ -244,6 +301,8 @@ void systemInfo::systemInformationButton(button *info_button, mainDisplay *displ
                 Serial.print(" SET " + String(1));
                 Serial.println(" Value Read button : " + String(digitalRead(info_button[i].pin)));
                 break;
+            case 2:
+                Serial.println("menu Setup");
             default:
                 break;
             }

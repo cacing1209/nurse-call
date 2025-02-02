@@ -124,16 +124,17 @@ struct buttonMain
     void getTime(button *btn);
     void Sorting(button *btn);
 };
-struct SetButton_Room
+struct setup_button
 {
-    String kamar, bed;
-    uint8_t numberOfKamar, numberofBed;
+    String incomingData = "";
+    void ReadSerial(button *btn);
+    void button_set(button *btn);
+    // void print();
 };
 
 struct sdCard
 {
     SdFat sd;
-    // void begin();
     HardwareSerial *serialMsg;
 };
 
