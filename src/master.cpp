@@ -267,6 +267,6 @@ void loop()
     display.main();
     callButton();
     ledHigh(display.buttonisHIGH());
-    // buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
-    // systemInformation.thread();
+    buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
+    systemInformation.thread();
 }
