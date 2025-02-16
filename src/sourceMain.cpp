@@ -182,7 +182,9 @@ void mainDisplay::displayAction()
         transisi();
     }
     else
+    {
         status = dsp_ON;
+    }
     functionClear();
     reset_valueH();
 }
@@ -205,13 +207,14 @@ void mainDisplay::main()
         break;
     case dsp_standby:
         lcdMsg->setCursor(5, 1);
+        lcdMsg->display();
+        lcdMsg->backlight();
         lcdMsg->print(logo);
         clear = 0x02;
-
         break;
     case dsp_menu:
-        lcdMsg->backlight();
         lcdMsg->display();
+        lcdMsg->backlight();
         clear = 0x04;
         break;
     case dsp_updateValue:
@@ -221,6 +224,7 @@ void mainDisplay::main()
         Serial.println("lcd no Roles");
         break;
     }
+    Serial.println(clear);
 }
 void mainDisplay::begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp)
 {
@@ -283,6 +287,64 @@ const char *RolesOFbutton(button *btn, uint8_t i)
         break;
     }
 }
+
+// void setup() {
+//   Serial.begin(115200);
+
+//   Serial.print("Initializing SD card... ");
+
+//   if (!SD.begin(CS_PIN)) {
+//     Serial.println("Card initialization failed!");
+//     while (true);
+//   }
+
+//   Serial.println("initialization done.");
+
+//   Serial.println("Files in the card:");
+//   root = SD.open("/");
+//   printDirectory(root, 0);
+//   Serial.println("");
+
+//   // Example of reading file from the card:
+//   File textFile = SD.open("wokwi.txt");
+//   if (textFile) {
+//     Serial.print("wokwi.txt: ");
+//     while (textFile.available()) {
+//       Serial.write(textFile.read());
+//     }
+//     textFile.close();
+//   } else {
+//     Serial.println("error opening wokwi.txt!");
+//   }
+// }
+
+// void loop() {
+//   // nothing happens after setup finishes.
+// }
+
+// void printDirectory(File dir, int numTabs) {
+//   while (true) {
+
+//     File entry =  dir.openNextFile();
+//     if (! entry) {
+//       // no more files
+//       break;
+//     }
+//     for (uint8_t i = 0; i < numTabs; i++) {
+//       Serial.print('\t');
+//     }
+//     Serial.print(entry.name());
+//     if (entry.isDirectory()) {
+//       Serial.println("/");
+//       printDirectory(entry, numTabs + 1);
+//     } else {
+//       // files have sizes, directories do not
+//       Serial.print("\t\t");
+//       Serial.println(entry.size(), DEC);
+//     }
+//     entry.close();
+//   }
+// }
 
 void systemInfo::systemInformationButton(button *info_button, mainDisplay *display)
 {

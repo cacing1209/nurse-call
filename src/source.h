@@ -5,7 +5,7 @@
 #define Range_lcdHorizontal 0b00010100
 #define Range_lcdVertical 0b0100
 
-#include <SdFat.h>
+#include <SD.h>
 #define SPI_SPEED SD_SCK_MHZ(4)
 #define CS_PIN 7
 
@@ -132,15 +132,18 @@ struct setup_button
     // void print();
 };
 
-struct sdCard
-{
-    SdFat sd;
-    HardwareSerial *serialMsg;
-};
+/**
+ * eror list:
+ * [0] sd Not Detect
+ * [1] eror open file
+ * [2]
+ */
 
 struct systemInfo
 {
     void systemInformationButton(button *info_button, mainDisplay *display);
     void thread();
+    bool erorList[12];
+    void SD_EROR(uint8_t idx);
     uint8_t debounceLoopsystem;
 };

@@ -7,15 +7,16 @@ systemInfo systemInformation;
 #define pinButton_menuDown A0
 #define buzzer 10
 
-sdCard sdcard;
+File root;
+
 mainDisplay display;
 LiquidCrystal_I2C lcdMsg(0x27, Range_lcdHorizontal, Range_lcdVertical);
 button myButton[SizeButton];
 ledState lamp;
 buttonMain main_Button;
-
 void TEST_setRole()
 {
+
     for (int buttonIndex = 0; buttonIndex < SizeButton; buttonIndex++)
     {
         myButton[buttonIndex].kamar = buttonIndex / 3;
@@ -126,15 +127,14 @@ void displayShowButton()
     {
         if (i < 4)
         {
-            Serial.print(xx[i]);
             lcdMsg.setCursor(0, i);
             lcdMsg.print(xx[i]);
         }
+    }
 
-        // if (xx[i].length() == 0)
-        // {
-        //     Serial.print(i);
-        // }
+    for (size_t i = 0; i < display.button_HIGH; i++)
+    {
+        Serial.print(xx[i]);
     }
     Serial.println();
 }
@@ -168,17 +168,17 @@ bool interuptButton(button *btn)
     return false;
 }
 
-char Cursor = '<';
+String Cursor = "<<";
 String Msg[4] = {"1.Setup button",
                  "2.Alarm song",
                  "3.event Log",
                  "4.System log"};
 
-static uint8_t pinMenu = 0x00;
+static signed char pinMenu = 0x00;
 static unsigned long DebouncePresButton = 0;
 long interval = 900;
 
-void updatepinMenu(int direction)
+void updatepinMenu(signed char direction)
 {
     if (display.status != dsp_menu)
     {
@@ -191,32 +191,154 @@ void updatepinMenu(int direction)
             pinMenu = 0;
         else if (pinMenu < 0)
             pinMenu = 3;
-        lcdMsg.clear();
         DebouncePresButton = millis();
     }
 }
 
+void activationMenu()
+{
+    static bool increment_Key = false;
+    static long previouseTime = 0;
+    static uint8_t key = 0;
+    if (display.ShowMenu)
+        return;
+
+    if (key == 2)
+    {
+        key = 0;
+        display.ShowMenu = true;
+        DebouncePresButton = millis();
+        return;
+    }
+
+    int menuDown = analogRead(pinButton_menuDown);
+    int menuUp = analogRead(pinButton_menuUp);
+    long currentTime = millis();
+
+    if (currentTime - previouseTime > 1200)
+    {
+        key = 0;
+    }
+    if (menuDown > 500 || menuUp > 500)
+    {
+        if (display.status == dsp_OFF)
+        {
+            delay(100);
+            display.timeSleep = currentTime;
+            return;
+        }
+        if (currentTime - previouseTime > 300 && currentTime - previouseTime < 1000)
+        {
+            increment_Key = true;
+            previouseTime = currentTime;
+            display.timeSleep = currentTime;
+        }
+    }
+    else if (increment_Key)
+    {
+        key++;
+        increment_Key = false;
+        previouseTime = currentTime;
+    }
+    else
+    {
+        previouseTime = currentTime;
+    }
+    lcdMsg.setCursor(19, 3);
+    lcdMsg.print((key >= 2 || key <= 0) ? " " : String(key));
+}
+
+void mainMenu(signed char *index)
+{
+    setup_button SerialComunication;
+    lcdMsg.clear();
+    static unsigned long dif_Time = millis();
+    static unsigned long difT = 0;
+    static uint8_t px = 0;
+    uint8_t speedLoop_animation = 25;
+    int interval_Returning = 15000;
+    bool cl = true;
+    while (*index == 0)
+    {
+
+        if (interuptButton(myButton) || millis() - dif_Time > interval_Returning)
+        {
+            if (interuptButton(myButton))
+                return;
+            else if (millis() - dif_Time > interval_Returning + 5000)
+            {
+                index = 0;
+                dif_Time = millis();
+                DebouncePresButton = millis();
+                lcdMsg.clear();
+                return;
+            }
+            else if (cl)
+            {
+                lcdMsg.clear();
+                cl = false;
+            }
+            else
+            {
+                lcdMsg.setCursor(6, 1);
+                lcdMsg.print(">RETURN<");
+                lcdMsg.setCursor(4, 2);
+                lcdMsg.print("NOT CONNECTED");
+            }
+        }
+        else if (millis() - difT > speedLoop_animation)
+        {
+            if (millis() - dif_Time > interval_Returning - 5000)
+            {
+                lcdMsg.setCursor(17, 0);
+                lcdMsg.print(15 - ((millis() - dif_Time) / 1000));
+            }
+            lcdMsg.setCursor(6, 0);
+            lcdMsg.print("Wait for");
+            lcdMsg.setCursor(6, 1);
+            lcdMsg.print("Conection");
+            lcdMsg.setCursor(px, 2);
+            lcdMsg.print("*");
+            lcdMsg.setCursor(19 - px, 3);
+            lcdMsg.print("*");
+            px++;
+            difT = millis();
+        }
+        else if (px == 20)
+        {
+            for (size_t xx = 0; xx < 20; xx++)
+            {
+                Serial.println(20 - xx);
+                lcdMsg.setCursor(xx, 2);
+                lcdMsg.print(" ");
+                lcdMsg.setCursor(19 - xx, 3);
+                lcdMsg.print(" ");
+            }
+            px = 0;
+        }
+        SerialComunication.ReadSerial(myButton);
+    }
+}
 void menu()
 {
+    activationMenu();
     if (interuptButton(myButton))
         return;
 
-    if (analogRead(pinButton_menuDown) >= 500)
+    else if (analogRead(pinButton_menuDown) >= 500 && display.ShowMenu)
     {
-        display.ShowMenu = true;
-        display.timeSleep = millis();
         updatepinMenu(1);
-    }
-    else if (analogRead(pinButton_menuUp) >= 500)
-    {
-        display.ShowMenu = true;
         display.timeSleep = millis();
+    }
+    else if (analogRead(pinButton_menuUp) >= 500 && display.ShowMenu)
+    {
         updatepinMenu(-1);
+        display.timeSleep = millis();
     }
     else if (analogRead(pinButton_menuConfirm) >= 500 &&
              display.status == dsp_menu)
     {
-        Serial.println(pinMenu);
+        mainMenu(&pinMenu);
     }
     else if (display.status == dsp_menu &&
              millis() - DebouncePresButton > 5000)
@@ -225,7 +347,7 @@ void menu()
         Serial.println("-> no Action");
         // display.transisi();
         lcdMsg.clear();
-        lcdMsg.setCursor(19, pinMenu);
+        lcdMsg.setCursor(18, pinMenu);
         lcdMsg.print(Cursor);
         lcdMsg.setCursor(7, pinMenu);
         display.ShowMenu = false;
@@ -233,22 +355,89 @@ void menu()
         delay(1500);
         return;
     }
-    else if (display.status == dsp_menu)
-    {
 
-        lcdMsg.setCursor(19, pinMenu);
-        lcdMsg.print(Cursor);
+    if (display.status == dsp_menu)
+    {
         for (size_t index = 0; index < 4; index++)
         {
             lcdMsg.setCursor(0, index);
             lcdMsg.print(Msg[index]);
+            lcdMsg.setCursor(18, index);
+            lcdMsg.print((pinMenu == index) ? Cursor : "  ");
         }
     }
 }
 
+void printDirectory(File dir, int numTabs)
+{
+    while (true)
+    {
+
+        File entry = dir.openNextFile();
+        if (!entry)
+        {
+            // no more files
+            break;
+        }
+        for (uint8_t i = 0; i < numTabs; i++)
+        {
+            Serial.print('\t');
+        }
+        Serial.print(entry.name());
+        if (entry.isDirectory())
+        {
+            Serial.println("/");
+            printDirectory(entry, numTabs + 1);
+        }
+        else
+        {
+            // files have sizes, directories do not
+            Serial.print("\t\t");
+            Serial.println(entry.size(), DEC);
+        }
+        entry.close();
+    }
+}
+
+void sdcard_READ(String namefile)
+{
+    systemInfo sys;
+    File textFile = SD.open(namefile);
+    if (textFile)
+    {
+        Serial.print(namefile);
+        while (textFile.available())
+        {
+            Serial.write(textFile.read());
+        }
+        textFile.close();
+    }
+    else
+    {
+        Serial.println("error open " + namefile);
+        sys.erorList[1] = 1;
+    }
+}
+void initSd_card()
+{
+    systemInfo sys;
+    for (size_t i = 0; i < 12; i++)
+    {
+        sys.erorList[i] = false;
+    }
+
+    if (!SD.begin(CS_PIN))
+    {
+        Serial.println("CARD IS NOT DETECT");
+        sys.erorList[0] = 1;
+    }
+    root = SD.open("/");
+    printDirectory(root, 0);
+    Serial.println("");
+}
+
 void setup()
 {
-    // Serial1.begin(300);
     Serial.begin(9600);
     lcdMsg.begin(20, 4);
     lcdMsg.backlight();
