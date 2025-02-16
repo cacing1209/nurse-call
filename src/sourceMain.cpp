@@ -72,7 +72,6 @@ void setup_button::ReadSerial(button *btn)
             Serial.println("Data diterima:");
             Serial.println(incomingData);
             button_set(btn);
-            // print();
             incomingData = "";
             delay(300);
         }
@@ -86,7 +85,7 @@ void buttonMain::getTime(button *btn)
         if (btn[i].STATUS == btn_ON)
         {
             delay(10 + i + 15);
-            btn[i].pressDuration = millis() - btn[i].difference;
+            btn[i].pressDuration = (millis() - btn[i].difference);
             continue;
         }
         btn[i].difference = millis();
@@ -224,7 +223,7 @@ void mainDisplay::main()
         Serial.println("lcd no Roles");
         break;
     }
-    Serial.println(clear);
+    // Serial.println(clear);
 }
 void mainDisplay::begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp)
 {
@@ -373,7 +372,7 @@ void systemInfo::systemInformationButton(button *info_button, mainDisplay *displ
 }
 void systemInfo::thread()
 {
-    static unsigned long int second;
+    static unsigned long second;
     static bool Scale_actionCheck = true;
 
     if (Scale_actionCheck)

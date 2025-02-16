@@ -43,7 +43,7 @@ void buzzerON(bool isEmergency, int timeONbuzzer)
     {
         return;
     }
-    static int prev = 0;
+    static long prev = 0;
     if (millis() - prev >= 1000)
     {
         prev = millis();
@@ -84,18 +84,31 @@ void button_Begin()
     pinMode(pinButton_menuUp, INPUT);
     display.timeSleep = millis();
 }
-
+uint8_t ledUse()
+{
+    for (size_t i = 0; i < display.total_HighButton; i++)
+    {
+        if (myButton[i].role == Codeblue)
+        {
+            digitalWrite(lamp.led[2], LOW);
+            return 1;
+        }
+    }
+    digitalWrite(lamp.led[1], LOW);
+    return 2;
+}
 void ledHigh(bool btnHigh)
 {
     if (!btnHigh)
     {
+        digitalWrite(lamp.led[1], LOW);
         digitalWrite(lamp.led[2], LOW);
         return;
     }
-    static long int timePreviouse = 0;
+    static long timePreviouse = 0;
     if (millis() - timePreviouse >= 500)
     {
-        digitalWrite(lamp.led[2], !digitalRead(lamp.led[2]) == HIGH);
+        digitalWrite(lamp.led[ledUse()], !(digitalRead(lamp.led[ledUse()]) == HIGH));
         timePreviouse = millis();
     }
 }
@@ -131,12 +144,11 @@ void displayShowButton()
             lcdMsg.print(xx[i]);
         }
     }
-
-    for (size_t i = 0; i < display.button_HIGH; i++)
-    {
-        Serial.print(xx[i]);
-    }
-    Serial.println();
+    // for (size_t i = 0; i < 4; i++)
+    // {
+    //     Serial.print(xx[i]);
+    // }
+    // Serial.println();
 }
 
 void callButton()
@@ -197,10 +209,9 @@ void updatepinMenu(signed char direction)
 
 void activationMenu()
 {
-    static bool increment_Key = false;
-    static long previouseTime = 0;
+    static bool incrementKey = false;
     static uint8_t key = 0;
-    if (display.ShowMenu)
+    if (display.ShowMenu || interuptButton(myButton))
         return;
 
     if (key == 2)
@@ -213,50 +224,54 @@ void activationMenu()
 
     int menuDown = analogRead(pinButton_menuDown);
     int menuUp = analogRead(pinButton_menuUp);
-    long currentTime = millis();
 
-    if (currentTime - previouseTime > 1200)
-    {
+    unsigned long currentTime = millis();
+    static unsigned long previousTime = 0, returning = 0;
+
+    if (currentTime - returning > 1200)
         key = 0;
-    }
+
     if (menuDown > 500 || menuUp > 500)
     {
         if (display.status == dsp_OFF)
         {
             delay(100);
             display.timeSleep = currentTime;
+            key = 0;
             return;
         }
-        if (currentTime - previouseTime > 300 && currentTime - previouseTime < 1000)
+        if (currentTime - previousTime > 300 && currentTime - previousTime < 1000)
         {
-            increment_Key = true;
-            previouseTime = currentTime;
+            incrementKey = true;
+            previousTime = currentTime;
             display.timeSleep = currentTime;
         }
     }
-    else if (increment_Key)
+    else if (incrementKey)
     {
         key++;
-        increment_Key = false;
-        previouseTime = currentTime;
+        incrementKey = false;
+        previousTime = currentTime;
+        returning = millis();
     }
     else
     {
-        previouseTime = currentTime;
+        previousTime = currentTime;
     }
     lcdMsg.setCursor(19, 3);
-    lcdMsg.print((key >= 2 || key <= 0) ? " " : String(key));
+    lcdMsg.print((key >= 2 || key == 0) ? " " : String(key));
 }
 
 void mainMenu(signed char *index)
 {
     setup_button SerialComunication;
     lcdMsg.clear();
-    static unsigned long dif_Time = millis();
+    unsigned long current = millis();
+    static unsigned long dif_Time = current;
     static unsigned long difT = 0;
     static uint8_t px = 0;
+    const unsigned long interval_Returning = 15000;
     uint8_t speedLoop_animation = 25;
-    int interval_Returning = 15000;
     bool cl = true;
     while (*index == 0)
     {
@@ -268,7 +283,7 @@ void mainMenu(signed char *index)
             else if (millis() - dif_Time > interval_Returning + 5000)
             {
                 index = 0;
-                dif_Time = millis();
+                dif_Time = current;
                 DebouncePresButton = millis();
                 lcdMsg.clear();
                 return;
@@ -399,9 +414,9 @@ void printDirectory(File dir, int numTabs)
     }
 }
 
+systemInfo sys;
 void sdcard_READ(String namefile)
 {
-    systemInfo sys;
     File textFile = SD.open(namefile);
     if (textFile)
     {
@@ -420,7 +435,6 @@ void sdcard_READ(String namefile)
 }
 void initSd_card()
 {
-    systemInfo sys;
     for (size_t i = 0; i < 12; i++)
     {
         sys.erorList[i] = false;
@@ -438,6 +452,7 @@ void initSd_card()
 
 void setup()
 {
+    Serial1.begin(9600);
     Serial.begin(9600);
     lcdMsg.begin(20, 4);
     lcdMsg.backlight();
