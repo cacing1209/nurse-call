@@ -5,7 +5,7 @@ systemInfo systemInformation;
 #define pinButton_menuConfirm A2
 #define pinButton_menuUp A1
 #define pinButton_menuDown A0
-#define buzzer 10
+const int buzzer = A3;
 
 File root;
 
@@ -34,19 +34,6 @@ void TEST_setRole()
         {
             myButton[buttonIndex].role = patient;
         }
-    }
-}
-
-void buzzerON(bool isEmergency, int timeONbuzzer)
-{
-    if (!isEmergency)
-    {
-        return;
-    }
-    static long prev = 0;
-    if (millis() - prev >= 1000)
-    {
-        prev = millis();
     }
 }
 
@@ -97,32 +84,27 @@ uint8_t ledUse()
     digitalWrite(lamp.led[1], LOW);
     return 2;
 }
-void ledHigh(bool btnHigh)
+void IndicatorMoment(bool btnHigh)
 {
     if (!btnHigh)
     {
         digitalWrite(lamp.led[1], LOW);
         digitalWrite(lamp.led[2], LOW);
+        analogWrite(buzzer, 0);
         return;
     }
     static long timePreviouse = 0;
+    static bool buzzer_e = false;
     if (millis() - timePreviouse >= 500)
     {
+        if (analogRead(buzzer) > 500)
+            buzzer_e = !buzzer_e;
+
+        analogWrite(buzzer, buzzer_e ? 1000 : 0);
+
         digitalWrite(lamp.led[ledUse()], !(digitalRead(lamp.led[ledUse()]) == HIGH));
         timePreviouse = millis();
     }
-}
-
-int BuzzerFlipFlop()
-{
-    for (size_t index = 0; index < SizeButton; index++)
-    {
-        if (myButton[index].role == Emergency)
-        {
-            return 500;
-        }
-    }
-    return 1000;
 }
 
 void displayShowButton()
@@ -373,12 +355,12 @@ void menu()
 
     if (display.status == dsp_menu)
     {
-        for (size_t index = 0; index < 4; index++)
+        for (signed char index = 0; index < 4; index++)
         {
             lcdMsg.setCursor(0, index);
             lcdMsg.print(Msg[index]);
             lcdMsg.setCursor(18, index);
-            lcdMsg.print((pinMenu == index) ? Cursor : "  ");
+            lcdMsg.print(pinMenu == index ? Cursor : "  ");
         }
     }
 }
@@ -470,7 +452,6 @@ void loop()
     menu();
     display.main();
     callButton();
-    ledHigh(display.buttonisHIGH());
-    buzzerON(display.buttonisHIGH(), BuzzerFlipFlop());
+    IndicatorMoment(display.buttonisHIGH());
     systemInformation.thread();
 }

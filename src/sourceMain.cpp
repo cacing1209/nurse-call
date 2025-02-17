@@ -128,17 +128,23 @@ void buttonMain::Call(button *btn, mainDisplay *dsp)
     getTime(btn);
 }
 
+void swap(button *xp, button *yp)
+{
+    button xx = *xp;
+    *xp = *yp;
+    *yp = xx;
+}
+
+// swapping by time
 void buttonMain::Sorting(button *btn)
 {
     for (size_t i = 0; i < SizeButton; i++)
     {
         for (size_t j = i + 1; j < SizeButton; j++)
         {
-            if (btn[i].pressDuration < btn[j].pressDuration)
+            if (btn[i].pressDuration < btn[j].pressDuration && btn[j].role)
             {
-                button temp = btn[i];
-                btn[i] = btn[j];
-                btn[j] = temp;
+                swap(&btn[j], &btn[i]);
             }
         }
     }
