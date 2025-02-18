@@ -77,14 +77,28 @@ void setup_button::ReadSerial(button *btn)
         }
     }
 }
+bool mainDisplay::interuptButton(button *btn)
+{
 
+    for (size_t index = 0; index < SizeButton; index++)
+    {
+        if (digitalRead(btn[index].pin) == HIGH)
+        {
+            ShowMenu = false;
+            timeSleep = millis();
+            return true;
+        }
+    }
+    return false;
+}
+void swap(button *xp, button *yp);
 void buttonMain::getTime(button *btn)
 {
     for (size_t i = 0; i < SizeButton; i++)
     {
         if (btn[i].STATUS == btn_ON)
         {
-            delay(10 + i + 15);
+            delay(i * 2);
             btn[i].pressDuration = (millis() - btn[i].difference);
             continue;
         }
@@ -125,7 +139,12 @@ void buttonMain::Call(button *btn, mainDisplay *dsp)
     setMessageDisplay(dsp, btn, dsp->total_HighButton);
     if (dsp->status == dsp_OFF)
         return;
-    getTime(btn);
+    static uint8_t swHIGH;
+    if (dsp->total_HighButton != swHIGH)
+    {
+        getTime(btn);
+        swHIGH = dsp->total_HighButton;
+    }
 }
 
 void swap(button *xp, button *yp)
@@ -142,12 +161,14 @@ void buttonMain::Sorting(button *btn)
     {
         for (size_t j = i + 1; j < SizeButton; j++)
         {
-            if (btn[i].pressDuration < btn[j].pressDuration && btn[j].role)
+            if (btn[i].pressDuration < btn[j].pressDuration)
             {
                 swap(&btn[j], &btn[i]);
             }
         }
+        Serial.print(1);
     }
+    Serial.println();
 }
 
 void mainDisplay::setupShowdisplay(button *btn)

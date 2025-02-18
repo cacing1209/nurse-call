@@ -97,6 +97,7 @@ struct mainDisplay
     void displayAction();
     // execution of stetment diplay role
     void main();
+    bool interuptButton(button *btn);
 
     uint8_t clear, previouseClear;
     void functionClear();

@@ -149,19 +149,6 @@ void callButton()
     }
 }
 
-bool interuptButton(button *btn)
-{
-    for (size_t index = 0; index < SizeButton; index++)
-    {
-        if (digitalRead(btn[index].pin) == HIGH)
-        {
-            display.ShowMenu = false;
-            return true;
-        }
-    }
-    return false;
-}
-
 String Cursor = "<<";
 String Msg[4] = {"1.Setup button",
                  "2.Alarm song",
@@ -193,7 +180,7 @@ void activationMenu()
 {
     static bool incrementKey = false;
     static uint8_t key = 0;
-    if (display.ShowMenu || interuptButton(myButton))
+    if (display.ShowMenu || display.interuptButton(myButton))
         return;
 
     if (key == 2)
@@ -249,7 +236,7 @@ void mainMenu(signed char *index)
     setup_button SerialComunication;
     lcdMsg.clear();
     unsigned long current = millis();
-    static unsigned long dif_Time = current;
+    static unsigned long dif_Time = millis();
     static unsigned long difT = 0;
     static uint8_t px = 0;
     const unsigned long interval_Returning = 15000;
@@ -258,9 +245,9 @@ void mainMenu(signed char *index)
     while (*index == 0)
     {
 
-        if (interuptButton(myButton) || millis() - dif_Time > interval_Returning)
+        if (display.interuptButton(myButton) || millis() - dif_Time > interval_Returning)
         {
-            if (interuptButton(myButton))
+            if (display.interuptButton(myButton))
                 return;
             else if (millis() - dif_Time > interval_Returning + 5000)
             {
@@ -319,7 +306,7 @@ void mainMenu(signed char *index)
 void menu()
 {
     activationMenu();
-    if (interuptButton(myButton))
+    if (display.interuptButton(myButton))
         return;
 
     else if (analogRead(pinButton_menuDown) >= 500 && display.ShowMenu)
