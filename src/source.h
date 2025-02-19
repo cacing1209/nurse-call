@@ -31,12 +31,28 @@ enum statusbtn
     btn_ON,
     btn_OFF
 };
+
+// #define OUTPUT 0x1
+// #define INPUT 0x0
 struct ledState
 {
     const int led[ledsize] = {12, 11, 13};
     Rolebutton ledRole;
     void begin();
 };
+struct buzzer_t
+{
+    uint8_t buzzer_pin;
+    int intervalOn;
+    int intervalOff;
+    bool flipFlopState;
+    unsigned long lastTime;
+
+    buzzer_t(); // Konstruktor
+    void begin(uint8_t pin, int onTime, int offTime);
+    void main_flipFlop();
+};
+
 enum setInputbutton
 {
     inputt,
@@ -133,6 +149,37 @@ struct setup_button
     // void print();
 };
 
+enum status_pinMenu_t
+{
+    setButton,
+    setBuzer,
+    eventlog,
+    systemlog,
+    subMenu,
+
+};
+#define getTimebutton 3 // millisecond
+#define pinButton_menuConfirm A2
+#define pinButton_menuUp A1
+#define pinButton_menuDown A0
+#define buzzer 10
+
+struct settings_t
+{
+    status_pinMenu_t role;
+    mainDisplay display;
+    signed char pinMenu;
+    unsigned long DebouncePresButton;
+    bool execuitedMenu;
+
+    settings_t()
+    {
+        pinMenu = 0x00;
+        DebouncePresButton = 0;
+        execuitedMenu = false;
+        role = subMenu;
+    }
+};
 /**
  * eror list:
  * [0] sd Not Detect

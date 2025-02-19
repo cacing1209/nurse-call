@@ -108,6 +108,38 @@ void buttonMain::getTime(button *btn)
     Sorting(btn);
 }
 
+buzzer_t::buzzer_t() : buzzer_pin(0), intervalOn(1000), intervalOff(1000), flipFlopState(false), lastTime(0) {}
+
+void buzzer_t::begin(uint8_t pin, int onTime, int offTime)
+{
+    buzzer_pin = pin;
+    intervalOn = onTime;
+    intervalOff = offTime;
+    pinMode(buzzer_pin, OUTPUT);
+    digitalWrite(buzzer_pin, LOW);
+    lastTime = millis();
+}
+
+void buzzer_t::main_flipFlop()
+{
+    unsigned long current_T = millis();
+
+    if (flipFlopState && current_T - lastTime >= intervalOn)
+    {
+        digitalWrite(buzzer_pin, LOW);
+        flipFlopState = false;
+        Serial.println("Buzzer OFF time is:" + String(current_T - lastTime));
+        lastTime = current_T;
+    }
+    else if (!flipFlopState && current_T - lastTime >= intervalOff)
+    {
+        digitalWrite(buzzer_pin, HIGH);
+        flipFlopState = true;
+        Serial.println("Buzzer ON time is:" + String(current_T - lastTime));
+        lastTime = current_T;
+    }
+}
+
 void setMessageDisplay(mainDisplay *dsp, button *btn, uint8_t sizeButton_HIGH)
 {
     String incomingMessage;
@@ -166,9 +198,7 @@ void buttonMain::Sorting(button *btn)
                 swap(&btn[j], &btn[i]);
             }
         }
-        Serial.print(1);
     }
-    Serial.println();
 }
 
 void mainDisplay::setupShowdisplay(button *btn)
@@ -202,7 +232,8 @@ void mainDisplay::displayAction()
         ShowMenu = false;
         status = dsp_standby;
     }
-    else if (total_HighButton != button_HIGH && status == dsp_ON)
+    else if (total_HighButton != button_HIGH &&
+             status == dsp_ON && button_HIGH <= 13)
     {
         status = dsp_updateValue;
         transisi();
@@ -278,7 +309,6 @@ bool mainDisplay::buttonisHIGH()
 }
 void mainDisplay::reset_valueH()
 {
-    // Serial.println(button_HIGH);
     total_HighButton = button_HIGH;
     button_HIGH = 0;
 }
