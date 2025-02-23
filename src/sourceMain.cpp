@@ -62,6 +62,7 @@ void setup_button::button_set(button *btn)
 }
 void setup_button::ReadSerial(button *btn)
 {
+
     while (Serial.available())
     {
         char incomingByte = Serial.read();

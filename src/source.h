@@ -9,11 +9,39 @@
 #define SPI_SPEED SD_SCK_MHZ(4)
 #define CS_PIN 7
 
-// template <typename penambahan, typename ss>
-// penambahan tambah(penambahan a, penambahan b)
-// {
-//     return a + b;
-// }
+#define getTimebutton 3 // millisecond
+#define pinButton_menuConfirm A2
+#define pinButton_menuUp A1
+#define pinButton_menuDown A0
+#define buzzer 10
+
+enum status_pinMenu_t
+{
+    setButton = 0x01,
+    setBuzer = 0x02,
+    eventlog = 0x03,
+    systemlog = 0x04,
+    subMenu = 0x05
+
+};
+
+struct settings_t
+{
+    const int intervalpressbtn = 400;
+    status_pinMenu_t role;
+    signed char pinMenu;
+    unsigned long TimePriviosebtn;
+    bool execuitedMenu;
+    String menuMSG[5];
+    settings_t()
+    {
+        pinMenu = 0x00;
+        TimePriviosebtn = 0;
+        execuitedMenu = false;
+        role = subMenu;
+        menuMSG[4] = "Kembali", menuMSG[0] = "Set button", menuMSG[1] = "Set alarm", menuMSG[2] = "Event log", menuMSG[3] = "system info";
+    }
+};
 const uint8_t Inputbutton[SizeButton] = {
     22, 23, 24, 25, 26, 27, 28, 29, 30,
     31, 32, 33, 34, 35, 36, 37,
@@ -133,6 +161,7 @@ struct mainDisplay
     // sort buttons by time
     void checkpoint_Shorting(button *btn);
     // String display_2[SizeButton];
+    settings_t menuSetting;
 };
 
 struct buttonMain
@@ -149,37 +178,6 @@ struct setup_button
     // void print();
 };
 
-enum status_pinMenu_t
-{
-    setButton,
-    setBuzer,
-    eventlog,
-    systemlog,
-    subMenu,
-
-};
-#define getTimebutton 3 // millisecond
-#define pinButton_menuConfirm A2
-#define pinButton_menuUp A1
-#define pinButton_menuDown A0
-#define buzzer 10
-
-struct settings_t
-{
-    status_pinMenu_t role;
-    mainDisplay display;
-    signed char pinMenu;
-    unsigned long DebouncePresButton;
-    bool execuitedMenu;
-
-    settings_t()
-    {
-        pinMenu = 0x00;
-        DebouncePresButton = 0;
-        execuitedMenu = false;
-        role = subMenu;
-    }
-};
 /**
  * eror list:
  * [0] sd Not Detect
