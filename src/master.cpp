@@ -261,7 +261,7 @@ void menu_setting(unsigned long *defferent)
             set.main_cursor(1, &set.cursor);
         *defferent = millis();
         actionCursor = 0;
-        Serial.println("not executed");
+        Serial.println("not executed " + String(set.cursor));
     }
 }
 
@@ -289,7 +289,6 @@ void activatedMenu(unsigned long *dif_t)
         }
         else
         {
-
             *dif_t = millis();
             display.ShowMenu = false;
         }

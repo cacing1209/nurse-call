@@ -26,12 +26,15 @@ struct setting_t
 {
     bool Action_DSP;
     signed char cursor;
-    char menuMsg[Range_lcdVertical][20];
+    String menuMsg[Range_lcdVertical];
     status_pinMenu_t cusorRole;
     const int debounceBtn = 350;
     void main_cursor(signed char Mapcursor, signed char *cursor);
     setting_t()
     {
+        menuMsg[0] = "EVENT LOG";
+        menuMsg[1] = "Setting beep";
+        menuMsg[2] = "Return";
         cursor = 0;
         cusorRole = notset;
         Action_DSP = false;
