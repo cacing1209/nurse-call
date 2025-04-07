@@ -23,6 +23,15 @@ const char *PickRole_button(uint8_t indexbutton, button *btn)
         return "P";
     }
 }
+void setting_t::main_cursor(signed char Mapcursor, signed char *cursor)
+{
+    const byte rangeCursor = 2;
+    *cursor += Mapcursor;
+    if (*cursor > rangeCursor)
+        *cursor = 0;
+    if (*cursor == -1)
+        *cursor = rangeCursor;
+}
 
 void setup_button::button_set(button *btn)
 {

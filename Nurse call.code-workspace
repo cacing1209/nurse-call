@@ -10,6 +10,10 @@
 		{
 			"name": "CTRL",
 			"path": "../display panel P5/CTRL"
+		},
+		{
+			"name": "thermostat",
+			"path": "../main-thermostat/thermostat"
 		}
 	],
 	"settings": {

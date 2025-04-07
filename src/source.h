@@ -4,44 +4,40 @@
 #define SizeButton 0b00100000 // 32
 #define Range_lcdHorizontal 0b00010100
 #define Range_lcdVertical 0b0100
-
+#define baudrate_S0 9600
+#define baudrate_S1 4800
 #include <SD.h>
 #define SPI_SPEED SD_SCK_MHZ(4)
 #define CS_PIN 7
-
-#define getTimebutton 3 // millisecond
+#define DB_pressButton 600 // millisecond
 #define pinButton_menuConfirm A2
-#define pinButton_menuUp A1
-#define pinButton_menuDown A0
-#define buzzer 10
+#define pinButton_menuUp A0
+#define pinButton_menuDown A1
+const int buzzer = A3;
 
 enum status_pinMenu_t
 {
+    notset = 0x00,
     setButton = 0x01,
-    setBuzer = 0x02,
+    Kembali = 0x02,
     eventlog = 0x03,
-    systemlog = 0x04,
-    subMenu = 0x05
-
 };
-
-struct settings_t
+struct setting_t
 {
-    const int intervalpressbtn = 400;
-    status_pinMenu_t role;
-    signed char pinMenu;
-    unsigned long TimePriviosebtn;
-    bool execuitedMenu;
-    String menuMSG[5];
-    settings_t()
+    bool Action_DSP;
+    signed char cursor;
+    char menuMsg[Range_lcdVertical][20];
+    status_pinMenu_t cusorRole;
+    const int debounceBtn = 350;
+    void main_cursor(signed char Mapcursor, signed char *cursor);
+    setting_t()
     {
-        pinMenu = 0x00;
-        TimePriviosebtn = 0;
-        execuitedMenu = false;
-        role = subMenu;
-        menuMSG[4] = "Kembali", menuMSG[0] = "Set button", menuMSG[1] = "Set alarm", menuMSG[2] = "Event log", menuMSG[3] = "system info";
+        cursor = 0;
+        cusorRole = notset;
+        Action_DSP = false;
     }
 };
+
 const uint8_t Inputbutton[SizeButton] = {
     22, 23, 24, 25, 26, 27, 28, 29, 30,
     31, 32, 33, 34, 35, 36, 37,
@@ -60,8 +56,6 @@ enum statusbtn
     btn_OFF
 };
 
-// #define OUTPUT 0x1
-// #define INPUT 0x0
 struct ledState
 {
     const int led[ledsize] = {12, 11, 13};
@@ -161,7 +155,6 @@ struct mainDisplay
     // sort buttons by time
     void checkpoint_Shorting(button *btn);
     // String display_2[SizeButton];
-    settings_t menuSetting;
 };
 
 struct buttonMain
@@ -175,21 +168,12 @@ struct setup_button
     String incomingData = "";
     void ReadSerial(button *btn);
     void button_set(button *btn);
-    // void print();
 };
-
-/**
- * eror list:
- * [0] sd Not Detect
- * [1] eror open file
- * [2]
- */
 
 struct systemInfo
 {
     void systemInformationButton(button *info_button, mainDisplay *display);
     void thread();
     bool erorList[12];
-    void SD_EROR(uint8_t idx);
     uint8_t debounceLoopsystem;
 };

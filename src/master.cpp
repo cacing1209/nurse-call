@@ -1,13 +1,7 @@
 #include <source.h>
-settings_t mainSetting;
-
+#include <toneBuzzer.h>
+setting_t set;
 systemInfo systemInformation;
-// #define getTimebutton 3 // millisecond
-// #define pinButton_menuConfirm A2
-// #define pinButton_menuUp A1
-// #define pinButton_menuDown A0
-// #define buzzer 10
-
 File root;
 
 mainDisplay display;
@@ -42,7 +36,6 @@ void TEST_setRole()
 
 void button_Begin()
 {
-
     digitalWrite(lamp.led[0], HIGH);
     delay(2500);
     for (uint8_t i = 0; i < SizeButton; i++)
@@ -69,6 +62,7 @@ void button_Begin()
         delay(100);
         digitalWrite(lamp.led[2], LOW);
     }
+    pinMode(buzzer, OUTPUT);
     pinMode(pinButton_menuConfirm, INPUT);
     pinMode(pinButton_menuDown, INPUT);
     pinMode(pinButton_menuUp, INPUT);
@@ -95,14 +89,17 @@ void IndicatorMoment(bool btnHigh)
     {
         digitalWrite(lamp.led[1], LOW);
         digitalWrite(lamp.led[2], LOW);
-        digitalWrite(buzzer, LOW);
+        analogWrite(buzzer, noTone);
         return;
     }
     if (millis() - timepreviouse_led >= intervalLamp)
     {
         if (digitalRead(lamp.led[ledUse()]) == HIGH)
-            Serial.println(ledUse());
-        digitalWrite(lamp.led[ledUse()], !digitalRead(lamp.led[ledUse()]) == HIGH);
+            analogWrite(buzzer, noteHigh01);
+        else
+            analogWrite(buzzer, noTone);
+
+        digitalWrite(lamp.led[ledUse()], !(digitalRead(lamp.led[ledUse()]) == HIGH));
         timepreviouse_led = millis();
     }
 }
@@ -152,7 +149,6 @@ void printDirectory(File dir, int numTabs)
         File entry = dir.openNextFile();
         if (!entry)
         {
-            // no more files
             break;
         }
         for (uint8_t i = 0; i < numTabs; i++)
@@ -167,7 +163,6 @@ void printDirectory(File dir, int numTabs)
         }
         else
         {
-            // files have sizes, directories do not
             Serial.print("\t\t");
             Serial.println(entry.size(), DEC);
         }
@@ -214,9 +209,7 @@ void initSd_card()
 uint8_t menuPins()
 {
     if (analogRead(pinButton_menuUp) > 500)
-    {
         return 0x01;
-    }
     else if (analogRead(pinButton_menuDown) > 500)
         return 0x02;
     else if (analogRead(pinButton_menuConfirm) > 500)
@@ -224,193 +217,116 @@ uint8_t menuPins()
     else
         return 0x00;
 }
-
-const int interval_b = display.menuSetting.intervalpressbtn;
-
-void printMenu(String *message, signed char cursor);
-void ActivatedMenu()
+void printMenu(signed char *cursor)
 {
-    static bool present = false;
-    bool *menuActive = &display.ShowMenu;
-
-    if (display.ShowMenu)
-        return;
-
-    if (menuPins() == 0x01 || menuPins() == 0x02 && display.menuSetting.role == subMenu)
-    {
-        if (millis() - display.menuSetting.TimePriviosebtn > interval_b)
-        {
-            Serial.println("present");
-            present = true;
-        }
-    }
-    else
-    {
-        display.menuSetting.TimePriviosebtn = millis();
-        if (present)
-        {
-            *menuActive = true;
-            present = false;
-            display.menuSetting.pinMenu = 0x00;
-            display.menuSetting.TimePriviosebtn = millis();
-            printMenu(display.menuSetting.menuMSG, display.menuSetting.pinMenu);
-        }
-    }
-}
-void printMenu(String *message, signed char cursor)
-{
-    for (signed char i = 0; i < Range_lcdVertical; i++)
+    for (size_t i = 0; i < Range_lcdVertical; i++)
     {
         lcdMsg.setCursor(0, i);
-        lcdMsg.print(message[i]);
+        lcdMsg.print(set.menuMsg[i]);
         lcdMsg.setCursor(18, i);
-        lcdMsg.print((i == cursor) ? "<<" : "  ");
+        lcdMsg.print(*cursor == i ? "<<" : "  ");
     }
 }
-void swappingRoles_menu(signed char cursor)
-{
-    // static String *temp[Range_lcdVertical];
-    String *message = display.menuSetting.menuMSG;
 
-    switch (cursor)
+void presButton(byte *actionCursor)
+{
+}
+void menu_setting(unsigned long *defferent)
+{
+    static byte actionCursor = 0;
+    if (menuPins() == 0x01)
     {
-    case 0x00:
-        message[0] = "Wait for", message[1] = "connection", message[2] = "\n", message[3] = "\n";
-        display.menuSetting.role = setButton;
-        break;
-    case 0x01:
-        message[0] = "Mode 1:1",
-        message[1] = "Mode 1:2",
-        message[2] = "Mode 2:1",
-        message[3] = "Mode 2:2";
-        message[4] = "Kembali";
-        display.menuSetting.role = setBuzer;
-        break;
-    case 0x02:
-        message[0] = "calling BED";
-        display.menuSetting.role = eventlog;
-        break;
-    case 0x03:
-        display.menuSetting.role = systemlog;
-        break;
-    default:
+        if (millis() - *defferent > set.debounceBtn)
+        {
+            actionCursor = 1;
+            Serial.print(actionCursor);
+            Serial.println(" executed " + String(millis() - *defferent));
+        }
+    }
+    else if (menuPins() == 0x02)
+    {
+        if (millis() - *defferent > set.debounceBtn)
+        {
+            actionCursor = 2;
+            Serial.print(actionCursor);
+            Serial.println(" executed " + String(millis() - *defferent));
+        }
+    }
+
+    else
+    {
+        if (actionCursor == 2)
+            set.main_cursor(-1, &set.cursor);
+        if (actionCursor == 1)
+            set.main_cursor(1, &set.cursor);
+        *defferent = millis();
+        actionCursor = 0;
+        Serial.println("not executed");
+    }
+}
+
+void activatedMenu(unsigned long *dif_t)
+{
+    static bool activMenu = false;
+    if (display.ShowMenu)
         return;
-    }
-    display.menuSetting.pinMenu = 0x00;
-}
-void msgMenu_Swap(bool *swap)
-{
-    String *manipulated = display.menuSetting.menuMSG;
-    if (*swap == false)
+    if (menuPins() == 0x01 || menuPins() == 0x02)
     {
-        Serial.println("yapping yaping");
-        for (size_t i = 0; i < Range_lcdVertical + 1; i++)
+        Serial.println(millis() - *dif_t);
+        if (millis() - *dif_t > set.debounceBtn)
         {
-            String temp = manipulated[i];
-            manipulated[i] = manipulated[i + 1];
-            manipulated[i + 1] = temp;
+            activMenu = true;
         }
-        // *swap = true;
-    }
-}
-void updatePins(signed char pins)
-{
-    unsigned long current = millis();
-    static bool scrollingMenu = false;
-
-    if (current - display.menuSetting.TimePriviosebtn > interval_b)
-    {
-        if (pins == 0x03)
-        {
-            swappingRoles_menu(display.menuSetting.pinMenu);
-            return;
-        }
-
-        signed char *pinMenuindex = &display.menuSetting.pinMenu;
-        *pinMenuindex += pins;
-
-        if (*pinMenuindex > 3)
-        {
-            if (scrollingMenu)
-            {
-                *pinMenuindex = 0;
-                scrollingMenu = false;
-            }
-            else
-            {
-                Serial.println("ancok");
-                msgMenu_Swap(&scrollingMenu);
-                *pinMenuindex = 3;
-            }
-        }
-
-        if (*pinMenuindex < 0)
-        {
-            if (scrollingMenu)
-            {
-                *pinMenuindex = 3;
-                scrollingMenu = false;
-            }
-            else
-            {
-                *pinMenuindex = 0;
-            }
-        }
-        display.menuSetting.TimePriviosebtn = current;
         display.timeSleep = millis();
     }
-}
-void main_Cursor()
-{
-    if (display.interuptButton(myButton))
-        return;
-    else if (menuPins() == 0x01)
-        updatePins(1);
-    else if (menuPins() == 0x02)
-        updatePins(-1);
-    else if (menuPins() == 0x03)
-        updatePins(0x03);
     else
-        display.menuSetting.TimePriviosebtn = millis();
-}
-void clear_dspmenu(mainDisplay *dspmenu)
-{
-    static uint8_t clear = 0x05;
-    if (dspmenu->menuSetting.role != clear)
     {
-        lcdMsg.clear();
-        clear = dspmenu->menuSetting.role;
+        if (activMenu)
+        {
+            activMenu = false;
+            display.ShowMenu = true;
+            *dif_t = millis();
+        }
+        else
+        {
+
+            *dif_t = millis();
+            display.ShowMenu = false;
+        }
     }
 }
-void main_setting()
+
+void mainSetting()
 {
-    ActivatedMenu();
-    clear_dspmenu(&display);
-    main_Cursor();
-    if (display.status == dsp_menu)
-        printMenu(display.menuSetting.menuMSG, display.menuSetting.pinMenu);
+    static unsigned long dif_time = 0;
+    if (display.ShowMenu)
+    {
+        menu_setting(&dif_time);
+        printMenu(&set.cursor); // check point
+    }
+    else
+    {
+        activatedMenu(&dif_time);
+    }
 }
 void setup()
 {
-    Serial1.begin(9600);
-    Serial.begin(9600);
+    Serial1.begin(baudrate_S1);
+    Serial.begin(baudrate_S0);
     lcdMsg.begin(20, 4);
     lcdMsg.backlight();
     lamp.begin();
     display.begin("'MZK--TECH'", 15000, &lcdMsg);
     button_Begin();
     TEST_setRole();
-    // systemInformation.systemInformationButton(myButton, &display);
     display.functionClear();
-    // bz.begin(buzzer, 2000, 1000); //check it
 }
 void loop()
 {
-    main_setting();
+    mainSetting();
     main_Button.Call(myButton, &display);
     display.main();
     callButton();
     IndicatorMoment(display.buttonisHIGH());
-    // bz.main_flipFlop(); waduh anjeng
     systemInformation.thread();
 }
