@@ -1,12 +1,12 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
-#define ledsize 3             // 3
+#include <SD.h>
+#define ledsize 3            // 3
 #define SizeButton 0b00100000 // 32
 #define Range_lcdHorizontal 0b00010100
 #define Range_lcdVertical 0b0100
 #define baudrate_S0 9600
 #define baudrate_S1 4800
-#include <SD.h>
 #define SPI_SPEED SD_SCK_MHZ(4)
 #define CS_PIN 7
 #define DB_pressButton 600 // millisecond

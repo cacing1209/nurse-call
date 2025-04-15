@@ -189,7 +189,7 @@ void sdcard_READ(String namefile)
         sys.erorList[1] = 1;
     }
 }
-void initSd_card()
+void initSd_card() // not use
 {
     for (size_t i = 0; i < 12; i++)
     {
@@ -198,7 +198,7 @@ void initSd_card()
 
     if (!SD.begin(CS_PIN))
     {
-        Serial.println("CARD IS NOT DETECT");
+        Serial.println(" SD IS NOT DETECT");
         sys.erorList[0] = 1;
     }
     root = SD.open("/");
@@ -217,40 +217,39 @@ uint8_t menuPins()
     else
         return 0x00;
 }
-void printMenu(signed char *cursor)
+void printMenu(signed char cursor)
 {
     for (size_t i = 0; i < Range_lcdVertical; i++)
     {
         lcdMsg.setCursor(0, i);
         lcdMsg.print(set.menuMsg[i]);
         lcdMsg.setCursor(18, i);
-        lcdMsg.print(*cursor == i ? "<<" : "  ");
+        lcdMsg.print((cursor == i) ? "<<" :"  ");
     }
 }
-
-void presButton(byte *actionCursor)
+void menuExecuted()
 {
 }
-void menu_setting(unsigned long *defferent)
+
+void Button_main(unsigned long *defferent)
 {
     static byte actionCursor = 0;
     if (menuPins() == 0x01)
     {
         if (millis() - *defferent > set.debounceBtn)
-        {
             actionCursor = 1;
-            Serial.print(actionCursor);
-            Serial.println(" executed " + String(millis() - *defferent));
+    }
+    else if (menuPins() == 0x03)
+    {
+        if (millis() - *defferent > set.debounceBtn)
+        {
+            actionCursor = 3;
         }
     }
     else if (menuPins() == 0x02)
     {
         if (millis() - *defferent > set.debounceBtn)
-        {
             actionCursor = 2;
-            Serial.print(actionCursor);
-            Serial.println(" executed " + String(millis() - *defferent));
-        }
     }
 
     else
@@ -259,9 +258,10 @@ void menu_setting(unsigned long *defferent)
             set.main_cursor(-1, &set.cursor);
         if (actionCursor == 1)
             set.main_cursor(1, &set.cursor);
+        if (actionCursor == 3)
+            set.Action_DSP = true;
         *defferent = millis();
         actionCursor = 0;
-        Serial.println("not executed " + String(set.cursor));
     }
 }
 
@@ -272,7 +272,6 @@ void activatedMenu(unsigned long *dif_t)
         return;
     if (menuPins() == 0x01 || menuPins() == 0x02)
     {
-        Serial.println(millis() - *dif_t);
         if (millis() - *dif_t > set.debounceBtn)
         {
             activMenu = true;
@@ -300,8 +299,9 @@ void mainSetting()
     static unsigned long dif_time = 0;
     if (display.ShowMenu)
     {
-        menu_setting(&dif_time);
-        printMenu(&set.cursor); // check point
+        Button_main(&dif_time);
+        printMenu(set.cursor);
+        menuExecuted();
     }
     else
     {

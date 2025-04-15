@@ -138,14 +138,12 @@ void buzzer_t::main_flipFlop()
     {
         digitalWrite(buzzer_pin, LOW);
         flipFlopState = false;
-        Serial.println("Buzzer OFF time is:" + String(current_T - lastTime));
         lastTime = current_T;
     }
     else if (!flipFlopState && current_T - lastTime >= intervalOff)
     {
         digitalWrite(buzzer_pin, HIGH);
         flipFlopState = true;
-        Serial.println("Buzzer ON time is:" + String(current_T - lastTime));
         lastTime = current_T;
     }
 }
@@ -288,10 +286,8 @@ void mainDisplay::main()
         clear = 0x05;
         break;
     default:
-        Serial.println("lcd no Roles");
         break;
     }
-    // Serial.println(clear);
 }
 void mainDisplay::begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp)
 {
@@ -388,12 +384,10 @@ void systemInfo::thread()
     {
         Scale_actionCheck = false;
         second = millis();
-        // Serial.print(" b " + String(millis() - second));
     }
     else
     {
         Scale_actionCheck = true;
-        // Serial.println(" a " + String(millis() - second));
         debounceLoopsystem = millis() - second;
     }
 }
