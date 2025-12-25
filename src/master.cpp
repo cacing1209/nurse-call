@@ -131,13 +131,9 @@ void callButton()
     {
 
         if (display.total_HighButton == 0)
-        {
             Serial.println(">>-- no Button");
-        }
         else
-        {
             displayShowButton();
-        }
     }
 }
 
@@ -217,65 +213,71 @@ uint8_t menuPins()
     else
         return 0x00;
 }
-void printMenu(signed char cursor)
+void printMenu(signed char &cursor)
 {
     for (size_t i = 0; i < Range_lcdVertical; i++)
     {
         lcdMsg.setCursor(0, i);
         lcdMsg.print(set.menuMsg[i]);
         lcdMsg.setCursor(18, i);
-        lcdMsg.print((cursor == i) ? "<<" :"  ");
+        lcdMsg.print((cursor == i) ? "<<" : "  ");
     }
 }
-void menuExecuted()
-{
-}
 
-void Button_main(unsigned long *defferent)
+void Button_main(unsigned long &defferent, bool &menu_selected)
 {
-    static byte actionCursor = 0;
+    static bool press = true;
+    static bool last_press = false;
     if (menuPins() == 0x01)
     {
-        if (millis() - *defferent > set.debounceBtn)
-            actionCursor = 1;
+        if (press && !last_press)
+            set.cusorRole = btn_up;
+        press = false;
+        last_press = true;
     }
     else if (menuPins() == 0x03)
     {
-        if (millis() - *defferent > set.debounceBtn)
+        if ((press && !last_press) && !menu_selected)
         {
-            actionCursor = 3;
+            menu_selected = true;
+            set.cusorRole = selected_menu;
         }
+        press = false;
+        last_press = true;
     }
     else if (menuPins() == 0x02)
     {
-        if (millis() - *defferent > set.debounceBtn)
-            actionCursor = 2;
+        if (press && !last_press)
+            set.cusorRole = btn_down;
+        press = false;
+        last_press = true;
     }
 
     else
     {
-        if (actionCursor == 2)
-            set.main_cursor(-1, &set.cursor);
-        if (actionCursor == 1)
-            set.main_cursor(1, &set.cursor);
-        if (actionCursor == 3)
-            set.Action_DSP = true;
-        *defferent = millis();
-        actionCursor = 0;
+        if (!press && last_press)
+        {
+            press = last_press;
+            last_press = !press;
+        }
+        if (set.cusorRole == btn_down)
+            set.main_cursor(-1, set.cursor);
+        if (set.cusorRole == btn_up)
+            set.main_cursor(1, set.cursor);
+        defferent = millis();
+        set.cusorRole = notset;
     }
 }
 
-void activatedMenu(unsigned long *dif_t)
+void activatedMenu(unsigned long &dif_t)
 {
     static bool activMenu = false;
     if (display.ShowMenu)
         return;
     if (menuPins() == 0x01 || menuPins() == 0x02)
     {
-        if (millis() - *dif_t > set.debounceBtn)
-        {
+        if (millis() - dif_t > set.debounceBtn)
             activMenu = true;
-        }
         display.timeSleep = millis();
     }
     else
@@ -284,11 +286,11 @@ void activatedMenu(unsigned long *dif_t)
         {
             activMenu = false;
             display.ShowMenu = true;
-            *dif_t = millis();
+            dif_t = millis();
         }
         else
         {
-            *dif_t = millis();
+            dif_t = millis();
             display.ShowMenu = false;
         }
     }
@@ -297,16 +299,14 @@ void activatedMenu(unsigned long *dif_t)
 void mainSetting()
 {
     static unsigned long dif_time = 0;
+    static bool menu_select = false;
     if (display.ShowMenu)
     {
-        Button_main(&dif_time);
+        Button_main(dif_time, menu_select);
         printMenu(set.cursor);
-        menuExecuted();
-    }
+        }
     else
-    {
-        activatedMenu(&dif_time);
-    }
+        activatedMenu(dif_time);
 }
 void setup()
 {
@@ -319,6 +319,7 @@ void setup()
     button_Begin();
     TEST_setRole();
     display.functionClear();
+    Serial.println("Deevice Ready");
 }
 void loop()
 {

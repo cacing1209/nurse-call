@@ -23,14 +23,14 @@ const char *PickRole_button(uint8_t indexbutton, button *btn)
         return "P";
     }
 }
-void setting_t::main_cursor(signed char Mapcursor, signed char *cursor)
+void setting_t::main_cursor(signed char Mapcursor, signed char &cursor)
 {
     const byte rangeCursor = 2;
-    *cursor += Mapcursor;
-    if (*cursor > rangeCursor)
-        *cursor = 0;
-    if (*cursor == -1)
-        *cursor = rangeCursor;
+    cursor += Mapcursor;
+    if (cursor > rangeCursor)
+        cursor = 0;
+    if (cursor == -1)
+        cursor = rangeCursor;
 }
 
 void setup_button::button_set(button *btn)
@@ -291,6 +291,7 @@ void mainDisplay::main()
 }
 void mainDisplay::begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp)
 {
+    ShowMenu = false;
     total_HighButton = 0b0000;
     button_HIGH = 0b0000;
     logo = logoMSG;
@@ -328,9 +329,9 @@ void mainDisplay::transisi()
         {
             lcdMsg->setCursor(x, y);
             lcdMsg->print("*");
-            delay(5);
+            delay(2);
         }
-        delay(13);
+        delay(5);
     }
 }
 const char *RolesOFbutton(button *btn, uint8_t i)

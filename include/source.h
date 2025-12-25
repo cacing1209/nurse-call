@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 #include <SD.h>
-#define ledsize 3            // 3
+#include <ArduinoJson.h>
+#define ledsize 3             // 3
 #define SizeButton 0b00100000 // 32
 #define Range_lcdHorizontal 0b00010100
 #define Range_lcdVertical 0b0100
@@ -15,21 +16,27 @@
 #define pinButton_menuDown A1
 const int buzzer = A3;
 
+enum display_t
+{
+    display_1 = 0xACF, // home menu
+    display_2,         // event log
+    display_3          // buzzer setting
+};
 enum status_pinMenu_t
 {
     notset = 0x00,
-    setButton = 0x01,
-    Kembali = 0x02,
-    eventlog = 0x03,
+    selected_menu,
+    Kembali,
+    btn_up,
+    btn_down
 };
 struct setting_t
 {
-    bool Action_DSP;
     signed char cursor;
     String menuMsg[Range_lcdVertical];
     status_pinMenu_t cusorRole;
     const int debounceBtn = 350;
-    void main_cursor(signed char Mapcursor, signed char *cursor);
+    void main_cursor(signed char Mapcursor, signed char &cursor);
     setting_t()
     {
         menuMsg[0] = "EVENT LOG";
@@ -37,7 +44,6 @@ struct setting_t
         menuMsg[2] = "Return";
         cursor = 0;
         cusorRole = notset;
-        Action_DSP = false;
     }
 };
 
@@ -73,7 +79,7 @@ struct buzzer_t
     bool flipFlopState;
     unsigned long lastTime;
 
-    buzzer_t(); // Konstruktor
+    buzzer_t();
     void begin(uint8_t pin, int onTime, int offTime);
     void main_flipFlop();
 };
