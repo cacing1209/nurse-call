@@ -72,3 +72,7 @@ const uint8_t Inputbutton[SizeButton] = {
 4. Buzzer berbunyi sebagai peringatan (opsional).
 
 ---
+### Schematic
+- detail scema [disini](https://wokwi.com/projects/401416223576636417)
+
+<img width="544" height="454" alt="{30D17047-30FB-4B3D-B7ED-4A4C90D0775B}" src="https://github.com/user-attachments/assets/5b4e72f4-b91c-48a2-8df9-ba0361a5e599"/>
