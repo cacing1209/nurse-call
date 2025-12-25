@@ -237,38 +237,6 @@
       "attrs": { "value": "1100" }
     },
     {
-      "type": "wokwi-pushbutton",
-      "id": "btn1",
-      "top": 201.5,
-      "left": 3.5,
-      "rotate": 90,
-      "attrs": { "color": "green" }
-    },
-    {
-      "type": "wokwi-resistor",
-      "id": "r33",
-      "top": 225.6,
-      "left": -19.75,
-      "rotate": 90,
-      "attrs": { "value": "10000" }
-    },
-    {
-      "type": "wokwi-pushbutton",
-      "id": "btn2",
-      "top": 201.5,
-      "left": -54.1,
-      "rotate": 90,
-      "attrs": { "color": "green" }
-    },
-    {
-      "type": "wokwi-resistor",
-      "id": "r34",
-      "top": 225.6,
-      "left": -77.35,
-      "rotate": 90,
-      "attrs": { "value": "10000" }
-    },
-    {
       "type": "wokwi-dip-switch-8",
       "id": "sw2",
       "top": 159.5,
@@ -306,29 +274,12 @@
       "rotate": 90,
       "attrs": {}
     },
-    { "type": "wokwi-microsd-card", "id": "sd1", "top": 595.43, "left": 182.47, "attrs": {} },
     {
       "type": "wokwi-resistor",
       "id": "r35",
       "top": 474.35,
       "left": 556.8,
       "attrs": { "value": "1100" }
-    },
-    {
-      "type": "wokwi-resistor",
-      "id": "r36",
-      "top": 225.6,
-      "left": -134.95,
-      "rotate": 90,
-      "attrs": { "value": "10000" }
-    },
-    {
-      "type": "wokwi-pushbutton",
-      "id": "btn3",
-      "top": 201.5,
-      "left": -111.7,
-      "rotate": 90,
-      "attrs": { "color": "green" }
     }
   ],
   "connections": [
@@ -415,7 +366,6 @@
     [ "sw1:6b", "sw1:7b", "green", [ "h0" ] ],
     [ "sw1:7b", "sw1:8b", "green", [ "h0" ] ],
     [ "sw1:8b", "mega1:5V", "red", [ "v422.4", "h-300.2" ] ],
-    [ "btn2:2.l", "btn1:2.l", "red", [ "v9.6", "h67" ] ],
     [ "sw2:1b", "sw2:2b", "green", [ "h0" ] ],
     [ "sw2:2b", "sw2:3b", "green", [ "h0" ] ],
     [ "sw2:3b", "sw2:4b", "green", [ "h0" ] ],
@@ -468,26 +418,9 @@
     [ "mega1:45", "sw3:8a", "limegreen", [ "v1.2", "h170.2", "v-288" ] ],
     [ "sw4:1b", "sw3:1b", "green", [ "h-0.3", "v-9.6", "h-48" ] ],
     [ "sw3:1b", "sw2:1b", "green", [ "h-0.3", "v-9.6", "h-57.3" ] ],
-    [ "sd1:GND", "mega1:GND.2", "black", [ "h0" ] ],
-    [ "sd1:VCC", "mega1:5V", "red", [ "h76.8", "v-93.16" ] ],
-    [ "sd1:SCK", "mega1:9", "magenta", [ "h0" ] ],
-    [ "mega1:8", "sd1:DI", "yellow", [ "v0" ] ],
-    [ "sd1:CS", "mega1:7", "cyan", [ "h0" ] ],
-    [ "sd1:DO", "mega1:6", "white", [ "h0" ] ],
     [ "r35:1", "mega1:39", "green", [ "v28.8", "h-103" ] ],
     [ "r35:2", "r25:2", "black", [ "v0" ] ],
     [ "r35:1", "sw3:2a", "green", [ "v-28.8", "h28.8", "v-268.8" ] ],
-    [ "r33:2", "r34:2", "black", [ "h0", "v-10.8", "h-48" ] ],
-    [ "r33:1", "btn1:1.l", "green", [ "h38.4" ] ],
-    [ "r33:2", "mega1:GND.1", "black", [ "h0", "v46.8", "h288" ] ],
-    [ "r34:1", "btn2:1.l", "green", [ "h38.4" ] ],
-    [ "btn1:2.r", "mega1:5V", "red", [ "v29", "h249.4", "v268.8", "h86.4" ] ],
-    [ "btn1:1.r", "mega1:A0", "cyan", [ "v307.4", "h336" ] ],
-    [ "btn2:1.r", "mega1:A1", "gold", [ "v38.6", "h67.2", "v278.4", "h336" ] ],
-    [ "r36:1", "btn3:1.l", "green", [ "h38.4" ] ],
-    [ "btn3:2.l", "btn2:2.l", "red", [ "v9.6", "h57.4" ] ],
-    [ "r36:2", "r34:2", "black", [ "h0", "v-10.8", "h57.6" ] ],
-    [ "btn3:1.r", "mega1:A2", "gray", [ "v57.8", "h105.6", "v268.8", "h358.3" ] ],
     [ "mega1:A3", "bz1:2", "white", [ "v16.5", "h227.15", "v-422.4", "h-19.2" ] ]
   ],
   "dependencies": {}

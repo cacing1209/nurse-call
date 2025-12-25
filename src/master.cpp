@@ -323,7 +323,7 @@ void setup()
 }
 void loop()
 {
-    mainSetting();
+    // mainSetting();
     main_Button.Call(myButton, &display);
     display.main();
     callButton();
