@@ -1,17 +1,18 @@
-# Nurse Call System by CCNG
 
-This Nurse Call System is built using an **Arduino Mega 2560** to monitor and manage patient call buttons from up to 32 beds. It displays call statuses on an LCD, uses an RGB LED as an indicator, and logs data into an SD card.
+---
+
+# ![Arduino Logo](https://upload.wikimedia.org/wikipedia/commons/4/4e/Arduino_Logo.png) Nurse Call System by CCNG
+
+Sistem Nurse Call ini menggunakan **Arduino Mega 2560** untuk memantau tombol panggil pasien hingga 32 tempat tidur. Status panggilan ditampilkan di LCD dan RGB LED, dengan buzzer sebagai indikator suara opsional.
 
 ---
 
 ## Features
 
-- Supports monitoring of **32 patient call buttons**
-- Status display via **20x4 I2C LCD**
-- **RGB LED** as a status indicator
-- **Buzzer** for audio alerts
-- **Menu navigation** with physical buttons
-- **SD Card** for call logging
+* Memantau **32 patient call buttons**
+* Status ditampilkan via **20x4 I2C LCD**
+* **RGB LED** sebagai indikator status
+* **Buzzer** untuk peringatan suara (opsional)
 
 ---
 
@@ -19,7 +20,7 @@ This Nurse Call System is built using an **Arduino Mega 2560** to monitor and ma
 
 ### Patient Call Buttons (Inputbutton)
 
-Each bed is assigned a dedicated button using the following digital pins:
+Setiap tempat tidur memiliki tombol khusus pada pin digital berikut:
 
 ```cpp
 const uint8_t Inputbutton[SizeButton] = {
@@ -28,67 +29,49 @@ const uint8_t Inputbutton[SizeButton] = {
   38, 39, 40, 41, 42, 43, 44, 45,
   46, 47, 48, 49, 50, 51, 52, 53
 };
-Note:
-	•	Uses digital pins 22–53.
-	•	These pins do not support external interrupts.
-	•	Ideal for polling input using digitalRead().
+```
 
-Buzzer
-	•	Pin: A3
-	•	Used for sound alerts.
-	•	Can be toggled ON/OFF or controlled using tone() if needed.
+**Catatan:**
 
-LCD 20x4 (I2C)
-	•	SDA: Pin 20
-	•	SCL: Pin 21
+* Menggunakan pin digital 22–53.
+* Pin ini tidak mendukung interrupt eksternal, cocok untuk polling dengan `digitalRead()`.
 
-Uses I2C communication. Only two pins needed. Recommended library: LiquidCrystal_I2C.
+### Buzzer
 
-RGB LED
-	•	Red: Pin 12 (PWM supported)
-	•	Green: Pin 11 (PWM supported)
-	•	Blue: Pin 13 (PWM supported)
+* Pin: A3
+* Digunakan untuk peringatan suara. Bisa dinyalakan/mati atau dikontrol dengan `tone()`.
 
-Used to display status using color combinations. You can control brightness with analogWrite().
+### LCD 20x4 (I2C)
 
-⸻
+* SDA: Pin 20
+* SCL: Pin 21
+* Komunikasi via I2C, cukup dua pin. Library yang direkomendasikan: `LiquidCrystal_I2C`.
 
-Menu Navigation Buttons
-	•	Confirm: Pin A2
-	•	Up: Pin A0
-	•	Down: Pin A1
+### RGB LED
 
-Used to navigate system menu and select or reset options.
+* Red: Pin 12 (PWM)
+* Green: Pin 11 (PWM)
+* Blue: Pin 13 (PWM)
+* Digunakan untuk menampilkan status dengan kombinasi warna. Intensitas bisa dikontrol dengan `analogWrite()`.
 
-⸻
+---
 
-SD Card Module (Software SPI)
-	•	CS (Chip Select): Pin 7
-	•	DO (MISO): Pin 6
-	•	DI (MOSI): Pin 8
-	•	SCK (Clock): Pin 9
+### Components Used
 
-Uses software SPI. Make sure your SD library supports custom SPI pins.
+* Arduino Mega 2560
+* 20x4 I2C LCD
+* 32x Push Buttons
+* RGB LED (3-pin)
+* Buzzer
+* Resistor, jumper wires, breadboard atau PCB
 
-⸻
+---
 
-Components Used
-	•	Arduino Mega 2560
-	•	20x4 I2C LCD
-	•	32x Push Buttons
-	•	RGB LED (3-pin)
-	•	Buzzer
-	•	SD Card Module
-	•	Resistors, jumper wires, breadboard or PCB
+### How It Works
 
-⸻
+1. Pasien menekan tombol panggil.
+2. Sistem mendeteksi sinyal dari pin terkait.
+3. RGB LED menyala sebagai indikator panggilan.
+4. Buzzer berbunyi sebagai peringatan (opsional).
 
-How It Works
-	1.	The patient presses the call button.
-	2.	The system detects the signal from the corresponding pin.
-	3.	RGB LED lights up to indicate the call.
-	4.	Buzzer sounds as an alert.
-	5.	The call event is logged to the SD card.
-	6.	Menu buttons allow staff to check and reset the calls.
-
-⸻
+---

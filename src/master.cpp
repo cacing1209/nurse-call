@@ -2,7 +2,6 @@
 #include <toneBuzzer.h>
 setting_t set;
 systemInfo systemInformation;
-File root;
 
 mainDisplay display;
 LiquidCrystal_I2C lcdMsg(0x27, Range_lcdHorizontal, Range_lcdVertical);
@@ -137,70 +136,11 @@ void callButton()
     }
 }
 
-void printDirectory(File dir, int numTabs)
-{
-    while (true)
-    {
 
-        File entry = dir.openNextFile();
-        if (!entry)
-        {
-            break;
-        }
-        for (uint8_t i = 0; i < numTabs; i++)
-        {
-            Serial.print('\t');
-        }
-        Serial.print(entry.name());
-        if (entry.isDirectory())
-        {
-            Serial.println("/");
-            printDirectory(entry, numTabs + 1);
-        }
-        else
-        {
-            Serial.print("\t\t");
-            Serial.println(entry.size(), DEC);
-        }
-        entry.close();
-    }
-}
 
 systemInfo sys;
-void sdcard_READ(String namefile)
-{
-    File textFile = SD.open(namefile);
-    if (textFile)
-    {
-        Serial.print(namefile);
-        while (textFile.available())
-        {
-            Serial.write(textFile.read());
-        }
-        textFile.close();
-    }
-    else
-    {
-        Serial.println("error open " + namefile);
-        sys.erorList[1] = 1;
-    }
-}
-void initSd_card() // not use
-{
-    for (size_t i = 0; i < 12; i++)
-    {
-        sys.erorList[i] = false;
-    }
 
-    if (!SD.begin(CS_PIN))
-    {
-        Serial.println(" SD IS NOT DETECT");
-        sys.erorList[0] = 1;
-    }
-    root = SD.open("/");
-    printDirectory(root, 0);
-    Serial.println("");
-}
+
 
 uint8_t menuPins()
 {
@@ -296,18 +236,7 @@ void activatedMenu(unsigned long &dif_t)
     }
 }
 
-void mainSetting()
-{
-    static unsigned long dif_time = 0;
-    static bool menu_select = false;
-    if (display.ShowMenu)
-    {
-        Button_main(dif_time, menu_select);
-        printMenu(set.cursor);
-        }
-    else
-        activatedMenu(dif_time);
-}
+
 void setup()
 {
     Serial1.begin(baudrate_S1);
@@ -323,7 +252,6 @@ void setup()
 }
 void loop()
 {
-    // mainSetting();
     main_Button.Call(myButton, &display);
     display.main();
     callButton();

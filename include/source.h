@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
-#include <SD.h>
 #include <ArduinoJson.h>
 #define ledsize 3             // 3
 #define SizeButton 0b00100000 // 32
