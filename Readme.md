@@ -1,10 +1,7 @@
 
 ---
-
-# ![Arduino Logo](https://upload.wikimedia.org/wikipedia/commons/4/4e/Arduino_Logo.png) Nurse Call System by CCNG
-
+Nurse Call System by CCNG
 Sistem Nurse Call ini menggunakan **Arduino Mega 2560** untuk memantau tombol panggil pasien hingga 32 tempat tidur. Status panggilan ditampilkan di LCD dan RGB LED, dengan buzzer sebagai indikator suara opsional.
-
 ---
 
 ## Features
