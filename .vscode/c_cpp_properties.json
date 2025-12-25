@@ -1,0 +1,64 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "D:/Coding/backup_controller_project/nurse-call/include",
+                "D:/Coding/backup_controller_project/nurse-call/src",
+                "D:/Coding/backup_controller_project/nurse-call/.pio/libdeps/megaatmega1280/ArduinoJson/src",
+                "D:/Coding/backup_controller_project/nurse-call/.pio/libdeps/megaatmega1280/SD/src",
+                "D:/Coding/backup_controller_project/nurse-call/.pio/libdeps/megaatmega1280/SdFat/src",
+                "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "D:/Coding/backup_controller_project/nurse-call/.pio/libdeps/megaatmega1280/LiquidCrystal_I2C",
+                "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "C:/Users/ROG/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/ROG/.platformio/packages/framework-arduino-avr/variants/mega",
+                "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "D:/Coding/backup_controller_project/nurse-call/include",
+                    "D:/Coding/backup_controller_project/nurse-call/src",
+                    "D:/Coding/backup_controller_project/nurse-call/.pio/libdeps/megaatmega1280/ArduinoJson/src",
+                    "D:/Coding/backup_controller_project/nurse-call/.pio/libdeps/megaatmega1280/SD/src",
+                    "D:/Coding/backup_controller_project/nurse-call/.pio/libdeps/megaatmega1280/SdFat/src",
+                    "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "D:/Coding/backup_controller_project/nurse-call/.pio/libdeps/megaatmega1280/LiquidCrystal_I2C",
+                    "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "C:/Users/ROG/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/ROG/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/ROG/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60118",
+                "ARDUINO_AVR_MEGA",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega1280__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/ROG/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega1280",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
