@@ -1,6 +1,6 @@
 #include <source.h>
 #include <toneBuzzer.h>
-setting_t set;
+#include <button.h>
 systemInfo systemInformation;
 File root;
 
@@ -10,7 +10,7 @@ button myButton[SizeButton];
 ledState lamp;
 buttonMain main_Button;
 buzzer_t bz;
-
+setting_state settings;
 void TEST_setRole()
 {
 
@@ -213,101 +213,7 @@ uint8_t menuPins()
     else
         return 0x00;
 }
-void printMenu(signed char &cursor)
-{
-    for (size_t i = 0; i < Range_lcdVertical; i++)
-    {
-        lcdMsg.setCursor(0, i);
-        lcdMsg.print(set.menuMsg[i]);
-        lcdMsg.setCursor(18, i);
-        lcdMsg.print((cursor == i) ? "<<" : "  ");
-    }
-}
 
-void Button_main(unsigned long &defferent, bool &menu_selected)
-{
-    static bool press = true;
-    static bool last_press = false;
-    if (menuPins() == 0x01)
-    {
-        if (press && !last_press)
-            set.cusorRole = btn_up;
-        press = false;
-        last_press = true;
-    }
-    else if (menuPins() == 0x03)
-    {
-        if ((press && !last_press) && !menu_selected)
-        {
-            menu_selected = true;
-            set.cusorRole = selected_menu;
-        }
-        press = false;
-        last_press = true;
-    }
-    else if (menuPins() == 0x02)
-    {
-        if (press && !last_press)
-            set.cusorRole = btn_down;
-        press = false;
-        last_press = true;
-    }
-
-    else
-    {
-        if (!press && last_press)
-        {
-            press = last_press;
-            last_press = !press;
-        }
-        if (set.cusorRole == btn_down)
-            set.main_cursor(-1, set.cursor);
-        if (set.cusorRole == btn_up)
-            set.main_cursor(1, set.cursor);
-        defferent = millis();
-        set.cusorRole = notset;
-    }
-}
-
-void activatedMenu(unsigned long &dif_t)
-{
-    static bool activMenu = false;
-    if (display.ShowMenu)
-        return;
-    if (menuPins() == 0x01 || menuPins() == 0x02)
-    {
-        if (millis() - dif_t > set.debounceBtn)
-            activMenu = true;
-        display.timeSleep = millis();
-    }
-    else
-    {
-        if (activMenu)
-        {
-            activMenu = false;
-            display.ShowMenu = true;
-            dif_t = millis();
-        }
-        else
-        {
-            dif_t = millis();
-            display.ShowMenu = false;
-        }
-    }
-}
-
-void mainSetting()
-{
-    static unsigned long dif_time = 0;
-    static bool menu_select = false;
-    if (display.ShowMenu)
-    {
-        Button_main(dif_time, menu_select);
-        printMenu(set.cursor);
-        }
-    else
-        activatedMenu(dif_time);
-}
 void setup()
 {
     Serial1.begin(baudrate_S1);
@@ -323,7 +229,7 @@ void setup()
 }
 void loop()
 {
-    mainSetting();
+    settings.main(&lcdMsg);
     main_Button.Call(myButton, &display);
     display.main();
     callButton();

@@ -11,41 +11,14 @@
 #define SPI_SPEED SD_SCK_MHZ(4)
 #define CS_PIN 7
 #define DB_pressButton 600 // millisecond
-#define pinButton_menuConfirm A2
-#define pinButton_menuUp A0
-#define pinButton_menuDown A1
+#define pinButton_menuUp 54
+#define pinButton_menuDown 55
+#define pinButton_menuConfirm 56
 const int buzzer = A3;
 
-enum display_t
-{
-    display_1 = 0xACF, // home menu
-    display_2,         // event log
-    display_3          // buzzer setting
-};
-enum status_pinMenu_t
-{
-    notset = 0x00,
-    selected_menu,
-    Kembali,
-    btn_up,
-    btn_down
-};
-struct setting_t
-{
-    signed char cursor;
-    String menuMsg[Range_lcdVertical];
-    status_pinMenu_t cusorRole;
-    const int debounceBtn = 350;
-    void main_cursor(signed char Mapcursor, signed char &cursor);
-    setting_t()
-    {
-        menuMsg[0] = "EVENT LOG";
-        menuMsg[1] = "Setting beep";
-        menuMsg[2] = "Return";
-        cursor = 0;
-        cusorRole = notset;
-    }
-};
+
+
+
 
 const uint8_t Inputbutton[SizeButton] = {
     22, 23, 24, 25, 26, 27, 28, 29, 30,
