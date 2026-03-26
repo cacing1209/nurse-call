@@ -10,7 +10,7 @@ button myButton[SizeButton];
 ledState lamp;
 buttonMain main_Button;
 buzzer_t bz;
-setting_state settings(pinButton_menuUp, pinButton_menuDown, pinButton_menuConfirm, 120);
+setting_state settings;
 void TEST_setRole()
 {
 
@@ -218,6 +218,7 @@ void setup()
 {
     Serial1.begin(baudrate_S1);
     Serial.begin(baudrate_S0);
+    settings.begin(pinButton_menuUp, pinButton_menuDown, pinButton_menuConfirm, 2500);
     lcdMsg.begin(20, 4);
     lcdMsg.backlight();
     lamp.begin();
@@ -232,6 +233,7 @@ void loop()
     settings.main(&lcdMsg);
     main_Button.Call(myButton, &display);
     display.main();
+    display.ShowMenu = settings.show_menu;
     callButton();
     IndicatorMoment(display.buttonisHIGH());
     systemInformation.thread();
