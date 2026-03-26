@@ -10,7 +10,7 @@ button myButton[SizeButton];
 ledState lamp;
 buttonMain main_Button;
 buzzer_t bz;
-setting_state settings;
+setting_state settings(pinButton_menuUp, pinButton_menuDown, pinButton_menuConfirm, 120);
 void TEST_setRole()
 {
 

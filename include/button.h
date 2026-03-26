@@ -15,7 +15,7 @@ struct menu_dsp
 {
     String menu_home[range_vertical];
     signed char pointer;
-    bool selected
+    bool selected;
 };
 struct setting_state
 {
