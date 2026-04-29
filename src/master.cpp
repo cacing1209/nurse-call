@@ -1,6 +1,6 @@
 #include <source.h>
 #include <toneBuzzer.h>
-#include <button.h>
+#include <eth.h>
 systemInfo systemInformation;
 File root;
 
@@ -10,7 +10,7 @@ button myButton[SizeButton];
 ledState lamp;
 buttonMain main_Button;
 buzzer_t bz;
-setting_state settings;
+void menu_btn(bool *show_menu);
 void TEST_setRole()
 {
 
@@ -40,7 +40,7 @@ void button_Begin()
     delay(2500);
     for (uint8_t i = 0; i < SizeButton; i++)
     {
-        if (i <= display.logo.length())
+        if (i <= strlen(display.logo))
         {
             digitalWrite(lamp.led[0], LOW);
 
@@ -63,9 +63,7 @@ void button_Begin()
         digitalWrite(lamp.led[2], LOW);
     }
     pinMode(buzzer, OUTPUT);
-    pinMode(pinButton_menuConfirm, INPUT);
-    pinMode(pinButton_menuDown, INPUT);
-    pinMode(pinButton_menuUp, INPUT);
+    pinMode(pinButton_menu, INPUT);
     display.timeSleep = millis();
 }
 uint8_t ledUse()
@@ -202,23 +200,26 @@ void initSd_card() // not use
     Serial.println("");
 }
 
-uint8_t menuPins()
+void capture_events()
 {
-    if (analogRead(pinButton_menuUp) > 500)
-        return 0x01;
-    else if (analogRead(pinButton_menuDown) > 500)
-        return 0x02;
-    else if (analogRead(pinButton_menuConfirm) > 500)
-        return 0x03;
-    else
-        return 0x00;
+    static statusbtn prev[SizeButton] = {btn_OFF};
+    for (size_t i = 0; i < SizeButton; i++)
+    {
+        if (myButton[i].STATUS == btn_ON && prev[i] == btn_OFF)
+        {
+            eth.push_event(myButton[i].pin,
+                           myButton[i].kamar,
+                           myButton[i].BED,
+                           (uint8_t)myButton[i].role);
+        }
+        prev[i] = myButton[i].STATUS;
+    }
 }
 
 void setup()
 {
     Serial1.begin(baudrate_S1);
     Serial.begin(baudrate_S0);
-    settings.begin(pinButton_menuUp, pinButton_menuDown, pinButton_menuConfirm, 2500);
     lcdMsg.begin(20, 4);
     lcdMsg.backlight();
     lamp.begin();
@@ -226,15 +227,18 @@ void setup()
     button_Begin();
     TEST_setRole();
     display.functionClear();
+    bz.begin(buzzer, 100, 100);
+    eth.begin(&bz);
     Serial.println("Deevice Ready");
 }
 void loop()
 {
-    settings.main(&lcdMsg);
+    menu_btn(&display.ShowMenu);
     main_Button.Call(myButton, &display);
+    capture_events();
     display.main();
-    display.ShowMenu = settings.show_menu;
     callButton();
     IndicatorMoment(display.buttonisHIGH());
+    eth.loop();
     systemInformation.thread();
 }

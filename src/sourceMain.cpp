@@ -216,6 +216,8 @@ void mainDisplay::functionClear()
 
 void mainDisplay::displayAction()
 {
+    if (button_HIGH > 0)
+        ShowMenu = false;
     if (timeOn >= intervalSleep)
     {
         ShowMenu = false;
@@ -234,6 +236,7 @@ void mainDisplay::displayAction()
     else if (total_HighButton != button_HIGH &&
              status == dsp_ON && button_HIGH <= 13)
     {
+        ShowMenu = false;
         status = dsp_updateValue;
         transisi();
     }
@@ -280,7 +283,7 @@ void mainDisplay::main()
         break;
     }
 }
-void mainDisplay::begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp)
+void mainDisplay::begin(char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp)
 {
     ShowMenu = false;
     total_HighButton = 0b0000;

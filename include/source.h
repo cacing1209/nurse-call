@@ -11,14 +11,10 @@
 #define SPI_SPEED SD_SCK_MHZ(4)
 #define CS_PIN 7
 #define DB_pressButton 600 // millisecond
-#define pinButton_menuUp 54
-#define pinButton_menuDown 55
-#define pinButton_menuConfirm 56
+// #define pinButton_menuUp 54
+// #define pinButton_menuDown 55
+#define pinButton_menu 56
 const int buzzer = A3;
-
-
-
-
 
 const uint8_t Inputbutton[SizeButton] = {
     22, 23, 24, 25, 26, 27, 28, 29, 30,
@@ -94,7 +90,7 @@ struct mainDisplay
      * setup the display status of satndby
      * setup value interval display sleep
      */
-    void begin(const char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp);
+    void begin(char *logoMSG, int time_Sleep, LiquidCrystal_I2C *dsp);
     LiquidCrystal_I2C *lcdMsg;
 
     // size of all button trigger is HIGH
@@ -124,7 +120,7 @@ struct mainDisplay
     void transisi();
 
     // name logo
-    String logo;
+    char* logo;
     // range 0 - 128
     uint8_t logoTime = 100;
 
