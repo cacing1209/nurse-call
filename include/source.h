@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
-#include <SD.h>
 #include <ArduinoJson.h>
 #define ledsize 3             // 3
 #define SizeButton 0b00100000 // 32
@@ -8,8 +7,6 @@
 #define Range_lcdVertical 0b0100
 #define baudrate_S0 9600
 #define baudrate_S1 4800
-#define SPI_SPEED SD_SCK_MHZ(4)
-#define CS_PIN 7
 #define DB_pressButton 600 // millisecond
 // #define pinButton_menuUp 54
 // #define pinButton_menuDown 55
@@ -120,7 +117,7 @@ struct mainDisplay
     void transisi();
 
     // name logo
-    char* logo;
+    char *logo;
     // range 0 - 128
     uint8_t logoTime = 100;
 
@@ -129,7 +126,7 @@ struct mainDisplay
     String Message_button;
     // setup show button HIGH
     void setupShowdisplay(button *btn);
-
+    void display_wakeup();
     // sort buttons by time
     void checkpoint_Shorting(button *btn);
     // String display_2[SizeButton];

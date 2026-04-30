@@ -159,14 +159,13 @@ void buttonMain::Call(button *btn, mainDisplay *dsp)
         {
             dsp->button_HIGH++;
             btn[i].STATUS = btn_ON;
-            dsp->timeSleep = millis();
+            dsp->display_wakeup();
         }
         else
         {
             btn[i].STATUS = btn_OFF;
         }
     }
-    dsp->timeOn = millis() - dsp->timeSleep;
     setMessageDisplay(dsp, btn, dsp->total_HighButton);
     if (dsp->status == dsp_OFF)
         return;
@@ -214,19 +213,24 @@ void mainDisplay::functionClear()
     }
 }
 
+void mainDisplay::display_wakeup()
+{
+    unsigned long now_t = millis();
+    timeSleep = now_t;
+}
 void mainDisplay::displayAction()
 {
-    if (button_HIGH > 0)
-        ShowMenu = false;
-    if (timeOn >= intervalSleep)
+    if (ShowMenu && button_HIGH < 1)
+    {
+        display_wakeup();
+        // Serial.println(":exec:menu");
+        status = dsp_menu;
+    }
+    else if (timeOn >= intervalSleep)
     {
         ShowMenu = false;
         status = dsp_OFF;
-    }
-    else if (ShowMenu)
-    {
-        timeSleep = millis();
-        status = dsp_menu;
+        Serial.println("standby");
     }
     else if (total_HighButton == 0)
     {
@@ -250,7 +254,7 @@ void mainDisplay::displayAction()
 
 void mainDisplay::main()
 {
-
+    timeOn = millis() - timeSleep;
     displayAction();
     switch (status)
     {

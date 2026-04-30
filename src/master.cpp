@@ -1,8 +1,8 @@
 #include <source.h>
 #include <toneBuzzer.h>
 #include <eth.h>
+#include <sdlog.h>
 systemInfo systemInformation;
-File root;
 
 mainDisplay display;
 LiquidCrystal_I2C lcdMsg(0x27, Range_lcdHorizontal, Range_lcdVertical);
@@ -10,7 +10,7 @@ button myButton[SizeButton];
 ledState lamp;
 buttonMain main_Button;
 buzzer_t bz;
-void menu_btn(bool *show_menu);
+void menu_btn(bool *show_menu, mainDisplay *dsp);
 void TEST_setRole()
 {
 
@@ -135,71 +135,6 @@ void callButton()
     }
 }
 
-void printDirectory(File dir, int numTabs)
-{
-    while (true)
-    {
-
-        File entry = dir.openNextFile();
-        if (!entry)
-        {
-            break;
-        }
-        for (uint8_t i = 0; i < numTabs; i++)
-        {
-            Serial.print('\t');
-        }
-        Serial.print(entry.name());
-        if (entry.isDirectory())
-        {
-            Serial.println("/");
-            printDirectory(entry, numTabs + 1);
-        }
-        else
-        {
-            Serial.print("\t\t");
-            Serial.println(entry.size(), DEC);
-        }
-        entry.close();
-    }
-}
-
-systemInfo sys;
-void sdcard_READ(String namefile)
-{
-    File textFile = SD.open(namefile);
-    if (textFile)
-    {
-        Serial.print(namefile);
-        while (textFile.available())
-        {
-            Serial.write(textFile.read());
-        }
-        textFile.close();
-    }
-    else
-    {
-        Serial.println("error open " + namefile);
-        sys.erorList[1] = 1;
-    }
-}
-void initSd_card() // not use
-{
-    for (size_t i = 0; i < 12; i++)
-    {
-        sys.erorList[i] = false;
-    }
-
-    if (!SD.begin(CS_PIN))
-    {
-        Serial.println(" SD IS NOT DETECT");
-        sys.erorList[0] = 1;
-    }
-    root = SD.open("/");
-    printDirectory(root, 0);
-    Serial.println("");
-}
-
 void capture_events()
 {
     static statusbtn prev[SizeButton] = {btn_OFF};
@@ -211,6 +146,9 @@ void capture_events()
                            myButton[i].kamar,
                            myButton[i].BED,
                            (uint8_t)myButton[i].role);
+            sd_log.log_event((uint8_t)myButton[i].role,
+                             myButton[i].kamar,
+                             myButton[i].BED);
         }
         prev[i] = myButton[i].STATUS;
     }
@@ -228,12 +166,12 @@ void setup()
     TEST_setRole();
     display.functionClear();
     bz.begin(buzzer, 100, 100);
-    eth.begin(&bz);
+    sd_log.begin();
+    // eth.begin(&bz);
     Serial.println("Deevice Ready");
 }
 void loop()
 {
-    menu_btn(&display.ShowMenu);
     main_Button.Call(myButton, &display);
     capture_events();
     display.main();

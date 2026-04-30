@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git config *)",
       "Read(//c/Users/admin/.platformio/penv/Scripts/**)",
-      "Bash(/c/Users/admin/.platformio/penv/Scripts/pio.exe run *)"
+      "Bash(/c/Users/admin/.platformio/penv/Scripts/pio.exe run *)",
+      "Bash(xargs grep *)"
     ]
   }
 }
