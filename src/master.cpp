@@ -167,7 +167,7 @@ void setup()
     display.functionClear();
     bz.begin(buzzer, 100, 100);
     sd_log.begin();
-    // eth.begin(&bz);
+    eth.begin(&bz);
     Serial.println("Deevice Ready");
 }
 void loop()
